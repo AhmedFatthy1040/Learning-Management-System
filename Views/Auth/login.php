@@ -1,14 +1,34 @@
 <?php
-require_once("../../Controllers/AuthController.php");
-require_once("../../../Learning-Management-System/Models/User.php");
+require_once(__DIR__ . "/../../Controllers/AuthController.php");
+require_once(__DIR__ . "/../../../Learning-Management-System/Models/User.php");
+
+$ErrorMessage = "";
+
 if (isset($_POST["email"]) && isset($_POST["password"])) {
     if (!empty($_POST["email"]) && !empty($_POST["password"])) {
         $user = new User();
         $auth = new \Controllers\AuthController();
         $user->setEmail($_POST["email"]);
         $user->SetPassword($_POST["password"]);
-        $auth->login($user);
+        if (!$auth->login($user)) {
+            if (!isset($_SESSION["UserID"])) {
+                session_start();
+            }
+            $ErrorMessage = $_SESSION["ErrorMessage"];
+        }
+        else
+            if (!isset($_SESSION["UserID"])) {
+                session_start();
+            }
+            if (!isset($_SESSION["LearningPath"]) && !isset($_SESSION["FinalRate"]))
+                header("location: ../Admin/dashboard.php");
+            elseif (!isset($_SESSION["Salary"]))
+                header("location: ../Student/dashboard.php");
+            else
+                header("location: ../Mentor/dashboard.php");
     }
+    else
+        $ErrorMessage = "Please Fill All Fields!";
 
 }
 
@@ -43,6 +63,21 @@ if (isset($_POST["email"]) && isset($_POST["password"])) {
                                     <div class="text-center">
                                         <h4 class="text-dark mb-4">Welcome Back!</h4>
                                     </div>
+
+                                    <?php
+                                        if ($ErrorMessage != "") {
+                                            ?>
+                                            <div class="card text-white bg-danger shadow">
+                                                <div class="card-body">
+                                                    <p class="m-0"><?php echo $ErrorMessage ?></p>
+                                                </div>
+                                            </div>
+                                            <?php
+                                        }
+                                    ?>
+
+
+
                                     <form class="user" action="login.php" method="POST">
                                         <div class="mb-3"><input class="form-control form-control-user" type="email"
                                                 id="exampleInputEmail" aria-describedby="emailHelp"

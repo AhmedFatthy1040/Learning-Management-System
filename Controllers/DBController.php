@@ -2,6 +2,7 @@
 
 namespace Controllers;
 
+
 use mysqli;
 
 class DBController
@@ -25,7 +26,7 @@ class DBController
         if(!$result) {
             die("Query failed: " . $this->conn->error);
         }
-        return $result;
+        return $result->fetch_all(MYSQLI_ASSOC);
     }
     function selectQuery($sql){
         $link = mysqli_connect($this->host, $this->user, $this->password, $this->database, $this->port);

@@ -24,7 +24,7 @@ class User extends Person{
     Public function getDateOfBirth(){
         return $this->DateOfBirth;
     }
-    Public function getEmail(){
+    public function getEmail(){
         return $this->Email;
     }
     Public function getPhoneNumber(){
