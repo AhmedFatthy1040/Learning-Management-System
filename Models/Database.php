@@ -1,27 +1,37 @@
 <?php
-class Database {
-    private $host = "localhost";
-    private $user = "username";
+class Database
+{private $host = "host";
+    private $user = "user";
     private $password = "password";
-    private $database = "database_name";
+    private $database = "database name";
+    private $port = "port";
     private $conn;
 
-    function __construct() {
-        $this->conn = new mysqli($this->host, $this->user, $this->password, $this->database);
+    function Connect() {
+        $this->conn = new mysqli($this->host, $this->user, $this->password, $this->database, $this->port);
         if($this->conn->connect_error) {
             die("Connection failed: " . $this->conn->connect_error);
         }
     }
 
-    function query($sql) {
-        $result = $this->conn->query($sql);
-        if(!$result) {
-            die("Query failed: " . $this->conn->error);
+    function Query($sql)
+    {
+        $link = mysqli_connect($this->host, $this->user, $this->password, $this->database, $this->port);
+        if ($link === false) {
+            die("ERROR: Could not connect. " . mysqli_connect_error());
         }
-        return $result;
+        if (!mysqli_query($link, $sql)) {
+            echo "ERROR: Could not able to execute $sql. " . mysqli_error($link);
+        }
+        mysqli_close($link);
     }
-
-    function close() {
-        $this->conn->close();
-    }
+    function selectQuery($sql){
+        $link = mysqli_connect($this->host, $this->user, $this->password, $this->database, $this->port);
+        if ($link === false) {
+            die("ERROR: Could not connect. " . mysqli_connect_error());
+        }
+        $result = mysqli_query($link, $sql) or trigger_error(mysqli_error($link));
+        mysqli_close($link); 
+        return ($result);
+       }
 }
