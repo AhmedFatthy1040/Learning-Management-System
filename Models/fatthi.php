@@ -1,4 +1,4 @@
 <?php
-echo"fatthi"
+echo"Hello World";
 
 ?>
