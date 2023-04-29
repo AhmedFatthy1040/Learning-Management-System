@@ -14,17 +14,22 @@ class DBController
     private $port = "3306";
     private $conn;
 
-    function connect() {
+    function connect(): bool
+    {
         $this->conn = new mysqli($this->host, $this->user, $this->password, $this->database, $this->port);
         if($this->conn->connect_error) {
-            die("Connection failed: " . $this->conn->connect_error);
+            echo "Connection failed: " . $this->conn->connect_error;
+            return false;
         }
+        else
+            return true;
     }
 
     function query($sql) {
         $result = $this->conn->query($sql);
         if(!$result) {
-            die("Query failed: " . $this->conn->error);
+            echo "Query failed: " . $this->conn->error;
+            return false;
         }
         return $result->fetch_all(MYSQLI_ASSOC);
     }
