@@ -9,6 +9,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
     <title>Blank Page - LMS</title>
+    <link rel="stylesheet" href="css/LerningPath.css">
     <link rel="stylesheet" href="../assets/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i&amp;display=swap">
     <link rel="stylesheet" href="../assets/fonts/fontawesome-all.min.css">
@@ -23,7 +24,7 @@
                 </a>
                 <hr class="sidebar-divider my-0">
                 <ul class="navbar-nav text-light" id="accordionSidebar">
-                    <li class="nav-item"><a class="nav-link" href="index.html"><i class="fas fa-home"></i><span>Home</span></a></li>
+                    <li class="nav-item"><a class="nav-link" href="dashboard.php"><i class="fas fa-home"></i><span>Home</span></a></li>
                     <li class="nav-item"><a class="nav-link" href="profile.html"><i class="fas fa-user"></i><span>Profile</span></a></li>
                     <li class="nav-item"><a class="nav-link" href="table.html"><i class="fas fa-users"></i><span>Mentors</span></a></li>
                     <li class="nav-item"><a class="nav-link" href="register.html"><i class="fas fa-book-open"></i><span>Learning Paths</span></a></li>
@@ -39,6 +40,7 @@
                         <form class="d-none d-sm-inline-block me-auto ms-md-3 my-2 my-md-0 mw-100 navbar-search">
                             <div class="input-group"><input class="bg-light form-control border-0 small" type="text" placeholder="Search for ..."><button class="btn btn-primary py-0" type="button"><i class="fas fa-search"></i></button></div>
                         </form>
+                        
                         <ul class="navbar-nav flex-nowrap ms-auto">
                             <li class="nav-item dropdown d-sm-none no-arrow"><a class="dropdown-toggle nav-link" aria-expanded="false" data-bs-toggle="dropdown" href="#"><i class="fas fa-search"></i></a>
                                 <div class="dropdown-menu dropdown-menu-end p-3 animated--grow-in" aria-labelledby="searchDropdown">
@@ -77,6 +79,7 @@
                                     </div>
                                 </div>
                             </li>
+                            
                             <li class="nav-item dropdown no-arrow mx-1">
                                 <div class="nav-item dropdown no-arrow"><a class="dropdown-toggle nav-link" aria-expanded="false" data-bs-toggle="dropdown" href="#"><span class="badge bg-danger badge-counter">7</span><i class="fas fa-envelope fa-fw"></i></a>
                                     <div class="dropdown-menu dropdown-menu-end dropdown-list animated--grow-in">
@@ -130,6 +133,40 @@
                         </ul>
                     </div>
                 </nav>
+                <div class="section2" id="service">
+        <h3 class="title">Learning Pathes</h3>
+        <a href="">
+<div class="contanre">
+            <div class="card">
+                <div class="icon">
+                <i class="fa-brands fa-android"></i>
+                </div>
+                <div class="info">
+                    <h3>Android </h3>
+                    <p>Launch Your Android App Development Career. Master the knowledge and skills necessary to develop maintainable mobile computing apps</p>
+                    
+                </div>
+            </div>
+            <div class="card">
+                <div class="icon">
+                    <i class="fa-solid fa-code"></i>
+                </div>
+                <div class="info">
+                    <h3>Front-end</h3>
+                    <p>You will learn how front-end developers create websites and applications that work well and are easy to maintain</p>
+                </div>
+            </div>
+            <div class="card">
+                <div class="icon">
+                <i class="fa-solid fa-database"></i>
+                </div>
+                <div class="info">
+                    <h3>Back-end</h3>
+                    <p>You’ll learn the latest tools and technologies used by professional back-end developers</p>
+            </div>
+        </div>
+        </a>
+    </div>
             </div>
             <footer class="bg-white sticky-footer">
                 <div class="container my-auto">
