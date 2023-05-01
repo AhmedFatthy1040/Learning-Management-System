@@ -9,31 +9,42 @@ class DBController
 {
     private $host = "localhost";
     private $user = "root";
-    private $password = "";
+    private $password = "36951";
     private $database = "lms";
-    private $port = "3306";
+    private $port = "3307";
     private $conn;
 
     function connect(): bool
     {
         $this->conn = new mysqli($this->host, $this->user, $this->password, $this->database, $this->port);
-        if($this->conn->connect_error) {
+        if ($this->conn->connect_error) {
             echo "Connection failed: " . $this->conn->connect_error;
             return false;
-        }
-        else
+        } else
             return true;
     }
 
-    function query($sql) {
+    function query($sql)
+    {
         $result = $this->conn->query($sql);
-        if(!$result) {
+        if (!$result) {
             echo "Query failed: " . $this->conn->error;
             return false;
         }
         return $result->fetch_all(MYSQLI_ASSOC);
     }
-    function selectQuery($sql){
+    function insert($sql)
+    {
+        $result = $this->conn->query($sql);
+        if (!$result) {
+            echo "Query failed: " . $this->conn->error;
+            return false;
+        } else {
+            return $this->conn->insert_id;
+        }
+    }
+    function selectQuery($sql)
+    {
         $link = mysqli_connect($this->host, $this->user, $this->password, $this->database, $this->port);
         if ($link === false) {
             die("ERROR: Could not connect. " . mysqli_connect_error());
@@ -43,7 +54,8 @@ class DBController
         return ($result);
     }
 
-    function close() {
+    function close()
+    {
         $this->conn->close();
     }
 }
