@@ -9,7 +9,7 @@ class DBController
 {
     private $host = "localhost";
     private $user = "root";
-    private $password = "sqXjKmW)JuYZAVa9";
+    private $password = "";
     private $database = "lms";
     private $port = "3306";
     private $conn;
@@ -24,7 +24,14 @@ class DBController
             return true;
     }
 
-    function query($sql)
+    function query($sql) {
+        $result = $this->conn->query($sql);
+        if(!$result) {
+            die("Query failed: " . $this->conn->error);
+        }
+        return $result;
+    }
+    function Select($sql)
     {
         $result = $this->conn->query($sql);
         if (!$result) {

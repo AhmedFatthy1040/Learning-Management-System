@@ -4,6 +4,7 @@
     {
         Private $Id;
         Private $Password;
+        Private $Gender;
 
         public function SetPassword($Password)
         {
@@ -23,7 +24,17 @@
         {
            return $this->Id=$Id;
         }
-    }
 
+        public function GetGender()
+        {
+            return $this->Gender;
+        }
+
+        public function SetGender($Gender)
+        {
+            $this->Gender=$Gender;
+        }
+
+    }
 
 ?>

@@ -20,12 +20,12 @@ if (isset($_POST["email"]) && isset($_POST["password"])) {
             if (!isset($_SESSION["UserID"])) {
                 session_start();
             }
-            if (!isset($_SESSION["LearningPath"]) && !isset($_SESSION["FinalRate"]))
+            if ($_SESSION["UserID"] >= 0 && $_SESSION["UserID"] <= 1000)
                 header("location: ../Admin/dashboard.php");
-            elseif (!isset($_SESSION["Salary"]))
-                header("location: ../Student/dashboard.php");
-            else
+            elseif ($_SESSION["UserID"] > 1000 && $_SESSION["UserID"] <= 2000)
                 header("location: ../Mentor/dashboard.php");
+            else
+            header("location: ../Student/dashboard.php");
     }
     else
         $ErrorMessage = "Please Fill All Fields!";
