@@ -61,11 +61,11 @@ mysqli_close($conn);
                 <ul class="navbar-nav text-light" id="accordionSidebar">
                     <li class="nav-item"><a class="nav-link" href="dashboard.php"><i class="fas fa-home"></i><span>Home</span></a></li>
                     <li class="nav-item"><a class="nav-link" href="profile.html"><i class="fas fa-user"></i><span>Profile</span></a></li>
-<<<<<<< HEAD
+<!--<<<<<<< HEAD-->
                     <li class="nav-item"><a class="nav-link" href="Manage-Users.php"><i class="fas fa-users"></i><span>Users</span></a></li>
-=======
-                    <li class="nav-item"><a class="nav-link" href="manage-user.php"><i class="fas fa-users"></i><span>Users</span></a></li>
->>>>>>> 52534ace450467a00d23037baffefd64354768d7
+<!--=======-->
+                    
+<!--=============================================-->
                     <li class="nav-item"><a class="nav-link" href="register.html"><i class="fas fa-book-open"></i><span>Learning Paths</span></a></li>
                 </ul>
                 <div class="text-center d-none d-md-inline"><button class="btn rounded-circle border-0" id="sidebarToggle" type="button"></button></div>
@@ -175,13 +175,13 @@ mysqli_close($conn);
                                 <div class="row align-items-center no-gutters">
                                     <div class="col me-2">
                                        <div class="container">
-<<<<<<< HEAD
+<!--<<<<<<< HEAD-->
 		                                <div class="btn"><a href="#">Manage Mentors</a></div>
 		                                <div class="btn"><a href="Manage-Users.php" >Manage Users</a></div>
-=======
+<!--=======-->
 		                                <div class="btn"><a href="add-mentor.php">Manage Mentors</a></div>
 		                                <div class="btn"><a href="manage-user.php" >Manage Users</a></div>
->>>>>>> 52534ace450467a00d23037baffefd64354768d7
+<!--                                           =============================================-->
 		                                <div class="btn"><a href="#" >Manage Learning Paths</a></div>
                                         <div class="btn"><a href="#" >Manage Courses</a></div>
                                        </div>
