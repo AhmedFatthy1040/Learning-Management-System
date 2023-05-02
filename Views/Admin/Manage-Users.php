@@ -1,14 +1,14 @@
 <style>
-<?php
-    include("../assets/bootstrap/css/Admin.css");
-    require_once(__DIR__ . "/../../Controllers/ValidationController.php");
-    use Controllers\ValidationController;
-    $Check = new ValidationController();
-    $Check->CheckForAdmin();
-    if (!$Check)
-        header("location:../Auth/login.php");
+    <?php
+        include("../assets/bootstrap/css/ManageUsers.css");
+        require_once(__DIR__ . "/../../Controllers/ValidationController.php");
+        use Controllers\ValidationController;
+        $Check = new ValidationController();
+        $Check->CheckForAdmin();
+        if (!$Check)
+            header("location:../Auth/login.php");
 
-?>
+    ?>
 </style>
 <?php
 // connect to the database
@@ -20,28 +20,44 @@ if(!$conn){
 }
 
 // write query for all mentors
-$sql = 'SELECT phone, fname, lname, salary, final_rate, email FROM mentor ORDER BY final_rate desc ';
+$sql = 'SELECT id, fname, lname, gender, email, phone FROM user ORDER BY id desc ';
 
 // get the result set (set of rows)
 $result = mysqli_query($conn, $sql);
 
 // fetch the resulting rows as an array
-$mentors = mysqli_fetch_all($result, MYSQLI_ASSOC);
+$users = mysqli_fetch_all($result, MYSQLI_ASSOC);
 
 // free the $result from memory (good practise)
 mysqli_free_result($result);
+
+//delete data if button is clicked
+if(isset($_POST['delete'])){
+
+    $id_to_delete = mysqli_real_escape_string($conn, $_POST['id_to_delete']);
+
+    $sql = "DELETE FROM user WHERE id = $id_to_delete";
+
+    if(mysqli_query($conn, $sql)){
+        header('Location: Manage-Users.php');
+    } else {
+        echo 'query error: '. mysqli_error($conn);
+    }
+
+}
 
 // close connection
 mysqli_close($conn);
 
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-    <title>Admin-Home page</title>
+    <title>Table - LMS</title>
     <link rel="stylesheet" href="../assets/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i&amp;display=swap">
     <link rel="stylesheet" href="../assets/fonts/fontawesome-all.min.css">
@@ -57,9 +73,9 @@ mysqli_close($conn);
                 <hr class="sidebar-divider my-0">
                 <ul class="navbar-nav text-light" id="accordionSidebar">
                     <li class="nav-item"><a class="nav-link" href="dashboard.php"><i class="fas fa-home"></i><span>Home</span></a></li>
-                    <li class="nav-item"><a class="nav-link" href="profile.html"><i class="fas fa-user"></i><span>Profile</span></a></li>
+                    <li class="nav-item"><a class="nav-link" href="#"><i class="fas fa-user"></i><span>Profile</span></a></li>
                     <li class="nav-item"><a class="nav-link" href="Manage-Users.php"><i class="fas fa-users"></i><span>Users</span></a></li>
-                    <li class="nav-item"><a class="nav-link" href="register.html"><i class="fas fa-book-open"></i><span>Learning Paths</span></a></li>
+                    <li class="nav-item"><a class="nav-link" href="#"><i class="fas fa-book-open"></i><span>Learning Paths</span></a></li>
                 </ul>
                 <div class="text-center d-none d-md-inline"><button class="btn rounded-circle border-0" id="sidebarToggle" type="button"></button></div>
             </div>
@@ -113,7 +129,7 @@ mysqli_close($conn);
                                 <div class="nav-item dropdown no-arrow"><a class="dropdown-toggle nav-link" aria-expanded="false" data-bs-toggle="dropdown" href="#"><span class="badge bg-danger badge-counter">7</span><i class="fas fa-envelope fa-fw"></i></a>
                                     <div class="dropdown-menu dropdown-menu-end dropdown-list animated--grow-in">
                                         <h6 class="dropdown-header">alerts center</h6><a class="dropdown-item d-flex align-items-center" href="#">
-                                            <div class="dropdown-list-image me-3"><img class="rounded-circle" src="../assets/img/avatars/avatar4.jpeg">
+                                            <div class="dropdown-list-image me-3"><img class="rounded-circle" src="assets/img/avatars/avatar4.jpeg">
                                                 <div class="bg-success status-indicator"></div>
                                             </div>
                                             <div class="fw-bold">
@@ -121,7 +137,7 @@ mysqli_close($conn);
                                                 <p class="small text-gray-500 mb-0">Emily Fowler - 58m</p>
                                             </div>
                                         </a><a class="dropdown-item d-flex align-items-center" href="#">
-                                            <div class="dropdown-list-image me-3"><img class="rounded-circle" src="../assets/img/avatars/avatar2.jpeg">
+                                            <div class="dropdown-list-image me-3"><img class="rounded-circle" src="assets/img/avatars/avatar2.jpeg">
                                                 <div class="status-indicator"></div>
                                             </div>
                                             <div class="fw-bold">
@@ -129,7 +145,7 @@ mysqli_close($conn);
                                                 <p class="small text-gray-500 mb-0">Jae Chun - 1d</p>
                                             </div>
                                         </a><a class="dropdown-item d-flex align-items-center" href="#">
-                                            <div class="dropdown-list-image me-3"><img class="rounded-circle" src="../assets/img/avatars/avatar3.jpeg">
+                                            <div class="dropdown-list-image me-3"><img class="rounded-circle" src="assets/img/avatars/avatar3.jpeg">
                                                 <div class="bg-warning status-indicator"></div>
                                             </div>
                                             <div class="fw-bold">
@@ -137,7 +153,7 @@ mysqli_close($conn);
                                                 <p class="small text-gray-500 mb-0">Morgan Alvarez - 2d</p>
                                             </div>
                                         </a><a class="dropdown-item d-flex align-items-center" href="#">
-                                            <div class="dropdown-list-image me-3"><img class="rounded-circle" src="../assets/img/avatars/avatar5.jpeg">
+                                            <div class="dropdown-list-image me-3"><img class="rounded-circle" src="assets/img/avatars/avatar5.jpeg">
                                                 <div class="bg-success status-indicator"></div>
                                             </div>
                                             <div class="fw-bold">
@@ -151,7 +167,7 @@ mysqli_close($conn);
                             </li>
                             <div class="d-none d-sm-block topbar-divider"></div>
                             <li class="nav-item dropdown no-arrow">
-                                <div class="nav-item dropdown no-arrow"><a class="dropdown-toggle nav-link" aria-expanded="false" data-bs-toggle="dropdown" href="#"><span class="d-none d-lg-inline me-2 text-gray-600 small">Valerie Luna</span><img class="border rounded-circle img-profile" src="../assets/img/avatars/avatar1.jpeg"></a>
+                                <div class="nav-item dropdown no-arrow"><a class="dropdown-toggle nav-link" aria-expanded="false" data-bs-toggle="dropdown" href="#"><span class="d-none d-lg-inline me-2 text-gray-600 small">Valerie Luna</span><img class="border rounded-circle img-profile" src="assets/img/avatars/avatar1.jpeg"></a>
                                     <div class="dropdown-menu shadow dropdown-menu-end animated--grow-in"><a class="dropdown-item" href="#"><i class="fas fa-user fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Profile</a><a class="dropdown-item" href="#"><i class="fas fa-cogs fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Settings</a><a class="dropdown-item" href="#"><i class="fas fa-list fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Activity log</a>
                                         <div class="dropdown-divider"></div><a class="dropdown-item" href="#"><i class="fas fa-sign-out-alt fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Logout</a>
                                     </div>
@@ -160,102 +176,15 @@ mysqli_close($conn);
                         </ul>
                     </div>
                 </nav>
-                    <div class="container-fluid">
-                        <div class="card shadow border-start-success py-2">
-                        <div class="card-header d-flex justify-content-between align-items-center">
-                                <h6 class="text-primary fw-bold m-0">Adminstration</h6>
-                            <div class="card-body">
-                                <div class="row align-items-center no-gutters">
-                                    <div class="col me-2">
-                                       <div class="container">
-		                                <div class="btn"><a href="#">Manage Mentors</a></div>
-		                                <div class="btn"><a href="Manage-Users.php" >Manage Users</a></div>
-		                                <div class="btn"><a href="#" >Manage Learning Paths</a></div>
-                                        <div class="btn"><a href="#" >Manage Courses</a></div>
-                                       </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                    <div class="col-md-6 col-xl-3 mb-4">
-                        <div class="card shadow border-start-primary py-2">
-                            <div class="card-body">
-                                <div class="row align-items-center no-gutters">
-                                    <div class="col me-2">
-                                        <div class="text-uppercase text-primary fw-bold text-xs mb-1"><span>Current Budget</span></div>
-                                        <div class="text-dark fw-bold h5 mb-0"><span>$40,000</span></div>
-                                    </div>
-                                    <div class="col-auto"><i class="fas fa-calendar fa-2x text-gray-300"></i></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6 col-xl-3 mb-4">
-                        <div class="card shadow border-start-success py-2">
-                            <div class="card-body">
-                                <div class="row align-items-center no-gutters">
-                                    <div class="col me-2">
-                                        <div class="text-uppercase text-success fw-bold text-xs mb-1"><span>Mentors total salary</span></div>
-                                        <div class="text-dark fw-bold h5 mb-0"><span>$215,000</span></div>
-                                    </div>
-                                    <div class="col-auto"><i class="fas fa-dollar-sign fa-2x text-gray-300"></i></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6 col-xl-3 mb-4">
-                        <div class="card shadow border-start-info py-2">
-                            <div class="card-body">
-                                <div class="row align-items-center no-gutters">
-                                    <div class="col me-2">
-                                        <div class="text-uppercase text-info fw-bold text-xs mb-1"><span></span></div>
-                                        <div class="row g-0 align-items-center">
-                                            <div class="col-auto">
-                                                <div class="text-dark fw-bold h5 mb-0 me-3"><span>50%</span></div>
-                                            </div>
-                                            <div class="col">
-                                                <div class="progress progress-sm">
-                                                    <div class="progress-bar bg-info" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width: 50%;"><span class="visually-hidden">50%</span></div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-auto"><i class="fas fa-clipboard-list fa-2x text-gray-300"></i></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6 col-xl-3 mb-4">
-                        <div class="card shadow border-start-warning py-2">
-                            <div class="card-body">
-                                <div class="row align-items-center no-gutters">
-                                    <div class="col me-2">
-                                        <div class="text-uppercase text-warning fw-bold text-xs mb-1"><span>Total Courses</span></div>
-                                        <div class="text-dark fw-bold h5 mb-0"><span>18</span></div>
-                                    </div>
-                                    <div class="col-auto"><i class="fas fa-comments fa-2x text-gray-300"></i></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
                 <div class="container-fluid">
-                    <h3 class="text-dark mb-4">Mentors</h3>
+                    <h3 class="text-dark mb-4">Users</h3>
                     <div class="card shadow">
-
                         <div class="card-header py-3">
-                            <p class="text-primary m-0 fw-bold">Mentor Info</p>
-
+                            <p class="text-primary m-0 fw-bold">User Info</p>
                         </div>
-                        <div><a class="btn btn-primary btn-sm d-none d-sm-inline-block" role="button" href="add-mentor.php"><i class="fas fa-download fa-sm text-white-50"></i>&nbsp;Add Mentor</a></div>
                         <div class="card-body">
-
                             <div class="row">
-
                                 <div class="col-md-6 text-nowrap">
-
                                     <div id="dataTable_length" class="dataTables_length" aria-controls="dataTable"><label class="form-label">Show&nbsp;<select class="d-inline-block form-select form-select-sm">
                                                 <option value="10" selected="">10</option>
                                                 <option value="25">25</option>
@@ -263,39 +192,53 @@ mysqli_close($conn);
                                                 <option value="100">100</option>
                                             </select>&nbsp;</label></div>
                                 </div>
-
                                 <div class="col-md-6">
+                                    <div class="text-md-end dataTables_filter" id="dataTable_filter"><label class="form-label"><input type="search" class="form-control form-control-sm" aria-controls="dataTable" placeholder="Search"></label></div>
                                 </div>
                             </div>
-<!--                            ================================================Mentors Table=============================================================-->
                             <div class="table-responsive table mt-2" id="dataTable" role="grid" aria-describedby="dataTable_info">
                                 <table class="table my-0" id="dataTable">
                                     <thead>
                                         <tr>
-                                            <th>First Name</th>
-                                            <th>Last Name</th>
+                                            <th>ID</th>
+                                            <th>FirstName</th>
+                                            <th>LastName</th>
                                             <th>Email</th>
-                                            <th>Rate</th>
-                                            <th>Phone number</th>
-                                            <th>Salary</th>
+                                            <th>phone</th>
+                                            <th>gender</th>
                                         </tr>
                                     </thead>
-                                    <?php foreach ($mentors as $mentor): ?>
-                                    <tbody>
+                                    <?php foreach ($users as $user): ?>
+                                        <tbody>
                                         <tr>
 
-                                            <td><?php echo htmlspecialchars($mentor['fname']); ?></td>
-                                            <td><?php echo htmlspecialchars($mentor['lname']); ?></td>
-                                            <td><?php echo htmlspecialchars($mentor['email']); ?></td>
-                                            <td><?php echo htmlspecialchars($mentor['final_rate']); ?></td>
-                                            <td><?php echo htmlspecialchars($mentor['phone']); ?></td>
-                                            <td><?php echo htmlspecialchars($mentor['salary']); ?></td>
+                                            <td><?php echo htmlspecialchars($user['id']); ?></td>
+                                            <td><?php echo htmlspecialchars($user['fname']); ?></td>
+                                            <td><?php echo htmlspecialchars($user['lname']); ?></td>
+                                            <td><?php echo htmlspecialchars($user['email']); ?></td>
+                                            <td><?php echo htmlspecialchars($user['phone']); ?></td>
+                                            <td><?php echo htmlspecialchars($user['gender']); ?></td>
+                                            <td>   <form action="Manage-Users.php" method="POST">
+                                                    <input type="hidden" name="id_to_delete" value="<?php echo $user['id']; ?>">
+                                                    <button class="noselect" type="submit" name="delete" value="Delete"><span class="text">Delete</span><span class="icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M24 20.188l-8.315-8.209 8.2-8.282-3.697-3.697-8.212 8.318-8.31-8.203-3.666 3.666 8.321 8.24-8.206 8.313 3.666 3.666 8.237-8.318 8.285 8.203z"></path></svg></span></button>
+                                                </form>
+                                            </button>
+                                            </td>
                                         </tr>
-                                    </tbody>
+                                        </tbody>
                                     <?php endforeach; ?>
+                                    <tfoot>
+                                        <tr>
+                                            <td><strong>ID</strong></td>
+                                            <td><strong>FirstName</strong></td>
+                                            <td><strong>LastName</strong></td>
+                                            <td><strong>Email</strong></td>
+                                            <td><strong>Phone</strong></td>
+                                            <td><strong>gender</strong></td>
+                                        </tr>
+                                    </tfoot>
                                 </table>
                             </div>
-<!--                            ==========================================================================================================================-->
                             <div class="row">
                                 <div class="col-md-6 align-self-center">
                                     <p id="dataTable_info" class="dataTables_info" role="status" aria-live="polite">Showing 1 to 10 of 27</p>
@@ -315,8 +258,6 @@ mysqli_close($conn);
                         </div>
                     </div>
                 </div>
-
-                </div>
             </div>
             <footer class="bg-white sticky-footer">
                 <div class="container my-auto">
@@ -325,9 +266,9 @@ mysqli_close($conn);
             </footer>
         </div><a class="border rounded d-inline scroll-to-top" href="#page-top"><i class="fas fa-angle-up"></i></a>
     </div>
-    <script src="../assets/bootstrap/js/bootstrap.min.js"></script>
-    <script src="../assets/js/bs-init.js"></script>
-    <script src="../assets/js/theme.js"></script>
+    <script src="assets/bootstrap/js/bootstrap.min.js"></script>
+    <script src="assets/js/bs-init.js"></script>
+    <script src="assets/js/theme.js"></script>
 </body>
 
 </html>
