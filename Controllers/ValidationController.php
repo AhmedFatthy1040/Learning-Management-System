@@ -7,11 +7,11 @@ class ValidationController
     public function CheckForAdmin(): bool
     {
         session_start();
-        if (!isset($_SESSION["userRole"])) {
+        if (!isset($_SESSION["id"])) {
             return false;
         }
         else {
-            if ($_SESSION["userRole"] == "Admin") {
+            if ($_SESSION["userRole"]  < "1000") {
                 return true;
             }
             else {

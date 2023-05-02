@@ -8,10 +8,33 @@
     if (!$Check)
         header("location:../Auth/login.php");
 
-
-
 ?>
 </style>
+<?php
+// connect to the database
+$conn = mysqli_connect('localhost', 'root', 'sqXjKmW)JuYZAVa9', 'lms','3306');
+
+// check connection
+if(!$conn){
+    echo 'Connection error: '. mysqli_connect_error();
+}
+
+// write query for all mentors
+$sql = 'SELECT phone, fname, lname, salary, final_rate, email FROM mentor ORDER BY final_rate desc ';
+
+// get the result set (set of rows)
+$result = mysqli_query($conn, $sql);
+
+// fetch the resulting rows as an array
+$mentors = mysqli_fetch_all($result, MYSQLI_ASSOC);
+
+// free the $result from memory (good practise)
+mysqli_free_result($result);
+
+// close connection
+mysqli_close($conn);
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -219,7 +242,7 @@
                     </div>
                 </div>
                 <div class="container-fluid">
-                    <h3 class="text-dark mb-4">Team</h3>
+                    <h3 class="text-dark mb-4">Mentors</h3>
                     <div class="card shadow">
 
                         <div class="card-header py-3">
@@ -242,7 +265,6 @@
                                 </div>
 
                                 <div class="col-md-6">
-                                    <div class="text-md-end dataTables_filter" id="dataTable_filter"><label class="form-label"><input type="search" class="form-control form-control-sm" aria-controls="dataTable" placeholder="Search"></label></div>
                                 </div>
                             </div>
 <!--                            ================================================Mentors Table=============================================================-->
@@ -258,27 +280,19 @@
                                             <th>Salary</th>
                                         </tr>
                                     </thead>
+                                    <?php foreach ($mentors as $mentor): ?>
                                     <tbody>
                                         <tr>
 
-                                            <td>Accountant</td>
-                                            <td>Tokyo</td>
-                                            <td>33</td>
-                                            <td>2008/11/28</td>
-                                            <td>$162,700</td>
+                                            <td><?php echo htmlspecialchars($mentor['fname']); ?></td>
+                                            <td><?php echo htmlspecialchars($mentor['lname']); ?></td>
+                                            <td><?php echo htmlspecialchars($mentor['email']); ?></td>
+                                            <td><?php echo htmlspecialchars($mentor['final_rate']); ?></td>
+                                            <td><?php echo htmlspecialchars($mentor['phone']); ?></td>
+                                            <td><?php echo htmlspecialchars($mentor['salary']); ?></td>
                                         </tr>
-
                                     </tbody>
-                                    <tfoot>
-                                        <tr>
-                                            <td><strong>First Name</strong></td>
-                                            <td><strong>Last Name</strong></td>
-                                            <td><strong>Email</strong></td>
-                                            <td><strong>Rate</strong></td>
-                                            <td><strong>Phone Number</strong></td>
-                                            <td><strong>Salary</strong></td>
-                                        </tr>
-                                    </tfoot>
+                                    <?php endforeach; ?>
                                 </table>
                             </div>
 <!--                            ==========================================================================================================================-->
