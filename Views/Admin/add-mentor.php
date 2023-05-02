@@ -12,24 +12,31 @@
     $MentorController = new UsersController();
     $ErrorMessage = "";
 
-    if (isset($_POST["fname"]) && isset($_POST["lname"]) && isset($_POST["email"]) && isset($_POST["password"]) && isset($_POST["salary"]) && isset($_POST["phone"])) {
-        if (!empty($_POST["fname"]) && !empty($_POST["lname"]) && !empty($_POST["email"]) && !empty($_POST["password"]) && !empty($_POST["salary"]) && !empty($_POST["phone"])) {
+    if (isset($_POST["first_name"]) && isset($_POST["email"]) && isset($_POST["password"]) && isset($_POST["salary"]) && isset($_POST["phone"])) {
+        if (!empty($_POST["first_name"]) && !empty($_POST["last_name"]) && !empty($_POST["email"]) && !empty($_POST["password"]) && !empty($_POST["salary"]) && !empty($_POST["phone"])) {
             $Mentor = new Mentor();
-            $Mentor->setFirstName($_POST["fname"]);
-            $Mentor->setLastName($_POST["lname"]);
+            $Mentor->setFirstName($_POST["first_name"]);
+            $Mentor->setLastName($_POST["last_name"]);
             $Mentor->setEmail($_POST["email"]);
             $Mentor->setSalary($_POST["salary"]);
             $Mentor->SetPassword($_POST["password"]);
             $Mentor->setPhoneNumber($_POST["phone"]);
+            $Mentor->setDateOfBirth($_POST["birthDate"]);
+            $Mentor->setNationality($_POST["nationality"]);
+            $Mentor->SetGender($_POST["gender"]);
 
             if ($MentorController->AddMentors($Mentor)) {
                 header("location: dashboard.php");
             }
             else {
-                $ErrorMessage = "Error!.. Please Try Again";
+                $ErrorMessage =  "Error!.. Please Try Again";
             }
         }
+        else
+            $ErrorMessage = "Error";
     }
+    else
+        $ErrorMessage = "Error";
 
 ?>
 <!DOCTYPE html>
@@ -38,7 +45,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-    <title>Register - LMS</title>
+    <title>Add Mentor - LMS</title>
     <link rel="stylesheet" href="../assets/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i&amp;display=swap">
     <link rel="stylesheet" href="../assets/fonts/fontawesome-all.min.css">
@@ -58,7 +65,7 @@
                             <h4 class="text-dark mb-4">Add a Mentor</h4>
                         </div>
 <!--                        ========================================================================-->
-                        <form class="user">
+                        <form class="user" method="POST">
                             <div class="row mb-3">
                                 <div class="col-sm-6 mb-3 mb-sm-0"><input class="form-control form-control-user" type="text" id="exampleFirstName" placeholder="First Name" name="first_name"></div>
                                 <div class="col-sm-6"><input class="form-control form-control-user" type="text" id="exampleLastName" placeholder="Last Name" name="last_name"></div>
@@ -70,15 +77,19 @@
 
                             </div>
                             <div class="row mb-3">
-                                <div class="col-sm-6"><input class="form-control form-control-user" type="salary" id="exampleSalary" placeholder="Salary" name="salary"></div>
+                                <div class="col-sm-6 mb-3 mb-sm-0"><input class="form-control form-control-user" type="salary" id="exampleSalary" placeholder="Salary" name="salary"></div>
                                 <div class="col-sm-6 mb-3 mb-sm-0"><input class="form-control form-control-user" type="phone" id="examplePhone" placeholder="Phone" name="phone"></div>
                             </div>
+                            <div class="row mb-3">
+                                <div class="col-sm-6 mb-3 mb-sm-0"><input class="form-control form-control-user" type="nationality" id="exampleNationality" placeholder="Nationality" name="nationality"></div>
+                                <div class="col-sm-6 mb-3 mb-sm-0"><input class="form-control form-control-user" type="gender" id="exampleGender" placeholder="Gender" name="gender"></div>
+                            </div>
+                            <div class="mb-3"><input class="form-control form-control-user" type="birthOfDate" id="exampleInputBirthDate" aria-describedby="birthDate" placeholder="Birth Date Like YYYY-MM-DD" name="birthDate"></div>
                             <button class="btn btn-primary d-block btn-user w-100" type="submit">Add</button>
-                            <hr><a class="btn btn-primary d-block btn-google btn-user w-100 mb-2" role="button"><i class="fab fa-google"></i>&nbsp; Register with Google</a><a class="btn btn-primary d-block btn-facebook btn-user w-100" role="button"><i class="fab fa-facebook-f"></i>&nbsp; Register with Facebook</a>
-                            <hr>
+
                         </form>
-                        <div class="text-center"><a class="small" href="forgot-password.html">Forgot Password?</a></div>
-                        <div class="text-center"><a class="small" href="login.html">Already have an account? Login!</a></div>
+
+
                     </div>
                 </div>
             </div>

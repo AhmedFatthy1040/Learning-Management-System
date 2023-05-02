@@ -23,7 +23,7 @@ class Mentor extends Person{
     Public function getRate(){
         return $this->Rate;
     }
-    Public function Nationality(){
+    Public function getNationality(){
         return $this->Nationality;
     }
     Public function getDateOfBirth(){

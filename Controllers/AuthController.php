@@ -15,10 +15,10 @@ class AuthController
     {
         $this->db = new DBController;
         $this->db->connect();
-        $e = $user->getEmail();
-        $p = $user->GetPassword();
-        $query = "select * from user where email = '$e' and password = '$p'";
-        $result = $this->db->query($query);
+        $email = $user->getEmail();
+        $password = $user->GetPassword();
+        $query = "select * from user where email = '$email' and password = '$password'";
+        $result = $this->db->Select($query);
         if ($result === false) {
             echo "Error in Query";
             return false;
