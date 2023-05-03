@@ -1,6 +1,7 @@
 <style>
 <?php
     include("../assets/bootstrap/css/Admin.css");
+    include("../assets/bootstrap/css/ManageUsers.css");
     require_once(__DIR__ . "/../../Controllers/ValidationController.php");
     use Controllers\ValidationController;
     $Check = new ValidationController();
@@ -15,7 +16,7 @@
 
 
 // connect to the database
-$conn = mysqli_connect('localhost', 'root', '', 'lms','3306');
+$conn = mysqli_connect('localhost', 'root', 'sqXjKmW)JuYZAVa9', 'lms','3306');
 
 // check connection
 if(!$conn){
@@ -23,7 +24,7 @@ if(!$conn){
 }
 
 // write query for all mentors
-$sql = 'SELECT phone, fname, lname, salary, final_rate, email FROM mentor ORDER BY final_rate desc ';
+$sql = 'SELECT phone, fname, lname, salary, final_rate, email, id FROM mentor ORDER BY final_rate desc ';
 
 // get the result set (set of rows)
 $result = mysqli_query($conn, $sql);
@@ -33,6 +34,22 @@ $mentors = mysqli_fetch_all($result, MYSQLI_ASSOC);
 
 // free the $result from memory (good practise)
 mysqli_free_result($result);
+
+//delete data if button is clicked
+if(isset($_POST['delete'])){
+
+    $id_to_delete = mysqli_real_escape_string($conn, $_POST['id_to_delete']);
+
+    $sql = "DELETE FROM mentor WHERE id = $id_to_delete";
+
+    if(mysqli_query($conn, $sql)){
+        header('Location: dashboard.php');
+    } else {
+        echo 'query error: '. mysqli_error($conn);
+    }
+
+}
+
 
 // close connection
 mysqli_close($conn);
@@ -176,14 +193,10 @@ mysqli_close($conn);
                                     <div class="col me-2">
                                        <div class="container">
 <!--<<<<<<< HEAD-->
-		                                <div class="btn"><a href="#">Manage Mentors</a></div>
+		                                <div class="btn"><a href="add-mentor.php">Add Mentors</a></div>
 		                                <div class="btn"><a href="Manage-Users.php" >Manage Users</a></div>
-<!--=======-->
-		                                <div class="btn"><a href="add-mentor.php">Manage Mentors</a></div>
-		                                <div class="btn"><a href="manage-user.php" >Manage Users</a></div>
-<!--                                           =============================================-->
-		                                <div class="btn"><a href="#" >Manage Learning Paths</a></div>
-                                        <div class="btn"><a href="#" >Manage Courses</a></div>
+		                                <div class="btn"><a href="#">Manage Learning Paths</a></div>
+		                                <div class="btn"><a href="#" >Manage Courses</a></div>
                                        </div>
                                     </div>
                                 </div>
@@ -261,7 +274,6 @@ mysqli_close($conn);
                             <p class="text-primary m-0 fw-bold">Mentor Info</p>
 
                         </div>
-                        <div><a class="btn btn-primary btn-sm d-none d-sm-inline-block" role="button" href="add-mentor.php"><i class="fas fa-download fa-sm text-white-50"></i>&nbsp;Add Mentor</a></div>
                         <div class="card-body">
 
                             <div class="row">
@@ -302,6 +314,12 @@ mysqli_close($conn);
                                             <td><?php echo htmlspecialchars($mentor['final_rate']); ?></td>
                                             <td><?php echo htmlspecialchars($mentor['phone']); ?></td>
                                             <td><?php echo htmlspecialchars($mentor['salary']); ?></td>
+                                            <td>   <form action="dashboard.php" method="POST">
+                                                    <input type="hidden" name="id_to_delete" value="<?php echo $mentor['id']; ?>">
+                                                    <button class="noselect" type="submit" name="delete" value="Delete"><span class="text">Delete</span><span class="icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M24 20.188l-8.315-8.209 8.2-8.282-3.697-3.697-8.212 8.318-8.31-8.203-3.666 3.666 8.321 8.24-8.206 8.313 3.666 3.666 8.237-8.318 8.285 8.203z"></path></svg></span></button>
+                                                </form>
+                                                </button>
+                                            </td>
                                         </tr>
                                     </tbody>
                                     <?php endforeach; ?>
