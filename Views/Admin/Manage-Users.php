@@ -75,7 +75,7 @@ mysqli_close($conn);
                     <li class="nav-item"><a class="nav-link" href="dashboard.php"><i class="fas fa-home"></i><span>Home</span></a></li>
                     <li class="nav-item"><a class="nav-link" href="manage-courses.php"><i class="fas fa-user"></i><span>Courses</span></a></li>
                     <li class="nav-item"><a class="nav-link" href="Manage-Users.php"><i class="fas fa-users"></i><span>Users</span></a></li>
-                    <li class="nav-item"><a class="nav-link" href="#"><i class="fas fa-book-open"></i><span>Learning Paths</span></a></li>
+                    <li class="nav-item"><a class="nav-link" href="manage-lp.php"><i class="fas fa-book-open"></i><span>Learning Paths</span></a></li>
                 </ul>
                 <div class="text-center d-none d-md-inline"><button class="btn rounded-circle border-0" id="sidebarToggle" type="button"></button></div>
             </div>

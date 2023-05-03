@@ -1,7 +1,7 @@
 <?php
 require_once(__DIR__ . "/../../Controllers/ValidationController.php");
 require_once(__DIR__ . "/../../Controllers/UsersController.php");
-require_once(__DIR__ . "/../../Models/Course.php");
+require_once(__DIR__ . "/../../Models/LearningPath.php");
 
 use Controllers\ValidationController;
 use Controllers\UsersController;
@@ -9,31 +9,36 @@ $Check = new ValidationController();
 $Check->CheckForAdmin();
 if (!$Check)
     header("location:../Auth/login.php");
+$conn = mysqli_connect('localhost', 'root', '', 'lms','3306');
+
+// check connection
+if(!$conn){
+    echo 'Connection error: '. mysqli_connect_error();
+}
 
 $CoursesController = new UsersController();
 $ErrorMessage = "";
 
-if (isset($_POST["CourseName"]) && isset($_POST["Description"]) && isset($_POST["MentorID"]) && isset($_POST["LearningPathID"])) {
-    if (!empty($_POST["CourseName"]) && !empty($_POST["Description"]) && !empty($_POST["MentorID"]) && !empty($_POST["LearningPathID"])) {
-        $Course = new Course();
-        $Course->SetName($_POST["CourseName"]);
-        $Course->SetRequirements($_POST["Requirements"]);
-        $Course->SetMntorID($_POST["MentorID"]);
-        $Course->SetLearningPathID($_POST["LearningPathID"]);
-        $Course->SetDescription($_POST["Description"]);
+if (isset($_POST["LPID"]) && isset($_POST["LPName"])) {
+    if (!empty($_POST["LPID"]) && !empty($_POST["LPName"])) {
+        $LP = new Learning_Path();
+        $LP->setLearningPathName($_POST["LPName"]);
+        $LP->setLearningPathId($_POST["LPID"]);
 
-        if ($CoursesController->AddCourses($Course)) {
-            header("location: manage-courses.php");
+        $LPNAME = $LP->getLearningPathName();
+        $LPID = $LP->getLearningPathId();
+
+        $sql = "INSERT INTO learning_path(id,name) VALUES('$LPID','$LPNAME')";
+
+        if (mysqli_query($conn, $sql)) {
+            header('Location: manage-lp.php');
+        } else {
+            echo 'query error: ' . mysqli_error($conn);
         }
-        else {
-            $ErrorMessage =  "Error!.. Please Try Again";
-        }
+
     }
-    else
-        $ErrorMessage = "Error";
 }
-else
-    $ErrorMessage = "Error";
+
 
 ?>
 <!DOCTYPE html>
@@ -42,7 +47,7 @@ else
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-    <title>Add Course - LMS</title>
+    <title>Add LP - LMS</title>
     <link rel="stylesheet" href="../assets/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i&amp;display=swap">
     <link rel="stylesheet" href="../assets/fonts/fontawesome-all.min.css">
@@ -59,20 +64,14 @@ else
                 <div class="col-lg-7">
                     <div class="p-5">
                         <div class="text-center">
-                            <h4 class="text-dark mb-4">Add a Course</h4>
+                            <h4 class="text-dark mb-4">Add a Learning Path</h4>
                         </div>
                         <!--                        ========================================================================-->
                         <form class="user" method="POST">
                             <div class="row mb-3">
-                                <div class="col-sm-6 mb-3 mb-sm-0"><input class="form-control form-control-user" type="text" id="exampleCourseName" placeholder="Course Name" name="CourseName"></div>
-                                <div class="col-sm-6"><input class="form-control form-control-user" type="text" id="exampleMentorID" placeholder="Mentor ID" name="MentorID"></div>
+                                <div class="col-sm-6 mb-3 mb-sm-0"><input class="form-control form-control-user" type="text" id="exampleCourseName" placeholder="Learning path Name" name="LPName"></div>
+                                <div class="col-sm-6"><input class="form-control form-control-user" type="text" id="exampleMentorID" placeholder="Learning path ID" name="LPID"></div>
                             </div>
-
-                            <div class="row mb-3">
-                                <div class="col-sm-6 mb-3 mb-sm-0"><input class="form-control form-control-user" type="text" id="exampleRequirements" placeholder="Requirements" name="Requirements"></div>
-                                <div class="col-sm-6 mb-3 mb-sm-0"><input class="form-control form-control-user" type="text" id="exampleLearningPathID" placeholder="Learning Path ID" name="LearningPathID"></div>
-                            </div>
-                            <div class="mb-3"><input class="form-control form-control-user" type="text" id="exampleInputDescription" aria-describedby="Description" placeholder="Description" name="Description"></div>
                             <button class="btn btn-primary d-block btn-user w-100" type="submit">Add</button>
 
                         </form>

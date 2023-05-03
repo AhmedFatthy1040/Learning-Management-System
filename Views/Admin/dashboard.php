@@ -195,7 +195,7 @@ mysqli_close($conn);
 <!--<<<<<<< HEAD-->
 		                                <div class="btn"><a href="add-mentor.php">Add Mentors</a></div>
 		                                <div class="btn"><a href="Manage-Users.php" >Manage Users</a></div>
-		                                <div class="btn"><a href="#">Manage Learning Paths</a></div>
+		                                <div class="btn"><a href="manage-lp.php">Manage Learning Paths</a></div>
 		                                <div class="btn"><a href="manage-courses.php" >Manage Courses</a></div>
                                        </div>
                                     </div>
@@ -300,7 +300,7 @@ mysqli_close($conn);
                                             <th>Last Name</th>
                                             <th>Email</th>
                                             <th>Rate</th>
-                                            <th>Phone number</th>
+                                            <th>ID</th>
                                             <th>Salary</th>
                                         </tr>
                                     </thead>
@@ -312,7 +312,7 @@ mysqli_close($conn);
                                             <td><?php echo htmlspecialchars($mentor['lname']); ?></td>
                                             <td><?php echo htmlspecialchars($mentor['email']); ?></td>
                                             <td><?php echo htmlspecialchars($mentor['final_rate']); ?></td>
-                                            <td><?php echo htmlspecialchars($mentor['phone']); ?></td>
+                                            <td><?php echo htmlspecialchars($mentor['id']); ?></td>
                                             <td><?php echo htmlspecialchars($mentor['salary']); ?></td>
                                             <td>   <form action="dashboard.php" method="POST">
                                                     <input type="hidden" name="id_to_delete" value="<?php echo $mentor['id']; ?>">

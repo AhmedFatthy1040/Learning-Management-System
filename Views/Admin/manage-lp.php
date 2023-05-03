@@ -1,23 +1,54 @@
 <style>
-    <?php include("../assets/bootstrap/css/ManageUsers.css");?>
+    <?php
+        include("../assets/bootstrap/css/ManageUsers.css");
+        require_once(__DIR__ . "/../../Controllers/ValidationController.php");
+        use Controllers\ValidationController;
+        $Check = new ValidationController();
+        $Check->CheckForAdmin();
+        if (!$Check)
+            header("location:../Auth/login.php");
+
+    ?>
 </style>
 <?php
-    require_once(__DIR__ . "/../../Controllers/ValidationController.php");
-    require_once(__DIR__ . "/../../Controllers/UsersController.php");
-    require_once(__DIR__ . "/../../Models/Course.php");
-    use Controllers\ValidationController;
-    use Controllers\UsersController;
-    $Check = new ValidationController();
-    $Check->CheckForAdmin();
-    if (!$Check)
-        header("location:../Auth/login.php");
+// connect to the database
+$conn = mysqli_connect('localhost', 'root', '', 'lms','3306');
 
-    $Controller = new UsersController();
-    $Courses = $Controller->GetCourses();
-    if (isset($_POST['delete'])) {
-        $DeleteID = $_POST['DeleteID'];
-        $Controller->DeleteFromTable("course", $DeleteID);
+// check connection
+if(!$conn){
+    echo 'Connection error: '. mysqli_connect_error();
+}
+
+// write query for all mentors
+$sql = 'SELECT id, name FROM learning_path ORDER BY id desc ';
+
+// get the result set (set of rows)
+$result = mysqli_query($conn, $sql);
+
+// fetch the resulting rows as an array
+$LPS = mysqli_fetch_all($result, MYSQLI_ASSOC);
+
+// free the $result from memory (good practise)
+mysqli_free_result($result);
+
+//delete data if button is clicked
+if(isset($_POST['delete'])){
+
+    $id_to_delete = mysqli_real_escape_string($conn, $_POST['id_to_delete']);
+
+    $sql = "DELETE FROM learning_path WHERE id = $id_to_delete";
+
+    if(mysqli_query($conn, $sql)){
+        header('Location: manage-lp.php');
+    } else {
+        echo 'query error: '. mysqli_error($conn);
     }
+
+}
+
+// close connection
+mysqli_close($conn);
+
 ?>
 
 <!DOCTYPE html>
@@ -26,7 +57,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-    <title>Manage Courses - LMS</title>
+    <title>Manage lp - LMS</title>
     <link rel="stylesheet" href="../assets/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i&amp;display=swap">
     <link rel="stylesheet" href="../assets/fonts/fontawesome-all.min.css">
@@ -152,11 +183,11 @@
             </nav>
             <div class="container-fluid">
                 <div class="d-sm-flex justify-content-between align-items-center mb-4">
-                    <h3 class="text-dark mb-0">Manage Courses</h3><a class="btn btn-primary btn-sm d-none d-sm-inline-block" role="button" href="add-course.php"><i class="fas fa-download fa-sm text-white-50"></i>&nbsp;Add Course</a>
+                    <h3 class="text-dark mb-0">Manage Learning paths</h3><a class="btn btn-primary btn-sm d-none d-sm-inline-block" role="button" href="add-lp.php"><i class="fas fa-download fa-sm text-white-50"></i>&nbsp;Add learning path</a>
                 </div>
                 <div class="card shadow">
                     <div class="card-header py-3">
-                        <p class="text-primary m-0 fw-bold">Course Info</p>
+                        <p class="text-primary m-0 fw-bold">Learning path Info</p>
                     </div>
                     <div class="card-body">
                         <div class="row">
@@ -178,25 +209,17 @@
                                 <tr>
                                     <th>ID</th>
                                     <th>Name</th>
-                                    <th>Description</th>
-                                    <th>Requirements</th>
-                                    <th>Mentor ID</th>
-                                    <th>Learning Path ID</th>
                                 </tr>
                                 </thead>
                                 <tbody>
                                 <?php
-                                    foreach ($Courses as $Course) {
+                                    foreach ($LPS as $LP) {
                                 ?>
                                 <tr>
-                                    <td><?php echo $Course['id'] ?></td>
-                                    <td><?php echo $Course['name'] ?></td>
-                                    <td><?php echo $Course['description'] ?></td>
-                                    <td><?php echo $Course['requirements'] ?></td>
-                                    <td><?php echo $Course['mentor_id'] ?></td>
-                                    <td><?php echo $Course['learning_path_id'] ?></td>
-                                    <td>   <form action="manage-courses.php" method="POST">
-                                            <input type="hidden" name="DeleteID" value="<?php echo $Course['id']; ?>">
+                                    <td><?php echo $LP['id'] ?></td>
+                                    <td><?php echo $LP['name'] ?></td>
+                                    <td>   <form action="manage-lp.php" method="POST">
+                                            <input type="hidden" name="id_to_delete" value="<?php echo $LP['id']; ?>">
                                             <button class="noselect" type="submit" name="delete" value="Delete"><span class="text">Delete</span><span class="icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M24 20.188l-8.315-8.209 8.2-8.282-3.697-3.697-8.212 8.318-8.31-8.203-3.666 3.666 8.321 8.24-8.206 8.313 3.666 3.666 8.237-8.318 8.285 8.203z"></path></svg></span></button>
                                         </form>
                                     </td>
@@ -211,10 +234,6 @@
                                 <tr>
                                     <td><strong>ID</strong></td>
                                     <td><strong>Name</strong></td>
-                                    <td><strong>Description</strong></td>
-                                    <td><strong>Requirements</strong></td>
-                                    <td><strong>Mentor ID</strong></td>
-                                    <td><strong>Learning Path ID</strong></td>
                                 </tr>
                                 </tfoot>
                             </table>

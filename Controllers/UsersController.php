@@ -88,4 +88,9 @@ class UsersController
 
     }
 
+    public function AddLPS(\Learning_Path $LP) {
+        $this->db = new DBController();
+        $Name = $LP->getLearningPathName();
+        $id = $LP->getLearningPathId();
+    }
 }
