@@ -23,6 +23,7 @@ class UsersController
             return false;
         }
     }
+
     public function GetCourses()
     {
         $this->db = new DBController();
@@ -57,6 +58,7 @@ class UsersController
             return false;
         }
     }
+
     public function AddCourses(Course $Course)
     {
         $this->db = new DBController();
@@ -87,13 +89,26 @@ class UsersController
         }
 
     }
-    public function GetUsers() {
+
+    public function GetUsers()
+    {
         $this->db = new DBController();
         if ($this->db->connect()) {
             $query = "SELECT id, fname, lname, gender, email, phone FROM user ORDER BY id desc";
             return $this->db->Select($query);
+        } else {
+            echo "Error in Database Connection";
+            return false;
         }
-        else {
+    }
+
+    public function GetCoursesForMentor($MentorID)
+    {
+        $this->db = new DBController();
+        if ($this->db->connect()) {
+            $query = "SELECT id, name, description, requirements, mentor_id, learning_path_id FROM course WHERE mentor_id = '$MentorID' ORDER BY id desc";
+            return $this->db->Select($query);
+        } else {
             echo "Error in Database Connection";
             return false;
         }
@@ -105,7 +120,8 @@ class UsersController
         $Name = $LP->getLearningPathName();
         $id = $LP->getLearningPathId();
     }
-<<<<<<< HEAD
+
+// <<<<<<< HEAD
     public function GetTranscript()
     {
         $this->db = new DBController();
@@ -117,22 +133,7 @@ class UsersController
                         join course c on c.id = cu.course_id 
                         where u.id = $id";
             return $this->db->Select($query);
-        } else {
-=======
-    public function GetCoursesForMentor($MnetorID) {
-        $this->db = new DBController();
-        if ($this->db->connect()) {
-            $query = "SELECT id, name, description, requirements, mentor_id, learning_path_id FROM course WHERE mentor_id = '$MnetorID' ORDER BY id desc";
-            return $this->db->Select($query);
-        }
-        else {
->>>>>>> a9a2e087a0d7cd6cba42e84f3e34d5492e562740
-            echo "Error in Database Connection";
-            return false;
         }
     }
-<<<<<<< HEAD
-=======
-
->>>>>>> a9a2e087a0d7cd6cba42e84f3e34d5492e562740
+// =======
 }
