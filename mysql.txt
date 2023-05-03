@@ -1,0 +1,178 @@
+create database lms;
+use lms;
+create table learning_path(
+	id int not null auto_increment,  
+	name varchar(50) not null unique,
+	primary key(id)
+);
+create table mentor(
+	id int not null auto_increment,
+	fname varchar(50) not null,
+	lname varchar(50) not null,
+	password varchar(50) not null unique, 
+	nationality varchar(50) ,
+	gender varchar(50) ,
+	birthdate date ,
+	email varchar(50) not null unique,
+	phone varchar(50)  unique,
+	salary double ,
+	final_rate double,
+	primary key(id)
+)AUTO_INCREMENT=1000;
+create table course(
+	id int not null auto_increment,
+	name varchar(50) not null unique,
+	description text,
+	requirements text,
+	mentor_id int not null,
+	learning_path_id int not null,
+	primary key(id),
+	foreign key(mentor_id) references mentor(id) ON UPDATE CASCADE ON DELETE CASCADE,
+	foreign key(learning_path_id) references learning_path(id) ON UPDATE CASCADE ON DELETE CASCADE
+);
+create table user(
+	id int not null auto_increment,
+	fname varchar(50) not null,
+	lname varchar(50) not null,
+	password varchar(50) not null unique,
+	nationality varchar(50),
+	gender varchar(50),
+	birthdate date,
+	email varchar(50) not null unique,
+	phone varchar(50),
+	learning_path_id int,
+	primary key(id),
+	FOREIGN KEY(learning_path_id) REFERENCES learning_path(id) ON UPDATE CASCADE ON DELETE CASCADE
+)AUTO_INCREMENT=2000;
+create table rate(
+	rate int,
+	mentor_id int not null,
+	foreign key(mentor_id) references mentor(id) ON UPDATE CASCADE ON DELETE CASCADE
+);
+create table lecture(
+	id int not null auto_increment,
+	name varchar(50) not null unique,
+	week varchar(50),
+	video blob,
+	link text,
+	slide blob,
+	info text,
+	course_id int not null,
+	primary key(id),
+	foreign key(course_id) references course(id) ON UPDATE CASCADE ON DELETE CASCADE
+);
+create table assignement(
+	sheet blob ,
+	deadline datetime,
+	lecture_id int not null,
+	foreign key(lecture_id) references lecture(id) ON UPDATE CASCADE ON DELETE CASCADE
+);
+create table exam(
+	id int not null auto_increment,
+	duration time ,
+	course_id int not null,
+	primary key(id),
+	foreign key(course_id) references course(id) ON UPDATE CASCADE ON DELETE CASCADE
+);
+create table user_exam(
+	exam_id int not null,
+	user_id int not null,
+	grade double,
+	gpa varchar(50),
+	primary key(exam_id,user_id),
+	foreign key(exam_id) references exam(id) ON UPDATE CASCADE ON DELETE CASCADE,
+	foreign key(user_id) references user(id) ON UPDATE CASCADE ON DELETE CASCADE
+);
+create table question(
+	id int not null auto_increment,
+	question text,
+	correct_ans text,
+	exam_id int not null,
+	primary key(id),
+	foreign key(exam_id) references exam(id) ON UPDATE CASCADE ON DELETE CASCADE
+);
+create table question_ans(
+	answer text ,
+	question_id int not null,
+	foreign key(question_id) references question(id) ON UPDATE CASCADE ON DELETE CASCADE
+);
+create table learning_path_mentor(
+	learning_path_id int not null,
+	mentor_id int not null,
+	primary key(learning_path_id,mentor_id),
+	foreign key(learning_path_id) references learning_path(id) ON UPDATE CASCADE ON DELETE CASCADE, 
+	foreign key(mentor_id) references mentor(id) ON UPDATE CASCADE ON DELETE CASCADE
+);
+create table feedback(
+	ftime time,
+	comment text,
+	user_id int not null,
+	mentor_id int not null,
+	foreign key(user_id) references user(id) ON UPDATE CASCADE ON DELETE CASCADE,
+	foreign key(mentor_id) references mentor(id) ON UPDATE CASCADE ON DELETE CASCADE
+);
+create table course_user(
+	user_id int not null,
+	course_id int not null,
+	grade double,
+	gpa varchar(50),
+	finished boolean,
+	primary key(course_id,user_id),
+	foreign key(course_id) references course(id) ON UPDATE CASCADE ON DELETE CASCADE,
+	foreign key(user_id) references user(id) ON UPDATE CASCADE ON DELETE CASCADE 	
+);
+create table admin(
+	id int not null auto_increment,
+	user_name varchar(50) not null unique,
+	password varchar(50) not null unique,
+	email varchar(50) not null unique,
+	primary key(id)
+); 
+create table mu_message(
+	mtime datetime,
+	message text not null,
+	mentor_id int not null,
+	user_id int not null,
+	foreign key(mentor_id) references mentor(id),
+	foreign key(user_id) references user(id)
+);	
+create table um_message(
+	mtime datetime,
+	message text not null,
+	user_id int not null,
+	mentor_id int not null,
+	foreign key(user_id) references user(id),
+	foreign key(mentor_id) references mentor(id)
+);	
+create table ma_message(
+	mtime datetime,
+	message text not null,
+	mentor_id int not null,
+	admin_id int not null,
+	foreign key(mentor_id) references mentor(id),
+	foreign key(admin_id) references admin(id)
+);
+create table am_message(
+	mtime datetime,
+	message text not null,
+	admin_id int not null,
+	mentor_id int not null,
+	foreign key(admin_id) references admin(id),
+	foreign key(mentor_id) references mentor(id)
+);		
+create table ua_message(
+	mtime datetime,
+	message text not null,
+	user_id int not null,
+	admin_id int not null,
+	foreign key(user_id) references user(id),
+	foreign key(admin_id) references admin(id)
+);	
+create table au_message(
+	mtime datetime,
+	message text not null,
+	admin_id int not null,
+	user_id int not null,
+	foreign key(admin_id) references admin(id),
+	foreign key(user_id) references user(id)
+);	
