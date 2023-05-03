@@ -12,30 +12,31 @@ class UsersController
 {
     protected $db;
 
-    public function GetMentors() {
+    public function GetMentors()
+    {
         $this->db = new DBController();
         if ($this->db->connect()) {
             $query = "select * from mentor";
             return $this->db->Select($query);
-        }
-        else {
+        } else {
             echo "Error in Database Connection";
             return false;
         }
     }
-    public function GetCourses() {
+    public function GetCourses()
+    {
         $this->db = new DBController();
         if ($this->db->connect()) {
             $query = "SELECT id, name, description, requirements, mentor_id, learning_path_id FROM course ORDER BY id desc";
             return $this->db->Select($query);
-        }
-        else {
+        } else {
             echo "Error in Database Connection";
             return false;
         }
     }
 
-    public function AddMentors(Mentor $Mentor) {
+    public function AddMentors(Mentor $Mentor)
+    {
         $this->db = new DBController();
         $fname = $Mentor->getFirstName();
         $lname = $Mentor->getLastName();
@@ -51,13 +52,13 @@ class UsersController
         if ($this->db->connect()) {
             $query = "insert into mentor(fname, lname, password, email, nationality, gender, birthdate, phone, salary) values ('$fname' , '$lname', '$password', '$email', '$nationality', '$gender', '$birthdate', '$phone', $salary);";
             return $this->db->query($query);
-        }
-        else {
+        } else {
             echo "Error in Database Connection";
             return false;
         }
     }
-    public function AddCourses(Course $Course) {
+    public function AddCourses(Course $Course)
+    {
         $this->db = new DBController();
         $Name = $Course->GetName();
         $Requirements = $Course->GetRequirements();
@@ -68,29 +69,45 @@ class UsersController
         if ($this->db->connect()) {
             $query = "insert into course(name, description, requirements, mentor_id, learning_path_id) values ('$Name' , '$Description', '$Requirements', '$MentorID', '$LearningPathID');";
             return $this->db->query($query);
-        }
-        else {
+        } else {
             echo "Error in Database Connection";
             return false;
         }
     }
 
-    public function DeleteFromTable($Type, $ID) {
+    public function DeleteFromTable($Type, $ID)
+    {
         $this->db = new DBController();
         if ($this->db->connect()) {
             $query = "DELETE FROM $Type WHERE id = $ID";
             return $this->db->query($query);
-        }
-        else {
+        } else {
             echo "Error in Database Connection";
             return false;
         }
 
     }
 
-    public function AddLPS(\Learning_Path $LP) {
+    public function AddLPS(\Learning_Path $LP)
+    {
         $this->db = new DBController();
         $Name = $LP->getLearningPathName();
         $id = $LP->getLearningPathId();
+    }
+    public function GetTranscript()
+    {
+        $this->db = new DBController();
+        if ($this->db->connect()) {
+            $id = $_SESSION["UserID"];
+            $query = "select c.name as course, cu.grade as grade, cu.gpa as gpa 
+                        from user u 
+                        join course_user cu on cu.user_id = u.id 
+                        join course c on c.id = cu.course_id 
+                        where u.id = $id";
+            return $this->db->Select($query);
+        } else {
+            echo "Error in Database Connection";
+            return false;
+        }
     }
 }

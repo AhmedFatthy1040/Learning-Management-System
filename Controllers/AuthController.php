@@ -45,6 +45,7 @@ class AuthController
     {
         $this->db = new DBController;
         if ($this->db->connect()) {
+            $UserId = $user->GetId();
             $fname = $user->getFirstName();
             $lname = $user->getLastName();
             $email = $user->getEmail();
