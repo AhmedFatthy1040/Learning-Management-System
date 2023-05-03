@@ -120,8 +120,6 @@ class UsersController
         $Name = $LP->getLearningPathName();
         $id = $LP->getLearningPathId();
     }
-
-// <<<<<<< HEAD
     public function GetTranscript()
     {
         $this->db = new DBController();
@@ -133,7 +131,10 @@ class UsersController
                         join course c on c.id = cu.course_id 
                         where u.id = $id";
             return $this->db->Select($query);
+
+        } else {
+            echo "Error in Database Connection";
+            return false;
         }
     }
-// =======
 }
