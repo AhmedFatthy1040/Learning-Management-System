@@ -9,7 +9,7 @@ class DBController
 {
     private $host = "localhost";
     private $user = "root";
-    private $password = "sqXjKmW)JuYZAVa9";
+    private $password = "";
     private $database = "lms";
     private $port = "3306";
     private $conn;

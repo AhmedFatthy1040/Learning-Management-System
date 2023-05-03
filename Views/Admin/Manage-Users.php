@@ -12,7 +12,7 @@
 </style>
 <?php
 // connect to the database
-$conn = mysqli_connect('localhost', 'root', 'sqXjKmW)JuYZAVa9', 'lms','3306');
+$conn = mysqli_connect('localhost', 'root', '', 'lms','3306');
 
 // check connection
 if(!$conn){
@@ -57,7 +57,7 @@ mysqli_close($conn);
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-    <title>Table - LMS</title>
+    <title>Manage Users - LMS</title>
     <link rel="stylesheet" href="../assets/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i&amp;display=swap">
     <link rel="stylesheet" href="../assets/fonts/fontawesome-all.min.css">
@@ -73,7 +73,7 @@ mysqli_close($conn);
                 <hr class="sidebar-divider my-0">
                 <ul class="navbar-nav text-light" id="accordionSidebar">
                     <li class="nav-item"><a class="nav-link" href="dashboard.php"><i class="fas fa-home"></i><span>Home</span></a></li>
-                    <li class="nav-item"><a class="nav-link" href="#"><i class="fas fa-user"></i><span>Profile</span></a></li>
+                    <li class="nav-item"><a class="nav-link" href="manage-courses.php"><i class="fas fa-user"></i><span>Courses</span></a></li>
                     <li class="nav-item"><a class="nav-link" href="Manage-Users.php"><i class="fas fa-users"></i><span>Users</span></a></li>
                     <li class="nav-item"><a class="nav-link" href="#"><i class="fas fa-book-open"></i><span>Learning Paths</span></a></li>
                 </ul>

@@ -4,7 +4,9 @@ namespace Controllers;
 
 require_once(__DIR__ . "/DBController.php");
 require_once(__DIR__ . "/../Models/Mentor.php");
+require_once(__DIR__ . "/../Models/Course.php");
 use Mentor;
+use Course;
 
 class UsersController
 {
@@ -14,6 +16,17 @@ class UsersController
         $this->db = new DBController();
         if ($this->db->connect()) {
             $query = "select * from mentor";
+            return $this->db->Select($query);
+        }
+        else {
+            echo "Error in Database Connection";
+            return false;
+        }
+    }
+    public function GetCourses() {
+        $this->db = new DBController();
+        if ($this->db->connect()) {
+            $query = "SELECT id, name, description, requirements, mentor_id, learning_path_id FROM course ORDER BY id desc";
             return $this->db->Select($query);
         }
         else {
@@ -43,6 +56,36 @@ class UsersController
             echo "Error in Database Connection";
             return false;
         }
+    }
+    public function AddCourses(Course $Course) {
+        $this->db = new DBController();
+        $Name = $Course->GetName();
+        $Requirements = $Course->GetRequirements();
+        $Description = $Course->GetDescription();
+        $MentorID = $Course->GetMentorID();
+        $LearningPathID = $Course->GetLearningPathID();
+
+        if ($this->db->connect()) {
+            $query = "insert into course(name, description, requirements, mentor_id, learning_path_id) values ('$Name' , '$Description', '$Requirements', '$MentorID', '$LearningPathID');";
+            return $this->db->query($query);
+        }
+        else {
+            echo "Error in Database Connection";
+            return false;
+        }
+    }
+
+    public function DeleteFromTable($Type, $ID) {
+        $this->db = new DBController();
+        if ($this->db->connect()) {
+            $query = "DELETE FROM $Type WHERE id = $ID";
+            return $this->db->query($query);
+        }
+        else {
+            echo "Error in Database Connection";
+            return false;
+        }
+
     }
 
 }

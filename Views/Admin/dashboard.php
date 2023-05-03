@@ -16,7 +16,7 @@
 
 
 // connect to the database
-$conn = mysqli_connect('localhost', 'root', 'sqXjKmW)JuYZAVa9', 'lms','3306');
+$conn = mysqli_connect('localhost', 'root', '', 'lms','3306');
 
 // check connection
 if(!$conn){
@@ -77,7 +77,7 @@ mysqli_close($conn);
                 <hr class="sidebar-divider my-0">
                 <ul class="navbar-nav text-light" id="accordionSidebar">
                     <li class="nav-item"><a class="nav-link" href="dashboard.php"><i class="fas fa-home"></i><span>Home</span></a></li>
-                    <li class="nav-item"><a class="nav-link" href="profile.html"><i class="fas fa-user"></i><span>Profile</span></a></li>
+                    <li class="nav-item"><a class="nav-link" href="manage-courses.php"><i class="fas fa-user"></i><span>Courses</span></a></li>
 <!--<<<<<<< HEAD-->
                     <li class="nav-item"><a class="nav-link" href="Manage-Users.php"><i class="fas fa-users"></i><span>Users</span></a></li>
 <!--=======-->
@@ -196,7 +196,7 @@ mysqli_close($conn);
 		                                <div class="btn"><a href="add-mentor.php">Add Mentors</a></div>
 		                                <div class="btn"><a href="Manage-Users.php" >Manage Users</a></div>
 		                                <div class="btn"><a href="#">Manage Learning Paths</a></div>
-		                                <div class="btn"><a href="#" >Manage Courses</a></div>
+		                                <div class="btn"><a href="manage-courses.php" >Manage Courses</a></div>
                                        </div>
                                     </div>
                                 </div>
