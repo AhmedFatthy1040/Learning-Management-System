@@ -11,13 +11,13 @@ require_once(__DIR__ . "/DBController.php");
 class AuthController
 {
     protected $db;
-    public function login(User $user)
+    public function login(User $user, $Type): bool
     {
         $this->db = new DBController;
         $this->db->connect();
         $email = $user->getEmail();
         $password = $user->GetPassword();
-        $query = "select * from user where email = '$email' and password = '$password'";
+        $query = "select * from $Type where email = '$email' and password = '$password'";
         $result = $this->db->Select($query);
         if ($result === false) {
             echo "Error in Query";
@@ -26,6 +26,7 @@ class AuthController
             if (count($result) == 0) {
                 session_start();
                 $_SESSION["ErrorMessage"] = "You Have Entered Wrong Password and Email!!";
+                $_SESSION["UserID"] = -1;
                 return false;
             } else {
                 session_start();

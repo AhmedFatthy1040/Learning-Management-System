@@ -10,7 +10,7 @@ if (isset($_POST["email"]) && isset($_POST["password"])) {
         $auth = new \Controllers\AuthController();
         $user->setEmail($_POST["email"]);
         $user->SetPassword($_POST["password"]);
-        if (!$auth->login($user)) {
+        if (!$auth->login($user, $_POST["Type"])) {
             if (!isset($_SESSION["UserID"])) {
                 session_start();
             }
@@ -24,8 +24,9 @@ if (isset($_POST["email"]) && isset($_POST["password"])) {
                 header("location: ../Admin/dashboard.php");
             elseif ($_SESSION["UserID"] > 1000 && $_SESSION["UserID"] <= 2000)
                 header("location: ../Mentor/dashboard.php");
-            else
-            header("location: ../Student/dashboard.php");
+            elseif ($_SESSION["UserID"] > 2000)
+
+                header("location: ../Student/dashboard.php");
     }
     else
         $ErrorMessage = "Please Fill All Fields!";
@@ -92,17 +93,24 @@ if (isset($_POST["email"]) && isset($_POST["password"])) {
                                                         class="form-check-label custom-control-label"
                                                         for="formCheck-1">Remember Me</label></div>
                                             </div>
-                                        </div><button class="btn btn-primary d-block btn-user w-100"
-                                            type="submit">Login</button>
-                                        <hr><a class="btn btn-primary d-block btn-google btn-user w-100 mb-2"
-                                            role="button"><i class="fab fa-google"></i>&nbsp; Login with Google</a><a
-                                            class="btn btn-primary d-block btn-facebook btn-user w-100" role="button"><i
-                                                class="fab fa-facebook-f"></i>&nbsp; Login with Facebook</a>
+                                        </div>
                                         <hr>
+                                            <input type="radio" id="option1" name="Type" checked value="admin">
+                                            <label for="option1">Admin</label><br>
+
+                                            <input type="radio" id="option2" name="Type" value="mentor">
+                                            <label for="option2">Mentor</label><br>
+
+                                            <input type="radio" id="option3" name="Type" value="user">
+                                            <label for="option3">User</label><br>
+
+                                        <hr>
+                                        <button class="btn btn-primary d-block btn-user w-100" type="submit">Login</button>
+
                                     </form>
-                                    <div class="text-center"><a class="small" href="forgot-password.html">Forgot
+                                    <div class="text-center"><a class="small" href="forgot-password.php">Forgot
                                             Password?</a></div>
-                                    <div class="text-center"><a class="small" href="register.html">Create an
+                                    <div class="text-center"><a class="small" href="register.php">Create an
                                             Account!</a></div>
                                 </div>
                             </div>
