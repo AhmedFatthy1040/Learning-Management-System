@@ -1,37 +1,36 @@
 <?php
-require_once(__DIR__ . "/../../Controllers/AuthController.php");
-require_once(__DIR__ . "/../../../Learning-Management-System/Models/User.php");
+    require_once(__DIR__ . "/../../Controllers/AuthController.php");
+    require_once(__DIR__ . "/../../../Learning-Management-System/Models/User.php");
 
-$ErrorMessage = "";
+    $ErrorMessage = "";
 
-if (isset($_POST["email"]) && isset($_POST["password"])) {
-    if (!empty($_POST["email"]) && !empty($_POST["password"])) {
-        $user = new User();
-        $auth = new \Controllers\AuthController();
-        $user->setEmail($_POST["email"]);
-        $user->SetPassword($_POST["password"]);
-        if (!$auth->login($user, $_POST["Type"])) {
-            if (!isset($_SESSION["UserID"])) {
-                session_start();
+    if (isset($_POST["email"]) && isset($_POST["password"])) {
+        if (!empty($_POST["email"]) && !empty($_POST["password"])) {
+            $user = new User();
+            $auth = new \Controllers\AuthController();
+            $user->setEmail($_POST["email"]);
+            $user->SetPassword($_POST["password"]);
+            if (!$auth->login($user, $_POST["Type"])) {
+                if (!isset($_SESSION["UserID"])) {
+                    session_start();
+                }
+                $ErrorMessage = $_SESSION["ErrorMessage"];
             }
-            $ErrorMessage = $_SESSION["ErrorMessage"];
+            else
+                if (!isset($_SESSION["UserID"])) {
+                    session_start();
+                }
+                if ($_SESSION["UserID"] >= 0 && $_SESSION["UserID"] <= 1000)
+                    header("location: ../Admin/dashboard.php");
+                elseif ($_SESSION["UserID"] > 1000 && $_SESSION["UserID"] <= 2000)
+                    header("location: ../Mentor/dashboard.php");
+                elseif ($_SESSION["UserID"] > 2000)
+                    header("location: ../Student/dashboard.php");
         }
         else
-            if (!isset($_SESSION["UserID"])) {
-                session_start();
-            }
-            if ($_SESSION["UserID"] >= 0 && $_SESSION["UserID"] <= 1000)
-                header("location: ../Admin/dashboard.php");
-            elseif ($_SESSION["UserID"] > 1000 && $_SESSION["UserID"] <= 2000)
-                header("location: ../Mentor/dashboard.php");
-            elseif ($_SESSION["UserID"] > 2000)
+            $ErrorMessage = "Please Fill All Fields!";
 
-                header("location: ../Student/dashboard.php");
     }
-    else
-        $ErrorMessage = "Please Fill All Fields!";
-
-}
 
 ?>
 
@@ -80,7 +79,7 @@ if (isset($_POST["email"]) && isset($_POST["password"])) {
 
 
                                     <form class="user" action="login.php" method="POST">
-                                        <div class="mb-3"><input class="form-control form-control-user" type="email"
+                                        <div class="mb-3"><input class="form-control form-control-user" type="text"
                                                 id="exampleInputEmail" aria-describedby="emailHelp"
                                                 placeholder="Enter Email Address..." name="email"></div>
                                         <div class="mb-3"><input class="form-control form-control-user" type="password"

@@ -5,11 +5,11 @@
     use Controllers\ValidationController;
     use Controllers\UsersController;
     $Check = new ValidationController();
-    $Check->CheckForAdmin();
-    if (!$Check)
-        header("location:../Auth/login.php");
+    $Access = $Check->CheckForAdmin();
+    if (!$Access)
+        header("location:../Auth/logout.php");
 
-    $MentorController = new UsersController();
+$MentorController = new UsersController();
     $ErrorMessage = "";
 
     if (isset($_POST["first_name"]) && isset($_POST["email"]) && isset($_POST["password"]) && isset($_POST["salary"]) && isset($_POST["phone"])) {

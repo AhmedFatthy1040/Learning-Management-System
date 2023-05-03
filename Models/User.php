@@ -101,20 +101,7 @@ if ( $isThereNumber ) {
     }
 
     public function setEmail($Email){
-        $isThereNumber = false;
-        for ($i = 0; $i < strlen($Email); $i++) {
-            if ($Email[$i] == '@') {
-                $isThereNumber = true;
-                break;
-            }
-        }
-         
-        if ( $isThereNumber ) {
-            $this->Email=$Email;
-        }
-         else {
-            echo "\"{$Email}\" doesn't contain the '@' sign";
-        }
+        $this->Email = $Email;
     }
 
     public function setPhoneNumber($PhoneNumber){
