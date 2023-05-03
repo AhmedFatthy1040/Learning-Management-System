@@ -17,7 +17,10 @@ class AuthController
         $this->db->connect();
         $email = $user->getEmail();
         $password = $user->GetPassword();
-        $query = "select * from $Type where email = '$email' and password = '$password'";
+        if ($Type == "admin")
+            $query = "select * from $Type where user_name = '$email' and password = '$password'";
+        else
+            $query = "select * from $Type where email = '$email' and password = '$password'";
         $result = $this->db->Select($query);
         if ($result === false) {
             echo "Error in Query";
@@ -35,6 +38,7 @@ class AuthController
                 $_SESSION["LearningPath"] = $result[0]["learning_path_id"];
                 $_SESSION["FinalRate"] = $result[0]["final_rate"];
                 $_SESSION["Salary"] = $result[0]["salary"];
+                $_SESSION["AdminName"] = $result[0]["user_name"];
 
                 return true;
             }

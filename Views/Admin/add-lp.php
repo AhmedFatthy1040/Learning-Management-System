@@ -1,43 +1,44 @@
 <?php
-require_once(__DIR__ . "/../../Controllers/ValidationController.php");
-require_once(__DIR__ . "/../../Controllers/UsersController.php");
-require_once(__DIR__ . "/../../Models/LearningPath.php");
+    require_once(__DIR__ . "/../../Controllers/ValidationController.php");
+    require_once(__DIR__ . "/../../Controllers/UsersController.php");
+    require_once(__DIR__ . "/../../Models/LearningPath.php");
 
-use Controllers\ValidationController;
-use Controllers\UsersController;
-$Check = new ValidationController();
-$Check->CheckForAdmin();
-if (!$Check)
-    header("location:../Auth/login.php");
-$conn = mysqli_connect('localhost', 'root', '', 'lms','3306');
+    use Controllers\ValidationController;
+    use Controllers\UsersController;
+    $Check = new ValidationController();
+    $Access = $Check->CheckForAdmin();
+    if (!$Access)
+        header("location:../Auth/logout.php");
 
-// check connection
-if(!$conn){
-    echo 'Connection error: '. mysqli_connect_error();
-}
+    $conn = mysqli_connect('localhost', 'root', '', 'lms','3306');
 
-$CoursesController = new UsersController();
-$ErrorMessage = "";
-
-if (isset($_POST["LPID"]) && isset($_POST["LPName"])) {
-    if (!empty($_POST["LPID"]) && !empty($_POST["LPName"])) {
-        $LP = new Learning_Path();
-        $LP->setLearningPathName($_POST["LPName"]);
-        $LP->setLearningPathId($_POST["LPID"]);
-
-        $LPNAME = $LP->getLearningPathName();
-        $LPID = $LP->getLearningPathId();
-
-        $sql = "INSERT INTO learning_path(id,name) VALUES('$LPID','$LPNAME')";
-
-        if (mysqli_query($conn, $sql)) {
-            header('Location: manage-lp.php');
-        } else {
-            echo 'query error: ' . mysqli_error($conn);
-        }
-
+    // check connection
+    if(!$conn){
+        echo 'Connection error: '. mysqli_connect_error();
     }
-}
+
+    $CoursesController = new UsersController();
+    $ErrorMessage = "";
+
+    if (isset($_POST["LPID"]) && isset($_POST["LPName"])) {
+        if (!empty($_POST["LPID"]) && !empty($_POST["LPName"])) {
+            $LP = new Learning_Path();
+            $LP->setLearningPathName($_POST["LPName"]);
+            $LP->setLearningPathId($_POST["LPID"]);
+
+            $LPNAME = $LP->getLearningPathName();
+            $LPID = $LP->getLearningPathId();
+
+            $sql = "INSERT INTO learning_path(id,name) VALUES('$LPID','$LPNAME')";
+
+            if (mysqli_query($conn, $sql)) {
+                header('Location: manage-lp.php');
+            } else {
+                echo 'query error: ' . mysqli_error($conn);
+            }
+
+        }
+    }
 
 
 ?>

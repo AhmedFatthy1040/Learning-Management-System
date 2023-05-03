@@ -87,10 +87,33 @@ class UsersController
         }
 
     }
+    public function GetUsers() {
+        $this->db = new DBController();
+        if ($this->db->connect()) {
+            $query = "SELECT id, fname, lname, gender, email, phone FROM user ORDER BY id desc";
+            return $this->db->Select($query);
+        }
+        else {
+            echo "Error in Database Connection";
+            return false;
+        }
+    }
 
     public function AddLPS(\Learning_Path $LP) {
         $this->db = new DBController();
         $Name = $LP->getLearningPathName();
         $id = $LP->getLearningPathId();
     }
+    public function GetCoursesForMentor($MnetorID) {
+        $this->db = new DBController();
+        if ($this->db->connect()) {
+            $query = "SELECT id, name, description, requirements, mentor_id, learning_path_id FROM course WHERE mentor_id = '$MnetorID' ORDER BY id desc";
+            return $this->db->Select($query);
+        }
+        else {
+            echo "Error in Database Connection";
+            return false;
+        }
+    }
+
 }

@@ -1,39 +1,38 @@
 <?php
-require_once(__DIR__ . "/../../Controllers/ValidationController.php");
-require_once(__DIR__ . "/../../Controllers/UsersController.php");
-require_once(__DIR__ . "/../../Models/Course.php");
+    require_once(__DIR__ . "/../../Controllers/ValidationController.php");
+    require_once(__DIR__ . "/../../Controllers/UsersController.php");
+    require_once(__DIR__ . "/../../Models/Course.php");
+    use Controllers\ValidationController;
+    use Controllers\UsersController;
+    $Check = new ValidationController();
+    $Access = $Check->CheckForAdmin();
+    if (!$Access)
+        header("location:../Auth/logout.php");
 
-use Controllers\ValidationController;
-use Controllers\UsersController;
-$Check = new ValidationController();
-$Check->CheckForAdmin();
-if (!$Check)
-    header("location:../Auth/login.php");
+    $CoursesController = new UsersController();
+    $ErrorMessage = "";
 
-$CoursesController = new UsersController();
-$ErrorMessage = "";
+    if (isset($_POST["CourseName"]) && isset($_POST["Description"]) && isset($_POST["MentorID"]) && isset($_POST["LearningPathID"])) {
+        if (!empty($_POST["CourseName"]) && !empty($_POST["Description"]) && !empty($_POST["MentorID"]) && !empty($_POST["LearningPathID"])) {
+            $Course = new Course();
+            $Course->SetName($_POST["CourseName"]);
+            $Course->SetRequirements($_POST["Requirements"]);
+            $Course->SetMntorID($_POST["MentorID"]);
+            $Course->SetLearningPathID($_POST["LearningPathID"]);
+            $Course->SetDescription($_POST["Description"]);
 
-if (isset($_POST["CourseName"]) && isset($_POST["Description"]) && isset($_POST["MentorID"]) && isset($_POST["LearningPathID"])) {
-    if (!empty($_POST["CourseName"]) && !empty($_POST["Description"]) && !empty($_POST["MentorID"]) && !empty($_POST["LearningPathID"])) {
-        $Course = new Course();
-        $Course->SetName($_POST["CourseName"]);
-        $Course->SetRequirements($_POST["Requirements"]);
-        $Course->SetMntorID($_POST["MentorID"]);
-        $Course->SetLearningPathID($_POST["LearningPathID"]);
-        $Course->SetDescription($_POST["Description"]);
-
-        if ($CoursesController->AddCourses($Course)) {
-            header("location: manage-courses.php");
+            if ($CoursesController->AddCourses($Course)) {
+                header("location: dashboard.php");
+            }
+            else {
+                $ErrorMessage =  "Error!.. Please Try Again";
+            }
         }
-        else {
-            $ErrorMessage =  "Error!.. Please Try Again";
-        }
+        else
+            $ErrorMessage = "Error";
     }
     else
         $ErrorMessage = "Error";
-}
-else
-    $ErrorMessage = "Error";
 
 ?>
 <!DOCTYPE html>
@@ -42,7 +41,7 @@ else
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-    <title>Add Course - LMS</title>
+    <title>Add Mentor - LMS</title>
     <link rel="stylesheet" href="../assets/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i&amp;display=swap">
     <link rel="stylesheet" href="../assets/fonts/fontawesome-all.min.css">
@@ -59,7 +58,7 @@ else
                 <div class="col-lg-7">
                     <div class="p-5">
                         <div class="text-center">
-                            <h4 class="text-dark mb-4">Add a Course</h4>
+                            <h4 class="text-dark mb-4">Add a Mentor</h4>
                         </div>
                         <!--                        ========================================================================-->
                         <form class="user" method="POST">
