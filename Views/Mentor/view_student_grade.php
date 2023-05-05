@@ -1,18 +1,28 @@
-<style>
 <?php
-    include("../assets/bootstrap/css/Admin.css")
+    require_once(__DIR__ . "/../../Controllers/ValidationController.php");
+    require_once(__DIR__ . "/../../Controllers/UsersController.php");
+    use Controllers\ValidationController;
+    use Controllers\UsersController;
+    $Check = new ValidationController();
+    $Access = $Check->CheckForMentor();
+    if (!$Access)
+        header("location:../Auth/logout.php");
+
+    $Controller = new UsersController();
+    $Courses = $Controller->GetCoursesForMentor($_SESSION["UserID"]);
+
 ?>
-</style>
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-    <title>Blank Page - LMS</title>
-    <link rel="stylesheet" href="css/LerningPath.css">
+    <title>Mentor Dashboard - LMS</title>
     <link rel="stylesheet" href="../assets/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i&amp;display=swap">
     <link rel="stylesheet" href="../assets/fonts/fontawesome-all.min.css">
+    <link rel="stylesheet" href="card.css">
 </head>
 
 <body id="page-top">
@@ -24,17 +34,10 @@
                 </a>
                 <hr class="sidebar-divider my-0">
                 <ul class="navbar-nav text-light" id="accordionSidebar">
-                    <li class="nav-item"><a class="nav-link" href="dashboard.php"><i class="fas fa-home"></i><span>Home</span></a></li>
-<<<<<<< HEAD
-                    <li class="nav-item"><a class="nav-link" href="profile.html"><i class="fas fa-user"></i><span>Profile</span></a></li>
-                    <li class="nav-item"><a class="nav-link" href="table.html"><i class="fas fa-users"></i><span>Mentors</span></a></li>
-                    <li class="nav-item"><a class="nav-link" href="register.html"><i class="fas fa-book-open"></i><span>Learning Paths</span></a></li>
-=======
                     <li class="nav-item"><a class="nav-link" href="profile.php"><i class="fas fa-user"></i><span>Profile</span></a></li>
-                    <li class="nav-item"><a class="nav-link" href="mentors.php"><i class="fas fa-users"></i><span>Mentors</span></a></li>
-                    <li class="nav-item"><a class="nav-link" href="learning paths.php" ><i class="fas fa-book-open"></i><span>Learning Paths</span></a></li>
->>>>>>> c37b97216c14fa48692fce02368d18332d8c4fd8
-                    <li class="nav-item"><a class="nav-link" href="transcript.php"><i class="fas fa-table"></i><span>transcript</span></a></li>
+                    <li class="nav-item"><a class="nav-link" href="add_course.php"><i class="fas fa-table"></i><span>Add Course</span></a></li>
+                    <li class="nav-item"><a class="nav-link" href="mange_course.php"><i class="far fa-user-circle"></i><span>Mange Course</span></a></li>
+                    <li class="nav-item"><a class="nav-link" href="profile.php"><i class="fas fa-user"></i><span>Dashboard</span></a></li>
                 </ul>
                 <div class="text-center d-none d-md-inline"><button class="btn rounded-circle border-0" id="sidebarToggle" type="button"></button></div>
             </div>
@@ -46,7 +49,6 @@
                         <form class="d-none d-sm-inline-block me-auto ms-md-3 my-2 my-md-0 mw-100 navbar-search">
                             <div class="input-group"><input class="bg-light form-control border-0 small" type="text" placeholder="Search for ..."><button class="btn btn-primary py-0" type="button"><i class="fas fa-search"></i></button></div>
                         </form>
-                        
                         <ul class="navbar-nav flex-nowrap ms-auto">
                             <li class="nav-item dropdown d-sm-none no-arrow"><a class="dropdown-toggle nav-link" aria-expanded="false" data-bs-toggle="dropdown" href="#"><i class="fas fa-search"></i></a>
                                 <div class="dropdown-menu dropdown-menu-end p-3 animated--grow-in" aria-labelledby="searchDropdown">
@@ -85,7 +87,6 @@
                                     </div>
                                 </div>
                             </li>
-                            
                             <li class="nav-item dropdown no-arrow mx-1">
                                 <div class="nav-item dropdown no-arrow"><a class="dropdown-toggle nav-link" aria-expanded="false" data-bs-toggle="dropdown" href="#"><span class="badge bg-danger badge-counter">7</span><i class="fas fa-envelope fa-fw"></i></a>
                                     <div class="dropdown-menu dropdown-menu-end dropdown-list animated--grow-in">
@@ -128,63 +129,17 @@
                             </li>
                             <div class="d-none d-sm-block topbar-divider"></div>
                             <li class="nav-item dropdown no-arrow">
-                                <div class="nav-item dropdown no-arrow">
-                                    <a class="dropdown-toggle nav-link" aria-expanded="false" data-bs-toggle="dropdown"
-                                        href="#"><span class="d-none d-lg-inline me-2 text-gray-600 small">
-                                            <?php echo $_SESSION["UserName"] ?>
-                                        </span><img class="border rounded-circle img-profile"
-                                            src="../assets/img/avatars/gear.png"></a>
-                                    <div class="dropdown-menu shadow dropdown-menu-end animated--grow-in"><a
-                                            class="dropdown-item" href="#"><i
-                                                class="fas fa-user fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Profile</a><a
-                                            class="dropdown-item" href="#"><i
-                                                class="fas fa-cogs fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Settings</a><a
-                                            class="dropdown-item" href="#"><i
-                                                class="fas fa-list fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Activity
-                                            log</a>
-                                        <div class="dropdown-divider"></div><a class="dropdown-item"
-                                            href="../Auth/logout.php"><i
-                                                class="fas fa-sign-out-alt fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Logout</a>
+                                <div class="nav-item dropdown no-arrow"><a class="dropdown-toggle nav-link" aria-expanded="false" data-bs-toggle="dropdown" href="#"><span class="d-none d-lg-inline me-2 text-gray-600 small"><?php echo $_SESSION["UserName"]; ?></span><img class="border rounded-circle img-profile" src="../assets/img/avatars/gear.png"></a>
+                                    <div class="dropdown-menu shadow dropdown-menu-end animated--grow-in"><a class="dropdown-item" href="#"><i class="fas fa-user fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Profile</a><a class="dropdown-item" href="#"><i class="fas fa-cogs fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Settings</a><a class="dropdown-item" href="#"><i class="fas fa-list fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Activity log</a>
+                                        <div class="dropdown-divider"></div><a class="dropdown-item" href="../Auth/logout.php"><i class="fas fa-sign-out-alt fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Logout</a>
                                     </div>
                                 </div>
                             </li>
                         </ul>
                     </div>
                 </nav>
-                <div class="section2" id="service">
-        <h3 class="title">Learning Pathes</h3>
-        <a href="">
-<div class="contanre">
-            <div class="card">
-                <div class="icon">
-                <i class="fa-brands fa-android"></i>
+                <div class="container-fluid">
                 </div>
-                <div class="info">
-                    <h3>Android </h3>
-                    <p>Launch Your Android App Development Career. Master the knowledge and skills necessary to develop maintainable mobile computing apps</p>
-                    
-                </div>
-            </div>
-            <div class="card">
-                <div class="icon">
-                    <i class="fa-solid fa-code"></i>
-                </div>
-                <div class="info">
-                    <h3>Front-end</h3>
-                    <p>You will learn how front-end developers create websites and applications that work well and are easy to maintain</p>
-                </div>
-            </div>
-            <div class="card">
-                <div class="icon">
-                <i class="fa-solid fa-database"></i>
-                </div>
-                <div class="info">
-                    <h3>Back-end</h3>
-                    <p>You’ll learn the latest tools and technologies used by professional back-end developers</p>
-            </div>
-        </div>
-        </a>
-    </div>
             </div>
             <footer class="bg-white sticky-footer">
                 <div class="container my-auto">

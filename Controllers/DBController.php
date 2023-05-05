@@ -9,9 +9,9 @@ class DBController
 {
     private $host = "localhost";
     private $user = "root";
-    private $password = "";
+    private $password = "root";
     private $database = "lms";
-    private $port = "3306";
+    private $port = "3307";
     private $conn;
 
     function connect(): bool

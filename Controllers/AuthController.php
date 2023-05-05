@@ -39,7 +39,12 @@ class AuthController
                 $_SESSION["FinalRate"] = $result[0]["final_rate"];
                 $_SESSION["Salary"] = $result[0]["salary"];
                 $_SESSION["AdminName"] = $result[0]["user_name"];
-
+                $_SESSION["UserEmail"] = $result[0]["email"];
+                $_SESSION["UserFirstName"] = $result[0]["fname"];
+                $_SESSION["UserLastName"] = $result[0]["lname"];
+                $_SESSION["UserPassword"] = $result[0]["password"];
+                $_SESSION["UserNationality"] = $result[0]["nationality"];
+                $_SESSION["UserPhone"] = $result[0]["phone"];
                 return true;
             }
         }
@@ -61,7 +66,11 @@ class AuthController
                 $_SESSION["UserID"] = $result;
                 $_SESSION["UserName"] = $user->getFirstName() . " " . $user->getLastName();
                 $_SESSION["UserEmail"] = $user->getEmail();
+                $_SESSION["UserFirstName"] = $user->getFirstName();
+                $_SESSION["UserLastName"] = $user->getLastName();
                 $_SESSION["UserPassword"] = $user->GetPassword();
+                $_SESSION["UserNationality"] = $user->Nationality();
+                $_SESSION["UserPhone"] = $user->getPhoneNumber();
                 $this->db->close();
                 return true;
             } else {
