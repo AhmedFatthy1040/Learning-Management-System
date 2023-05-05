@@ -24,7 +24,31 @@
     <link rel="stylesheet" href="../assets/fonts/fontawesome-all.min.css">
     <link rel="stylesheet" href="card.css">
 </head>
+<style>
+.link_list {
+  list-style-type: none;
+  margin: 1;
+  padding: 1;
+  overflow: hidden;
+  background-color: #4e73df;
+}
 
+.link_item {
+  float: left;
+}
+
+.link_item a {
+  display: block;
+  color: white;
+  text-align: center;
+  padding: 16px;
+  text-decoration: slateblue;
+}
+
+.link_item a:hover {
+  background-color: purple;
+}
+</style>
 <body id="page-top">
     <div id="wrapper">
         <nav class="navbar navbar-dark align-items-start sidebar sidebar-dark accordion bg-gradient-primary p-0">
@@ -35,8 +59,8 @@
                 <hr class="sidebar-divider my-0">
                 <ul class="navbar-nav text-light" id="accordionSidebar">
                     <li class="nav-item"><a class="nav-link" href="profile.php"><i class="fas fa-user"></i><span>Profile</span></a></li>
-                    <li class="nav-item"><a class="nav-link" href="add_course.php"><i class="fas fa-table"></i><span>Add Course</span></a></li>
-                    <li class="nav-item"><a class="nav-link" href="mange_course.php"><i class="far fa-user-circle"></i><span>Mange Course</span></a></li>
+                    <li class="nav-item"><a class="nav-link" href="dashboard.php"><i class="fas fa-table"></i><span>Dashboard</span></a></li>
+                    <li class="nav-item"><a class="nav-link" href="add_course.php"><i class="far fa-user-circle"></i><span>Add Course</span></a></li>
                 </ul>
                 <div class="text-center d-none d-md-inline"><button class="btn rounded-circle border-0" id="sidebarToggle" type="button"></button></div>
             </div>
@@ -138,8 +162,13 @@
                     </div>
                 </nav>
                 <div class="container-fluid">
-                    <div class="d-sm-flex justify-content-between align-items-center mb-4">
-                        <h3 class="text-dark mb-0"><?php echo "Welcome " . $_SESSION["UserName"] . " Your ID is " . $_SESSION["UserID"]; ?></h3>
+                    <div>
+                        <ul class="link_list">
+                            <li class="link_item"><a href="edit_lecture.php">Lectures</a></li>
+                            <li class="link_item"><a href="edit_exam.php">Exams</a></li>
+                            <li class="link_item"><a href="view_student_grade.php">View Student Grades</a></li>
+                            <li class="link_item"><button>Delete Course</button></li>
+                        </ul>
                     </div>
                 </div>
             </div>

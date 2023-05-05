@@ -34,7 +34,7 @@
                 </a>
                 <hr class="sidebar-divider my-0">
                 <ul class="navbar-nav text-light" id="accordionSidebar">
-                    <li class="nav-item"><a class="nav-link" href="profile.php"><i class="fas fa-user"></i><span>Profile</span></a></li>
+                    <li class="nav-item"><a class="nav-link" href="dashboard.php"><i class="fas fa-user"></i><span>Dashboard</span></a></li>
                     <li class="nav-item"><a class="nav-link" href="add_course.php"><i class="fas fa-table"></i><span>Add Course</span></a></li>
                     <li class="nav-item"><a class="nav-link" href="mange_course.php"><i class="far fa-user-circle"></i><span>Mange Course</span></a></li>
                 </ul>
@@ -138,9 +138,6 @@
                     </div>
                 </nav>
                 <div class="container-fluid">
-                    <div class="d-sm-flex justify-content-between align-items-center mb-4">
-                        <h3 class="text-dark mb-0"><?php echo "Welcome " . $_SESSION["UserName"] . " Your ID is " . $_SESSION["UserID"]; ?></h3>
-                    </div>
                 </div>
             </div>
             <footer class="bg-white sticky-footer">
