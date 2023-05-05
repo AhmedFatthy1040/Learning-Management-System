@@ -20,11 +20,11 @@
                 if (!isset($_SESSION["UserID"])) {
                     session_start();
                 }
-                if ($_SESSION["UserID"] >= 0 && $_SESSION["UserID"] <= 1000)
+                if ($_SESSION["UserID"] >= 0 && $_SESSION["UserID"] < 1000)
                     header("location: ../Admin/dashboard.php");
-                elseif ($_SESSION["UserID"] > 1000 && $_SESSION["UserID"] <= 2000)
+                elseif ($_SESSION["UserID"] >= 1000 && $_SESSION["UserID"] < 2000)
                     header("location: ../Mentor/dashboard.php");
-                elseif ($_SESSION["UserID"] > 2000)
+                elseif ($_SESSION["UserID"] >= 2000)
                     header("location: ../Student/dashboard.php");
         }
         else

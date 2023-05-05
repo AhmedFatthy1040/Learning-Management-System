@@ -125,13 +125,22 @@ class UsersController
         $this->db = new DBController();
         if ($this->db->connect()) {
             $id = $_SESSION["UserID"];
-            $query = "select c.name as course, cu.grade as grade, cu.gpa as gpa 
-                        from user u 
-                        join course_user cu on cu.user_id = u.id 
-                        join course c on c.id = cu.course_id 
-                        where u.id = $id";
+            $query="select c.name as course, cu.grade as grade, cu.gpa as gpa
+            from course c, user u, course_user cu
+            where u.id = $id and cu.user_id = u.id and cu.course_id = c.id and cu.finished = true";
             return $this->db->Select($query);
 
+        } else {
+            echo "Error in Database Connection";
+            return false;
+        }
+    }
+    public function GetMentorsForStudent()
+    {
+        $this->db = new DBController();
+        if ($this->db->connect()) {
+            $query = "select YEAR(birthdate),fname,lname,password,nationality,gender,email,phone,salary,final_rate from mentor";
+            return $this->db->Select($query);
         } else {
             echo "Error in Database Connection";
             return false;
