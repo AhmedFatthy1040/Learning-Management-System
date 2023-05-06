@@ -64,7 +64,7 @@ class AuthController
             if ($result != false) {
                 session_start();
                 $_SESSION["UserID"] = $result;
-                $_SESSION["UserName"] = $user->getFirstName() . " " . $user->getLastName();
+                $_SESSION["UserName"] = $result[0]["fname"] . " " . $result[0]["lname"];
                 $_SESSION["UserEmail"] = $user->getEmail();
                 $_SESSION["UserFirstName"] = $user->getFirstName();
                 $_SESSION["UserLastName"] = $user->getLastName();

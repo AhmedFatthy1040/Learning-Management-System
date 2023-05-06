@@ -164,4 +164,29 @@ class UsersController
         }
 
     }
+    public function EditUser(User $user,$entity,$value)
+    {
+        $this->db = new DBController();
+        if ($this->db->connect()) {
+            $id = $_SESSION["UserID"];
+            $query = "UPDATE user SET $entity = '$value'
+            WHERE id = $id";
+            return $this->db->query($query);
+        } else {
+            echo "Error in Database Connection";
+            return false;
+        }
+    }
+    public function GetUser()
+    {
+        $this->db = new DBController();
+        if ($this->db->connect()) {
+            $id = $_SESSION["UserID"];
+            $query = "select * from user where id = $id";
+            return $this->db->Select($query);
+        } else {
+            echo "Error in Database Connection";
+            return false;
+        }
+    }
 }
