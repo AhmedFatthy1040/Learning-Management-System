@@ -1,0 +1,131 @@
+@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css');
+.contanre {
+    display: flex;
+    justify-content: center;
+    flex-direction: row;
+    flex-wrap: wrap;
+    height: 800px;
+    text-decoration: none;
+    position: relative;
+    bottom: -80px;
+}
+
+.card {
+    background-color: #110b0b;
+    width: 16em;
+    box-shadow: 0 5px 20px rgba(1 1 1 /15%);
+    border-radius: 18px;
+    padding: 25px;
+    margin: 13px;
+    transition: 0.7s ease;
+    height: 40px;
+    text-decoration: none;
+}
+
+.card:hover {
+    transform: scale(1.1, 1.1);
+}
+
+.info {
+    display: flex;
+    justify-content: center;
+    color: rgb(0, 0, 0);
+    font-size: 1em;
+}
+
+.info h3 {
+    color: #3a6cf4;
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    font-size: 1.1em;
+    font-weight: 800;
+}
+
+.description {
+    margin: 15px;
+    font-size: 2.3em;
+    position: relative;
+    top: 30px;
+    color: #3a6cf4;
+    font-weight: 600;
+}
+
+.icon {
+    font-size: 3.0em;
+    display: flex;
+    justify-content: center;
+    margin-bottom: 30px;
+    color: #1f2020;
+}
+
+
+/* .pro-imge img {
+    width: 100px;
+    height: 230px;
+    border-radius: 20px;
+} */
+
+.title {
+    display: flex;
+    justify-content: center;
+    color: #000000;
+    font-size: 2.2em;
+    font-weight: 800;
+}
+
+img {
+    width: 700px;
+    height: 169px;
+}
+
+footer {
+    position: absolute;
+    bottom: 900px;
+    padding: auto;
+}
+
+.php img {
+    width: 500px;
+    height: 600px;
+}
+
+.sec-1 {
+    display: flex;
+    justify-content: center;
+    background-color: rgb(255, 253, 253);
+    width: 900px;
+    height: 190px;
+    position: relative;
+    margin: 60px;
+    border-radius: 15px;
+    /* border: solid blueviolet; */
+    box-shadow: 0 5px 20px rgba(1 1 1 /15%);
+}
+
+.photo {
+    width: 130px;
+    height: 100px;
+    background-color: #f1eded;
+    border-radius: 250px;
+    margin: 22px;
+    margin-bottom: -15px;
+    position: relative;
+    left: -299px;
+}
+
+.photo i {
+    font-size: 100px;
+    width: 110;
+    color: #000000;
+}
+
+.info1 {
+    position: relative;
+    left: -300px;
+    margin: 19px;
+    font-size: 25px;
+    color: #3a6cf4;
+    font-weight: 600;
+}

@@ -1,6 +1,7 @@
 <style>
 <?php
-    include("../assets/bootstrap/css/Admin.css")
+    include("../assets/bootstrap/css/Admin.css");
+    include("css/LerningPath.css")
 ?>
 </style>
 <!DOCTYPE html>
@@ -25,15 +26,9 @@
                 <hr class="sidebar-divider my-0">
                 <ul class="navbar-nav text-light" id="accordionSidebar">
                     <li class="nav-item"><a class="nav-link" href="dashboard.php"><i class="fas fa-home"></i><span>Home</span></a></li>
-<<<<<<< HEAD
                     <li class="nav-item"><a class="nav-link" href="profile.html"><i class="fas fa-user"></i><span>Profile</span></a></li>
                     <li class="nav-item"><a class="nav-link" href="table.html"><i class="fas fa-users"></i><span>Mentors</span></a></li>
                     <li class="nav-item"><a class="nav-link" href="register.html"><i class="fas fa-book-open"></i><span>Learning Paths</span></a></li>
-=======
-                    <li class="nav-item"><a class="nav-link" href="profile.php"><i class="fas fa-user"></i><span>Profile</span></a></li>
-                    <li class="nav-item"><a class="nav-link" href="mentors.php"><i class="fas fa-users"></i><span>Mentors</span></a></li>
-                    <li class="nav-item"><a class="nav-link" href="learning paths.php" ><i class="fas fa-book-open"></i><span>Learning Paths</span></a></li>
->>>>>>> c37b97216c14fa48692fce02368d18332d8c4fd8
                     <li class="nav-item"><a class="nav-link" href="transcript.php"><i class="fas fa-table"></i><span>transcript</span></a></li>
                 </ul>
                 <div class="text-center d-none d-md-inline"><button class="btn rounded-circle border-0" id="sidebarToggle" type="button"></button></div>
@@ -128,23 +123,11 @@
                             </li>
                             <div class="d-none d-sm-block topbar-divider"></div>
                             <li class="nav-item dropdown no-arrow">
-                                <div class="nav-item dropdown no-arrow">
-                                    <a class="dropdown-toggle nav-link" aria-expanded="false" data-bs-toggle="dropdown"
-                                        href="#"><span class="d-none d-lg-inline me-2 text-gray-600 small">
-                                            <?php echo $_SESSION["UserName"] ?>
-                                        </span><img class="border rounded-circle img-profile"
-                                            src="../assets/img/avatars/gear.png"></a>
-                                    <div class="dropdown-menu shadow dropdown-menu-end animated--grow-in"><a
-                                            class="dropdown-item" href="#"><i
-                                                class="fas fa-user fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Profile</a><a
-                                            class="dropdown-item" href="#"><i
-                                                class="fas fa-cogs fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Settings</a><a
-                                            class="dropdown-item" href="#"><i
-                                                class="fas fa-list fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Activity
-                                            log</a>
-                                        <div class="dropdown-divider"></div><a class="dropdown-item"
-                                            href="../Auth/logout.php"><i
-                                                class="fas fa-sign-out-alt fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Logout</a>
+                                <div class="nav-item dropdown no-arrow"><a class="dropdown-toggle nav-link" aria-expanded="false" data-bs-toggle="dropdown" href="#"><span class="d-none d-lg-inline me-2 text-gray-600 small">Valerie Luna</span><img class="border rounded-circle img-profile" src="../assets/img/avatars/avatar1.jpeg"></a>
+                                    <div class="dropdown-menu shadow dropdown-menu-end animated--grow-in">
+                                        <a class="dropdown-item" href="#"><i class="fas fa-user fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Profile</a>
+                                        <div class="dropdown-divider"></div>
+                                        <a class="dropdown-item" href="#"><i class="fas fa-sign-out-alt fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Logout</a>
                                     </div>
                                 </div>
                             </li>
@@ -153,19 +136,18 @@
                 </nav>
                 <div class="section2" id="service">
         <h3 class="title">Learning Pathes</h3>
-        <a href="">
-<div class="contanre">
-            <div class="card">
-                <div class="icon">
-                <i class="fa-brands fa-android"></i>
+    <div class="contanre">
+            <a class="card" href="x">
+                    <div class="icon">
+                    <i class="fa-brands fa-android"></i>
                 </div>
                 <div class="info">
                     <h3>Android </h3>
                     <p>Launch Your Android App Development Career. Master the knowledge and skills necessary to develop maintainable mobile computing apps</p>
                     
                 </div>
-            </div>
-            <div class="card">
+            </a>
+            <a class="card" href="">
                 <div class="icon">
                     <i class="fa-solid fa-code"></i>
                 </div>
@@ -173,17 +155,41 @@
                     <h3>Front-end</h3>
                     <p>You will learn how front-end developers create websites and applications that work well and are easy to maintain</p>
                 </div>
-            </div>
-            <div class="card">
+            </a>
+            <a class="card" href="">
+                
                 <div class="icon">
                 <i class="fa-solid fa-database"></i>
                 </div>
                 <div class="info">
                     <h3>Back-end</h3>
                     <p>You’ll learn the latest tools and technologies used by professional back-end developers</p>
-            </div>
-        </div>
-        </a>
+                </div>
+            </a>    
+            <a class="card" href="">
+                
+                <div class="icon">
+                <i class="fa-solid fa-database"></i>
+                </div>
+                <div class="info">
+                    <h3>Back-end</h3>
+                    <p>You’ll learn the latest tools and technologies used by professional back-end developers</p>
+                </div>
+            </a>    
+            </a>    
+            <a class="card" href="">
+                
+                <div class="icon">
+                <i class="fa-solid fa-database"></i>
+                </div>
+                <div class="info">
+                    <h3>Back-end</h3>
+                    <p>You’ll learn the latest tools and technologies used by professional back-end developers</p>
+                </div>
+            </a>    
+    </div>
+            
+        
     </div>
             </div>
             <footer class="bg-white sticky-footer">
