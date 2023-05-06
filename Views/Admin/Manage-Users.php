@@ -12,7 +12,7 @@
 </style>
 <?php
 // connect to the database
-$conn = mysqli_connect('localhost', 'root', '', 'lms','3306');
+$conn = mysqli_connect('localhost', 'root', 'root', 'lms','3307');
 
 // check connection
 if(!$conn){

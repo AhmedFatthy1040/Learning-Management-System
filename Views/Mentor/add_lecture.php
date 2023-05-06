@@ -1,6 +1,7 @@
 <?php
     require_once(__DIR__ . "/../../Controllers/ValidationController.php");
     require_once(__DIR__ . "/../../Controllers/UsersController.php");
+    require_once(__DIR__ . "/../../Models/Lecture.php");
     use Controllers\ValidationController;
     use Controllers\UsersController;
     $Check = new ValidationController();
@@ -8,8 +9,34 @@
     if (!$Access)
         header("location:../Auth/logout.php");
 
-    $Controller = new UsersController();
-    $Courses = $Controller->GetCoursesForMentor($_SESSION["UserID"]);
+    $LectureController = new UsersController();
+    $ErrorMessage = "";
+    //$Lectures = $LectureController->GetCourseForLectures($_SESSION["CourseID"]);
+
+    if (isset($_POST["LectureName"]) && isset($_POST["Week"]) && isset($_POST["Course_ID"]) && isset($_POST["Info"]) && isset($_POST["Link"])) { // && isset($_POST["Slide"]) && isset($_POST["Video"])
+        if (!empty($_POST["LectureName"]) && !empty($_POST["Week"]) && !empty($_POST["Course_ID"]) && !empty($_POST["Info"]) && !empty($_POST["Link"])) { // && !empty($_POST["Slide"]) && !empty($_POST["Video"])
+            $Lecture = new Lecture();
+            $Lecture->setName($_POST["LectureName"]);
+            $Lecture->setWeek($_POST["Week"]);
+            $Lecture->setCourse_ID($_POST["Course_ID"]);
+            $Lecture->setInfo($_POST["Info"]);
+            $Lecture->setLink($_POST["Link"]);
+            //$Lecture->setSlide($_POST["uploding_slides"]);
+            //$Lecture->setVideo($_POST["uploding_videos"]);
+
+
+            if ($LectureController->AddLectures($Lecture)) {
+                header("location: mange_course.php");
+            }
+            else {
+                $ErrorMessage =  "Error!.. Please Try Again";
+            }
+        }
+        else
+            $ErrorMessage = "Error";
+    }
+    else
+        $ErrorMessage = "Error";
 
 ?>
 <!DOCTYPE html>
@@ -22,6 +49,13 @@
     <link rel="stylesheet" href="../assets/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i&amp;display=swap">
     <link rel="stylesheet" href="../assets/fonts/fontawesome-all.min.css">
+    <style>
+        .text_1{
+            text-align: center;
+            font-size: larger;
+            color: #4e73df;
+        }
+    </style>
 </head>
 
 <body id="page-top">
@@ -137,19 +171,50 @@
                     </div>
                 </nav>
                 <div class="container-fluid">
-                    <div class="d-sm-flex justify-content-between align-items-center mb-4">
-                        <h3 class="text-dark mb-0"><?php echo "Add lecture" ?></h3>
+                    <div class="card shadow-lg o-hidden border-0 my-5">
+                        <div class="card-body p-0">
+                            <div class="row">
+                                <div class="col-lg-5 d-none d-lg-flex">
+                                    <div class="flex-grow-1 bg-register-image" style="background-image: url(&quot;../assets/img/dogs/image2.jpeg&quot;);"></div>
+                                    </div>
+                                <div class="col-lg-7">
+                                    <div class="p-5">
+                                        <div class="text-center">
+                                            <h4 class="text-dark mb-4">Add a Lecture</h4>
+                                        </div>
+                                    <!--                        ========================================================================-->
+                                        <form class="user" method="POST">
+                                            <div class="row mb-3">
+                                                <div class="col-sm-6 mb-3 mb-sm-0"><input class="form-control form-control-user" type="text" id="exampleInputLectureName" aria-describedby="Lecture Name" placeholder="Lecture Name" name="LectureName"></div>
+                                                <div class="col-sm-6 mb-3 mb-sm-0"><input class="form-control form-control-user" type="text" id="exampleInputWeek" aria-describedby="Week" placeholder="Week" name="Week"></div>
+                                                <div class="col-sm-6 mb-3 mb-sm-0"><input class="form-control form-control-user" type="text" id="exampleLink" placeholder="Link" name="Link"></div>
+                                                <div class="col-sm-6 mb-3 mb-sm-0"><input class="form-control form-control-user" type="text" id="exampleCourse_ID" placeholder="Course_ID" name="Course_ID"></div>
+                                                <div><input class="form-control form-control-user" type="text" id="exampleInfo" placeholder="Info" name="Info"></div>
+                                                <!-- <div><input class="form-control form-control-user" type="text" id="exampleSlide" placeholder="Slide" name="Slide"> -->
+                                                <div class="uploading_slides">
+                                                    <div>
+                                                        <p class="text_1" for="filename">Add Slides</p>
+                                                    </div>
+                                                    <input type="file" id="myFile" name="filename">
+                                                </div>
+                                                <!-- </div> -->
+                                                <!-- <div><input class="form-control form-control-user" type="text" id="exampleVideo" placeholder="Video" name="Video"> -->
+                                                <div class="uploading_videos">
+                                                    <div>
+                                                        <p class="text_1" for="filename">Add Video</p>
+                                                    </div>
+                                                    <input type="file" id="myFile" name="filename">
+                                                </div>
+                                                <!-- </div> -->
+                                            </div>
+                                            <button class="btn btn-primary d-block btn-user w-100" type="submit">Add</button>
+
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <form action="" class="adding lecture form">
-                        <div class ="lecture name">
-                            <label for="lec name">Add Lecture's subject :</label>
-                            <input type="text" name="lec name">
-                        </div>
-                        <div class="uploading slides">
-                            <label for="filename">Add Slides</label>
-                            <input type="file" id="myFile" name="filename">
-                        </div>
-                        </form>
                 </div>
             </div>
             <footer class="bg-white sticky-footer">
