@@ -11,7 +11,7 @@ class ValidationController
             return false;
         }
         else {
-            if ($_SESSION["UserID"]  <= 1000) {
+            if ($_SESSION["UserID"]  < 1000) {
                 return true;
             }
             else {
@@ -26,7 +26,7 @@ class ValidationController
             return false;
         }
         else {
-            if ($_SESSION["UserID"]  > 1000 && $_SESSION["UserID"] <= 2000) {
+            if ($_SESSION["UserID"]  >= 1000 && $_SESSION["UserID"] <= 2000) {
                 return true;
             }
             else {
