@@ -19,8 +19,11 @@ class Question{
     //     $this->correct_answer=$correct_answer;
     // }
 
-    public function __construct($question_id){
-        $this->question_id=$question_id;
+    public function __construct(){
+        
+    }
+    public function setQuestioID($question_id) {
+        $this->question_id = $question_id;
     }
 
     public function getQuestion_id(){

@@ -7,10 +7,12 @@ require_once(__DIR__ . "/../Models/Mentor.php");
 require_once(__DIR__ . "/../Models/Course.php");
 require_once(__DIR__ . "/../Models/user.php");
 require_once(__DIR__ . "/../Models/Lecture.php");
+require_once(__DIR__ . "/../Models/Question.php");
 use Mentor;
 use Course;
 use User;
 use Lecture;
+use Question;
 
 class UsersController
 {
@@ -238,5 +240,74 @@ class UsersController
             echo "Error in Database Connection";
             return false;
         }
-}
+    }
+    public function AddQuestion(Question $Question)
+    {
+        $this->db = new DBController();
+        $TheQuestion = $Question->getQuestion();
+        $CorrectAnswer = $Question->getCorrectAnswers();
+        $ExamID = $_SESSION["ExamID"];
+
+        if ($this->db->connect()) {
+            $query = "insert into question(question, correct_ans, exam_id) values ('$TheQuestion', '$CorrectAnswer', '$ExamID');";
+            return $this->db->query($query);
+        } else {
+            echo "Error in Database Connection";
+            return false;
+        }
+    }
+
+    public function SendAnswer1(Question $Question)
+    {
+        $this->db = new DBController();
+        $Answer1 = $Question->getAnswer1();
+
+        if ($this->db->connect()) {
+            $query = "insert into question_ans(answer, question_id) values ('$Answer1', '1');";
+            return $this->db->query($query);
+        } else {
+            echo "Error in Database Connection";
+            return false;
+        }
+    }
+    public function SendAnswer2(Question $Question)
+    {
+        $this->db = new DBController();
+        $Answer2 = $Question->getAnswer2();
+
+        if ($this->db->connect()) {
+            $query = "insert into question_ans(answer, question_id) values ('$Answer2', '1');";
+            return $this->db->query($query);
+        } else {
+            echo "Error in Database Connection";
+            return false;
+        }
+    }
+    public function SendAnswer3(Question $Question)
+    {
+        $this->db = new DBController();
+        $Answer3 = $Question->getAnswer3();
+
+        if ($this->db->connect()) {
+            $query = "insert into question_ans(answer, question_id) values ('$Answer3', '1');";
+            return $this->db->query($query);
+        } else {
+            echo "Error in Database Connection";
+            return false;
+        }
+    }
+    public function SendAnswer4(Question $Question)
+    {
+        $this->db = new DBController();
+        $Answer4 = $Question->getAnswer4();
+
+        if ($this->db->connect()) {
+            $query = "insert into question_ans(answer, question_id) values ('$Answer4', '1');";
+            return $this->db->query($query);
+        } else {
+            echo "Error in Database Connection";
+            return false;
+        }
+    }
+
 }
