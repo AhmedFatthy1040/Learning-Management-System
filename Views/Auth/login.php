@@ -67,12 +67,12 @@
                                     <?php
                                         if ($ErrorMessage != "") {
                                             ?>
-                                            <div class="card text-white bg-danger shadow">
-                                                <div class="card-body">
-                                                    <p class="m-0"><?php echo $ErrorMessage ?></p>
-                                                </div>
-                                            </div>
-                                            <?php
+                                    <div class="card text-white bg-danger shadow">
+                                        <div class="card-body">
+                                            <p class="m-0"><?php echo $ErrorMessage ?></p>
+                                        </div>
+                                    </div>
+                                    <?php
                                         }
                                     ?>
 
@@ -94,17 +94,18 @@
                                             </div>
                                         </div>
                                         <hr>
-                                            <input type="radio" id="option1" name="Type" checked value="admin">
-                                            <label for="option1">Admin</label><br>
+                                        <input type="radio" id="option1" name="Type" checked value="admin">
+                                        <label for="option1">Admin</label><br>
 
-                                            <input type="radio" id="option2" name="Type" value="mentor">
-                                            <label for="option2">Mentor</label><br>
+                                        <input type="radio" id="option2" name="Type" value="mentor">
+                                        <label for="option2">Mentor</label><br>
 
-                                            <input type="radio" id="option3" name="Type" value="user">
-                                            <label for="option3">User</label><br>
+                                        <input type="radio" id="option3" name="Type" value="user">
+                                        <label for="option3">User</label><br>
 
                                         <hr>
-                                        <button class="btn btn-primary d-block btn-user w-100" type="submit">Login</button>
+                                        <button class="btn btn-primary d-block btn-user w-100"
+                                            type="submit">Login</button>
 
                                     </form>
                                     <div class="text-center"><a class="small" href="forgot-password.php">Forgot
