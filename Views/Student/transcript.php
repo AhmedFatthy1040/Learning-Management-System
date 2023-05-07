@@ -34,7 +34,7 @@ $progress = $Controller->GetTranscript();
                                 class="fas fa-home"></i><span>Home</span></a></li>
                     <li class="nav-item"><a class="nav-link" href="courses.php"><i
                                 class="fas fa-home"></i><span>Courses</span></a></li>
-                    <li class="nav-item"><a class="nav-link" href="lecture.php"><i
+                    <li class="nav-item"><a class="nav-link" href="lectures.php"><i
                                 class="fas fa-home"></i><span>Lectures</span></a></li>
                     <li class="nav-item"><a class="nav-link" href="profile.php"><i
                                 class="fas fa-user"></i><span>Profile</span></a></li>
@@ -192,17 +192,18 @@ $progress = $Controller->GetTranscript();
                         </ul>
                     </div>
                 </nav>
-            </div>
-            <div class="container-fluid">
-                <div class="card shadow">
+                <div class="container-fluid">
+                    <div class="card shadow">
                     <div class="card-header py-3">
-                        <p class="text-primary m-0 fw-bold">progress</p>
+                        <p class="text-primary m-0 fw-bold"><?php echo "NAME: ".$_SESSION["UserName"] ?></p>
+                        <p class="text-primary m-0 fw-bold"><?php echo "Email  : ".$_SESSION["UserEmail"] ?></p>
+                        <p class="text-primary m-0 fw-bold"><?php echo "ID  : ".$_SESSION["UserID"] ?></p>
                     </div>
                     <div class="card-body">
                         <div class="row">
                             <div class="col-md-6 text-nowrap">
                                 <div id="dataTable_length" class="dataTables_length" aria-controls="dataTable"><label
-                                        class="form-label">Show&nbsp;<select
+                                class="form-label">Show&nbsp;<select
                                             class="d-inline-block form-select form-select-sm">
                                             <option value="10" selected="">10</option>
                                             <option value="25">25</option>
@@ -212,8 +213,8 @@ $progress = $Controller->GetTranscript();
                             </div>
                             <div class="col-md-6">
                                 <div class="text-md-end dataTables_filter" id="dataTable_filter"><label
-                                        class="form-label"><input type="search" class="form-control form-control-sm"
-                                            aria-controls="dataTable" placeholder="Search"></label></div>
+                                class="form-label"><input type="search" class="form-control form-control-sm"
+                                aria-controls="dataTable" placeholder="Search"></label></div>
                             </div>
                         </div>
                         <div class="table-responsive table mt-2" id="dataTable" role="grid"
@@ -263,7 +264,7 @@ $progress = $Controller->GetTranscript();
                                         <li class="page-item"><a class="page-link" href="#">2</a></li>
                                         <li class="page-item"><a class="page-link" href="#">3</a></li>
                                         <li class="page-item"><a class="page-link" aria-label="Next" href="#"><span
-                                                    aria-hidden="true">»</span></a></li>
+                                        aria-hidden="true">»</span></a></li>
                                     </ul>
                                 </nav>
                             </div>
@@ -271,7 +272,7 @@ $progress = $Controller->GetTranscript();
                     </div>
                 </div>
             </div>
-
+        </div>
             <footer class="bg-white sticky-footer">
                 <div class="container my-auto">
                     <div class="text-center my-auto copyright"><span>Copyright © LMS 2023</span></div>
@@ -283,5 +284,4 @@ $progress = $Controller->GetTranscript();
     <script src="../assets/js/bs-init.js"></script>
     <script src="../assets/js/theme.js"></script>
 </body>
-
 </html>

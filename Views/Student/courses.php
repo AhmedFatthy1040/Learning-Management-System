@@ -3,7 +3,6 @@ require_once(__DIR__ . "/../../Controllers/ValidationController.php");
 require_once(__DIR__ . "/../../Controllers/UsersController.php");
 require_once(__DIR__ . "/../../Models/Course.php");
 use Controllers\UsersController;
-
 $Controller = new UsersController();
 session_start();
 $Courses = $Controller->GetLearningPathCoursesInfo(1);
@@ -40,7 +39,7 @@ if (isset($_POST['lectures'])) {
                                 class="fas fa-home"></i><span>Home</span></a></li>
                     <li class="nav-item"><a class="nav-link" href="courses.php"><i
                                 class="fas fa-home"></i><span>Courses</span></a></li>
-                    <li class="nav-item"><a class="nav-link" href="lecture.php"><i
+                    <li class="nav-item"><a class="nav-link" href="lectures.php"><i
                                 class="fas fa-home"></i><span>Lectures</span></a></li>
                     <li class="nav-item"><a class="nav-link" href="profile.php"><i
                                 class="fas fa-user"></i><span>Profile</span></a></li>
@@ -199,15 +198,9 @@ if (isset($_POST['lectures'])) {
                     </div>
                 </nav>
                 <div class="container-fluid">
-                    <div class="d-sm-flex justify-content-between align-items-center mb-4">
-                        <h3 class="text-dark mb-0">Manage Courses</h3><a
-                            class="btn btn-primary btn-sm d-none d-sm-inline-block" role="button"
-                            href="add-course.php"><i class="fas fa-download fa-sm text-white-50"></i>&nbsp;Add
-                            Course</a>
-                    </div>
                     <div class="card shadow">
                         <div class="card-header py-3">
-                            <p class="text-primary m-0 fw-bold">Course Info</p>
+                            <p class="text-primary m-0 fw-bold">Courses</p>
                         </div>
                         <div class="card-body">
                             <div class="row">

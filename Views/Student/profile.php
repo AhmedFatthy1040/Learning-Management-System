@@ -79,7 +79,7 @@ $_SESSION["UserName"] = $UserInfo[0]["fname"] . "_" . $UserInfo[0]["lname"];
                                 class="fas fa-home"></i><span>Home</span></a></li>
                     <li class="nav-item"><a class="nav-link" href="courses.php"><i
                                 class="fas fa-home"></i><span>Courses</span></a></li>
-                    <li class="nav-item"><a class="nav-link" href="lecture.php"><i
+                    <li class="nav-item"><a class="nav-link" href="lectures.php"><i
                                 class="fas fa-home"></i><span>Lectures</span></a></li>
                     <li class="nav-item"><a class="nav-link" href="profile.php"><i
                                 class="fas fa-user"></i><span>Profile</span></a></li>
@@ -408,5 +408,4 @@ $_SESSION["UserName"] = $UserInfo[0]["fname"] . "_" . $UserInfo[0]["lname"];
     <script src="../assets/js/bs-init.js"></script>
     <script src="../assets/js/theme.js"></script>
 </body>
-
 </html>
