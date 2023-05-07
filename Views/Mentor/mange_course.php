@@ -60,7 +60,7 @@
                 <ul class="navbar-nav text-light" id="accordionSidebar">
                     <li class="nav-item"><a class="nav-link" href="profile.php"><i class="fas fa-user"></i><span>Profile</span></a></li>
                     <li class="nav-item"><a class="nav-link" href="dashboard.php"><i class="fas fa-table"></i><span>Dashboard</span></a></li>
-                    <li class="nav-item"><a class="nav-link" href="add_course.php"><i class="far fa-user-circle"></i><span>Add Course</span></a></li>
+                    <li class="nav-item"><a class="nav-link" href="add-course.php"><i class="far fa-user-circle"></i><span>Add Course</span></a></li>
                 </ul>
                 <div class="text-center d-none d-md-inline"><button class="btn rounded-circle border-0" id="sidebarToggle" type="button"></button></div>
             </div>
@@ -164,8 +164,8 @@
                 <div class="container-fluid">
                     <div>
                         <ul class="link_list">
-                            <li class="link_item"><a href="edit_lecture.php">Lectures</a></li>
-                            <li class="link_item"><a href="edit_exam.php">Exams</a></li>
+                            <li class="link_item"><a href="add_lecture.php">Lectures</a></li>
+                            <li class="link_item"><a href="add_exam.php">Exams</a></li>
                             <li class="link_item"><a href="view_student_grade.php">View Student Grades</a></li>
                             <li class="link_item"><button>Delete Course</button></li>
                         </ul>

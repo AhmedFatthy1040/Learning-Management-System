@@ -34,8 +34,8 @@
                 <hr class="sidebar-divider my-0">
                 <ul class="navbar-nav text-light" id="accordionSidebar">
                     <li class="nav-item"><a class="nav-link" href="profile.php"><i class="fas fa-user"></i><span>Profile</span></a></li>
-                    <li class="nav-item"><a class="nav-link" href="manage profile.php"><i class="fas fa-table"></i><span>manage course</span></a></li>
-                    <li class="nav-item"><a class="nav-link" href="add course.php"><i class="fas fa-table"></i><span>add course</span></a></li>
+                    <li class="nav-item"><a class="nav-link" href="manage_course.php"><i class="fas fa-table"></i><span>Manage Course</span></a></li>
+                    <li class="nav-item"><a class="nav-link" href="add-course.php"><i class="fas fa-table"></i><span>Add Course</span></a></li>
                 </ul>
                 <div class="text-center d-none d-md-inline"><button class="btn rounded-circle border-0" id="sidebarToggle" type="button"></button></div>
             </div>
