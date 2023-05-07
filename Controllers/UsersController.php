@@ -210,4 +210,33 @@ class UsersController
             return false;
         }
     }
+    public function GetLearningPathCoursesInfo($id)
+    {
+        $this->db = new DBController();
+        if ($this->db->connect()) {
+            $query="select c.id as course_id,c.name as course,
+                    c.description as description, lp.name as learning_path,
+                    m.fname as mentor_fname, m.lname as mentor_lname 
+                    from course c, mentor m, learning_path lp
+                    where m.id = c.mentor_id and lp.id = $id 
+                    and c.learning_path_id = lp.id;";
+            return $this->db->Select($query);
+        } else {
+            echo "Error in Database Connection";
+            return false;
+        }
+}
+    public function GetLectures($id)
+    {
+        $this->db = new DBController();
+        if ($this->db->connect()) {
+            $query="select *
+                    from lecture l, course c
+                    where c.id = $id and l.course_id = c.id";
+            return $this->db->Select($query);
+        } else {
+            echo "Error in Database Connection";
+            return false;
+        }
+}
 }
