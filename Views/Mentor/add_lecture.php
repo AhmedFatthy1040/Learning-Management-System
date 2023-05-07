@@ -1,66 +1,61 @@
-<style>
-    <?php
-        include("../assets/bootstrap/css/ManageUsers.css");
-        require_once(__DIR__ . "/../../Controllers/ValidationController.php");
-        use Controllers\ValidationController;
-        $Check = new ValidationController();
-        $Access = $Check->CheckForAdmin();
-        if (!$Access)
-            header("location:../Auth/logout.php");
-
-    ?>
-</style>
 <?php
-// connect to the database
-$conn = mysqli_connect('localhost', 'root', 'root', 'lms','3307');
+    require_once(__DIR__ . "/../../Controllers/ValidationController.php");
+    require_once(__DIR__ . "/../../Controllers/UsersController.php");
+    require_once(__DIR__ . "/../../Models/Lecture.php");
+    use Controllers\ValidationController;
+    use Controllers\UsersController;
+    $Check = new ValidationController();
+    $Access = $Check->CheckForMentor();
+    if (!$Access)
+        header("location:../Auth/logout.php");
 
-// check connection
-if(!$conn){
-    echo 'Connection error: '. mysqli_connect_error();
-}
+    $LectureController = new UsersController();
+    $ErrorMessage = "";
+    //$Lectures = $LectureController->GetCourseForLectures($_SESSION["CourseID"]);
 
-// write query for all mentors
-$sql = 'SELECT id, fname, lname, gender, email, phone FROM user ORDER BY id desc ';
+    if (isset($_POST["LectureName"]) && isset($_POST["Week"]) && isset($_POST["Course_ID"]) && isset($_POST["Info"]) && isset($_POST["Link"])) { // && isset($_POST["Slide"]) && isset($_POST["Video"])
+        if (!empty($_POST["LectureName"]) && !empty($_POST["Week"]) && !empty($_POST["Course_ID"]) && !empty($_POST["Info"]) && !empty($_POST["Link"])) { // && !empty($_POST["Slide"]) && !empty($_POST["Video"])
+            $Lecture = new Lecture();
+            $Lecture->setName($_POST["LectureName"]);
+            $Lecture->setWeek($_POST["Week"]);
+            $Lecture->setCourse_ID($_POST["Course_ID"]);
+            $Lecture->setInfo($_POST["Info"]);
+            $Lecture->setLink($_POST["Link"]);
+            //$Lecture->setSlide($_POST["uploding_slides"]);
+            //$Lecture->setVideo($_POST["uploding_videos"]);
 
-// get the result set (set of rows)
-$result = mysqli_query($conn, $sql);
 
-// fetch the resulting rows as an array
-$users = mysqli_fetch_all($result, MYSQLI_ASSOC);
-
-// free the $result from memory (good practise)
-mysqli_free_result($result);
-
-//delete data if button is clicked
-if(isset($_POST['delete'])){
-
-    $id_to_delete = mysqli_real_escape_string($conn, $_POST['id_to_delete']);
-
-    $sql = "DELETE FROM user WHERE id = $id_to_delete";
-
-    if(mysqli_query($conn, $sql)){
-        header('Location: Manage-Users.php');
-    } else {
-        echo 'query error: '. mysqli_error($conn);
+            if ($LectureController->AddLectures($Lecture)) {
+                header("location: mange_course.php");
+            }
+            else {
+                $ErrorMessage =  "Error!.. Please Try Again";
+            }
+        }
+        else
+            $ErrorMessage = "Error";
     }
-
-}
-
-// close connection
-mysqli_close($conn);
+    else
+        $ErrorMessage = "Error";
 
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-    <title>Manage Users - LMS</title>
+    <title>Mentor Dashboard - LMS</title>
     <link rel="stylesheet" href="../assets/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i&amp;display=swap">
     <link rel="stylesheet" href="../assets/fonts/fontawesome-all.min.css">
+    <style>
+        .text_1{
+            text-align: center;
+            font-size: larger;
+            color: #4e73df;
+        }
+    </style>
 </head>
 
 <body id="page-top">
@@ -72,10 +67,9 @@ mysqli_close($conn);
                 </a>
                 <hr class="sidebar-divider my-0">
                 <ul class="navbar-nav text-light" id="accordionSidebar">
-                    <li class="nav-item"><a class="nav-link" href="dashboard.php"><i class="fas fa-home"></i><span>Home</span></a></li>
-                    <li class="nav-item"><a class="nav-link" href="manage-courses.php"><i class="fas fa-user"></i><span>Courses</span></a></li>
-                    <li class="nav-item"><a class="nav-link" href="Manage-Users.php"><i class="fas fa-users"></i><span>Users</span></a></li>
-                    <li class="nav-item"><a class="nav-link" href="manage-lp.php"><i class="fas fa-book-open"></i><span>Learning Paths</span></a></li>
+                    <li class="nav-item"><a class="nav-link" href="profile.php"><i class="fas fa-user"></i><span>Profile</span></a></li>
+                    <li class="nav-item"><a class="nav-link" href="manage profile.php"><i class="fas fa-table"></i><span>manage course</span></a></li>
+                    <li class="nav-item"><a class="nav-link" href="add course.php"><i class="fas fa-table"></i><span>add course</span></a></li>
                 </ul>
                 <div class="text-center d-none d-md-inline"><button class="btn rounded-circle border-0" id="sidebarToggle" type="button"></button></div>
             </div>
@@ -129,7 +123,7 @@ mysqli_close($conn);
                                 <div class="nav-item dropdown no-arrow"><a class="dropdown-toggle nav-link" aria-expanded="false" data-bs-toggle="dropdown" href="#"><span class="badge bg-danger badge-counter">7</span><i class="fas fa-envelope fa-fw"></i></a>
                                     <div class="dropdown-menu dropdown-menu-end dropdown-list animated--grow-in">
                                         <h6 class="dropdown-header">alerts center</h6><a class="dropdown-item d-flex align-items-center" href="#">
-                                            <div class="dropdown-list-image me-3"><img class="rounded-circle" src="assets/img/avatars/avatar4.jpeg">
+                                            <div class="dropdown-list-image me-3"><img class="rounded-circle" src="../assets/img/avatars/avatar4.jpeg">
                                                 <div class="bg-success status-indicator"></div>
                                             </div>
                                             <div class="fw-bold">
@@ -137,7 +131,7 @@ mysqli_close($conn);
                                                 <p class="small text-gray-500 mb-0">Emily Fowler - 58m</p>
                                             </div>
                                         </a><a class="dropdown-item d-flex align-items-center" href="#">
-                                            <div class="dropdown-list-image me-3"><img class="rounded-circle" src="assets/img/avatars/avatar2.jpeg">
+                                            <div class="dropdown-list-image me-3"><img class="rounded-circle" src="../assets/img/avatars/avatar2.jpeg">
                                                 <div class="status-indicator"></div>
                                             </div>
                                             <div class="fw-bold">
@@ -145,7 +139,7 @@ mysqli_close($conn);
                                                 <p class="small text-gray-500 mb-0">Jae Chun - 1d</p>
                                             </div>
                                         </a><a class="dropdown-item d-flex align-items-center" href="#">
-                                            <div class="dropdown-list-image me-3"><img class="rounded-circle" src="assets/img/avatars/avatar3.jpeg">
+                                            <div class="dropdown-list-image me-3"><img class="rounded-circle" src="../assets/img/avatars/avatar3.jpeg">
                                                 <div class="bg-warning status-indicator"></div>
                                             </div>
                                             <div class="fw-bold">
@@ -153,7 +147,7 @@ mysqli_close($conn);
                                                 <p class="small text-gray-500 mb-0">Morgan Alvarez - 2d</p>
                                             </div>
                                         </a><a class="dropdown-item d-flex align-items-center" href="#">
-                                            <div class="dropdown-list-image me-3"><img class="rounded-circle" src="assets/img/avatars/avatar5.jpeg">
+                                            <div class="dropdown-list-image me-3"><img class="rounded-circle" src="../assets/img/avatars/avatar5.jpeg">
                                                 <div class="bg-success status-indicator"></div>
                                             </div>
                                             <div class="fw-bold">
@@ -167,7 +161,7 @@ mysqli_close($conn);
                             </li>
                             <div class="d-none d-sm-block topbar-divider"></div>
                             <li class="nav-item dropdown no-arrow">
-                                <div class="nav-item dropdown no-arrow"><a class="dropdown-toggle nav-link" aria-expanded="false" data-bs-toggle="dropdown" href="#"><span class="d-none d-lg-inline me-2 text-gray-600 small"><?php echo $_SESSION["AdminName"] ?></span><img class="border rounded-circle img-profile" src="../assets/img/avatars/gear.png"></a>
+                                <div class="nav-item dropdown no-arrow"><a class="dropdown-toggle nav-link" aria-expanded="false" data-bs-toggle="dropdown" href="#"><span class="d-none d-lg-inline me-2 text-gray-600 small"><?php echo $_SESSION["UserName"]; ?></span><img class="border rounded-circle img-profile" src="../assets/img/avatars/gear.png"></a>
                                     <div class="dropdown-menu shadow dropdown-menu-end animated--grow-in"><a class="dropdown-item" href="#"><i class="fas fa-user fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Profile</a><a class="dropdown-item" href="#"><i class="fas fa-cogs fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Settings</a><a class="dropdown-item" href="#"><i class="fas fa-list fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Activity log</a>
                                         <div class="dropdown-divider"></div><a class="dropdown-item" href="../Auth/logout.php"><i class="fas fa-sign-out-alt fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Logout</a>
                                     </div>
@@ -177,82 +171,46 @@ mysqli_close($conn);
                     </div>
                 </nav>
                 <div class="container-fluid">
-                    <h3 class="text-dark mb-4">Users</h3>
-                    <div class="card shadow">
-                        <div class="card-header py-3">
-                            <p class="text-primary m-0 fw-bold">User Info</p>
-                        </div>
-                        <div class="card-body">
+                    <div class="card shadow-lg o-hidden border-0 my-5">
+                        <div class="card-body p-0">
                             <div class="row">
-                                <div class="col-md-6 text-nowrap">
-                                    <div id="dataTable_length" class="dataTables_length" aria-controls="dataTable"><label class="form-label">Show&nbsp;<select class="d-inline-block form-select form-select-sm">
-                                                <option value="10" selected="">10</option>
-                                                <option value="25">25</option>
-                                                <option value="50">50</option>
-                                                <option value="100">100</option>
-                                            </select>&nbsp;</label></div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="text-md-end dataTables_filter" id="dataTable_filter"><label class="form-label"><input type="search" class="form-control form-control-sm" aria-controls="dataTable" placeholder="Search"></label></div>
-                                </div>
-                            </div>
-                            <div class="table-responsive table mt-2" id="dataTable" role="grid" aria-describedby="dataTable_info">
-                                <table class="table my-0" id="dataTable">
-                                    <thead>
-                                        <tr>
-                                            <th>ID</th>
-                                            <th>FirstName</th>
-                                            <th>LastName</th>
-                                            <th>Email</th>
-                                            <th>phone</th>
-                                            <th>gender</th>
-                                        </tr>
-                                    </thead>
-                                    <?php foreach ($users as $user): ?>
-                                        <tbody>
-                                        <tr>
+                                <div class="col-lg-5 d-none d-lg-flex">
+                                    <div class="flex-grow-1 bg-register-image" style="background-image: url(&quot;../assets/img/dogs/image2.jpeg&quot;);"></div>
+                                    </div>
+                                <div class="col-lg-7">
+                                    <div class="p-5">
+                                        <div class="text-center">
+                                            <h4 class="text-dark mb-4">Add a Lecture</h4>
+                                        </div>
+                                    <!--                        ========================================================================-->
+                                        <form class="user" method="POST">
+                                            <div class="row mb-3">
+                                                <div class="col-sm-6 mb-3 mb-sm-0"><input class="form-control form-control-user" type="text" id="exampleInputLectureName" aria-describedby="Lecture Name" placeholder="Lecture Name" name="LectureName"></div>
+                                                <div class="col-sm-6 mb-3 mb-sm-0"><input class="form-control form-control-user" type="text" id="exampleInputWeek" aria-describedby="Week" placeholder="Week" name="Week"></div>
+                                                <div class="col-sm-6 mb-3 mb-sm-0"><input class="form-control form-control-user" type="text" id="exampleLink" placeholder="Link" name="Link"></div>
+                                                <div class="col-sm-6 mb-3 mb-sm-0"><input class="form-control form-control-user" type="text" id="exampleCourse_ID" placeholder="Course_ID" name="Course_ID"></div>
+                                                <div><input class="form-control form-control-user" type="text" id="exampleInfo" placeholder="Info" name="Info"></div>
+                                                <!-- <div><input class="form-control form-control-user" type="text" id="exampleSlide" placeholder="Slide" name="Slide"> -->
+                                                <div class="uploading_slides">
+                                                    <div>
+                                                        <p class="text_1" for="filename">Add Slides</p>
+                                                    </div>
+                                                    <input type="file" id="myFile" name="filename">
+                                                </div>
+                                                <!-- </div> -->
+                                                <!-- <div><input class="form-control form-control-user" type="text" id="exampleVideo" placeholder="Video" name="Video"> -->
+                                                <div class="uploading_videos">
+                                                    <div>
+                                                        <p class="text_1" for="filename">Add Video</p>
+                                                    </div>
+                                                    <input type="file" id="myFile" name="filename">
+                                                </div>
+                                                <!-- </div> -->
+                                            </div>
+                                            <button class="btn btn-primary d-block btn-user w-100" type="submit">Add</button>
 
-                                            <td><?php echo htmlspecialchars($user['id']); ?></td>
-                                            <td><?php echo htmlspecialchars($user['fname']); ?></td>
-                                            <td><?php echo htmlspecialchars($user['lname']); ?></td>
-                                            <td><?php echo htmlspecialchars($user['email']); ?></td>
-                                            <td><?php echo htmlspecialchars($user['phone']); ?></td>
-                                            <td><?php echo htmlspecialchars($user['gender']); ?></td>
-                                            <td>   <form action="Manage-Users.php" method="POST">
-                                                    <input type="hidden" name="id_to_delete" value="<?php echo $user['id']; ?>">
-                                                    <button class="noselect" type="submit" name="delete" value="Delete"><span class="text">Delete</span><span class="icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M24 20.188l-8.315-8.209 8.2-8.282-3.697-3.697-8.212 8.318-8.31-8.203-3.666 3.666 8.321 8.24-8.206 8.313 3.666 3.666 8.237-8.318 8.285 8.203z"></path></svg></span></button>
-                                                </form>
-                                            </button>
-                                            </td>
-                                        </tr>
-                                        </tbody>
-                                    <?php endforeach; ?>
-                                    <tfoot>
-                                        <tr>
-                                            <td><strong>ID</strong></td>
-                                            <td><strong>FirstName</strong></td>
-                                            <td><strong>LastName</strong></td>
-                                            <td><strong>Email</strong></td>
-                                            <td><strong>Phone</strong></td>
-                                            <td><strong>gender</strong></td>
-                                        </tr>
-                                    </tfoot>
-                                </table>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-6 align-self-center">
-                                    <p id="dataTable_info" class="dataTables_info" role="status" aria-live="polite">Showing 1 to 10 of 27</p>
-                                </div>
-                                <div class="col-md-6">
-                                    <nav class="d-lg-flex justify-content-lg-end dataTables_paginate paging_simple_numbers">
-                                        <ul class="pagination">
-                                            <li class="page-item disabled"><a class="page-link" aria-label="Previous" href="#"><span aria-hidden="true">«</span></a></li>
-                                            <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                                            <li class="page-item"><a class="page-link" href="#">2</a></li>
-                                            <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                            <li class="page-item"><a class="page-link" aria-label="Next" href="#"><span aria-hidden="true">»</span></a></li>
-                                        </ul>
-                                    </nav>
+                                        </form>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -266,9 +224,9 @@ mysqli_close($conn);
             </footer>
         </div><a class="border rounded d-inline scroll-to-top" href="#page-top"><i class="fas fa-angle-up"></i></a>
     </div>
-    <script src="assets/bootstrap/js/bootstrap.min.js"></script>
-    <script src="assets/js/bs-init.js"></script>
-    <script src="assets/js/theme.js"></script>
+    <script src="../assets/bootstrap/js/bootstrap.min.js"></script>
+    <script src="../assets/js/bs-init.js"></script>
+    <script src="../assets/js/theme.js"></script>
 </body>
 
 </html>

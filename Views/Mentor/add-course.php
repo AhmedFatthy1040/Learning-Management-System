@@ -12,8 +12,8 @@
     $CoursesController = new UsersController();
     $ErrorMessage = "";
 
-    if (isset($_POST["CourseName"]) && isset($_POST["Description"]) && isset($_POST["MentorID"]) && isset($_POST["LearningPathID"])) {
-        if (!empty($_POST["CourseName"]) && !empty($_POST["Description"]) && !empty($_POST["MentorID"]) && !empty($_POST["LearningPathID"])) {
+    if (isset($_POST["CourseName"]) && isset($_POST["Description"]) && isset($_POST["LearningPathID"])) {
+        if (!empty($_POST["CourseName"]) && !empty($_POST["Description"]) && !empty($_POST["LearningPathID"])) {
             $Course = new Course();
             $Course->SetName($_POST["CourseName"]);
             $Course->SetRequirements($_POST["Requirements"]);

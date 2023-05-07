@@ -6,9 +6,11 @@ require_once(__DIR__ . "/DBController.php");
 require_once(__DIR__ . "/../Models/Mentor.php");
 require_once(__DIR__ . "/../Models/Course.php");
 require_once(__DIR__ . "/../Models/user.php");
+require_once(__DIR__ . "/../Models/Lecture.php");
 use Mentor;
 use Course;
 use User;
+use Lecture;
 
 class UsersController
 {
@@ -72,6 +74,25 @@ class UsersController
 
         if ($this->db->connect()) {
             $query = "insert into course(name, description, requirements, mentor_id, learning_path_id) values ('$Name' , '$Description', '$Requirements', '$MentorID', '$LearningPathID');";
+            return $this->db->query($query);
+        } else {
+            echo "Error in Database Connection";
+            return false;
+        }
+    }
+
+
+    public function AddLectures(Lecture $Lecture)
+    {
+        $this->db = new DBController();
+        $Name = $Lecture->GetName();
+        $Course_ID = $Lecture->getCourse_ID();
+        $Info = $Lecture->getInfo();
+        $Week = $Lecture->getWeek();
+        $Link = $Lecture->getLink();
+
+        if ($this->db->connect()) {
+            $query = "insert into lecture(name, course_id, info, week, link) values ('$Name', '$Course_ID', '$Info', '$Week', '$Link');";
             return $this->db->query($query);
         } else {
             echo "Error in Database Connection";
@@ -163,5 +184,30 @@ class UsersController
             return false;
         }
 
+    }
+    public function EditUser(User $user,$entity,$value)
+    {
+        $this->db = new DBController();
+        if ($this->db->connect()) {
+            $id = $_SESSION["UserID"];
+            $query = "UPDATE user SET $entity = '$value'
+            WHERE id = $id";
+            return $this->db->query($query);
+        } else {
+            echo "Error in Database Connection";
+            return false;
+        }
+    }
+    public function GetUser()
+    {
+        $this->db = new DBController();
+        if ($this->db->connect()) {
+            $id = $_SESSION["UserID"];
+            $query = "select * from user where id = $id";
+            return $this->db->Select($query);
+        } else {
+            echo "Error in Database Connection";
+            return false;
+        }
     }
 }

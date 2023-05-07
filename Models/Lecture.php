@@ -1,31 +1,71 @@
 <?php
 
 class Lecture {
-    private $title;
-    private $date;
-    private $duration;
-    private $speaker;
+    private $Name;
+    private $Week;
+    private $Course_ID;
+    private $Info;
+    private $Link;
+    private $Slide;
+    private $Video;
 
-    public function __construct($title, $date, $duration, $speaker) {
-        $this->title = $title;
-        $this->date = $date;
-        $this->duration = $duration;
-        $this->speaker = $speaker;
+    public function __construct() {
     }
 
-    public function getTitle() {
-        return $this->title;
+    public function setName($Name){
+        $this->Name = $Name;
     }
 
-    public function getDate() {
-        return $this->date;
+    public function setLink($Link){
+        $this->Link = $Link;
     }
 
-    public function getDuration() {
-        return $this->duration;
+    public function setWeek($Week){
+        $this->Week = $Week;
     }
 
-    public function getSpeaker() {
-        return $this->speaker;
+    public function setCourse_ID($Course_ID){
+        $this->Course_ID = $Course_ID;
     }
+
+    public function setInfo($Info){
+        $this->Info = $Info;
+    }
+
+    public function setSlide($Slide){
+        $this->Slide = $Slide;
+    }
+
+    public function setVideo($Video){
+        $this->Video = $Video;
+    }
+
+    public function getName() {
+        return $this->Name;
+    }
+
+    public function getWeek() {
+        return $this->Week;
+    }
+
+    public function getCourse_ID() {
+        return $this->Course_ID;
+    }
+
+    public function getInfo() {
+        return $this->Info;
+    }
+
+    public function getLink() {
+        return $this->Link;
+    }
+
+    public function getSlide() {
+        return $this->Slide;
+    }
+
+    public function getVideo() {
+        return $this->Video;
+    }
+
 }

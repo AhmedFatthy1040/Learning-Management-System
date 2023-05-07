@@ -1,23 +1,67 @@
 <?php
+use Controllers\UsersController;
 require_once(__DIR__ . "/../../Controllers/ValidationController.php");
 require_once(__DIR__ . "/../../Controllers/UsersController.php");
 require_once(__DIR__ . "/../../Models/Course.php");
 session_start();
-$Controller = new \Controllers\UsersController();
-$progress = $Controller->GetTranscript();
+$Controller = new UsersController();
+$Courses = $Controller->GetAllCourses();
+$UserInfo = $Controller->GetUser();
+$user = new User();
+if (isset($_POST["Fname"]) && !empty($_POST["Fname"])) {
+    $user->setFirstName($_POST["Fname"]);
+    if ($Controller->EditUser($user,'fname',$user->getFirstName())) {
+        header("location: ../Student/profile.php");
+    } else {
+        $ErrorMessage = $_SESSION["ErrorMessage"];
+    }
+}
+if (isset($_POST["Lname"]) && !empty($_POST["Lname"])) {
+    $user->setLastName($_POST["Lname"]);
+    if ($Controller->EditUser($user,'lname',$user->getLastName())) {
+        header("location: ../Student/profile.php");
+    } else {
+        $ErrorMessage = $_SESSION["ErrorMessage"];
+    }
+}
+if (isset($_POST["Email"]) && !empty($_POST["Email"])) {
+    $user->setEmail($_POST["Email"]);
+    if ($Controller->EditUser($user,'email',$user->getEmail())) {
+        header("location: ../Student/profile.php");
+    } else {
+        $ErrorMessage = $_SESSION["ErrorMessage"];
+    }
+}
+if (isset($_POST["Country"]) && !empty($_POST["Country"])) {
+    $user->setNationality($_POST["Country"]);
+    if ($Controller->EditUser($user,'nationality',$user->Nationality())) {
+        header("location: ../Student/profile.php");
+    } else {
+        $ErrorMessage = $_SESSION["ErrorMessage"];
+    }
+}
+if (isset($_POST["PhoneNumber"]) && !empty($_POST["PhoneNumber"])) {
+    $user->setPhoneNumber($_POST["PhoneNumber"]);
+    if ($Controller->EditUser($user,'phone',$user->getPhoneNumber())) {
+        header("location: ../Student/profile.php");
+    } else {
+        $ErrorMessage = $_SESSION["ErrorMessage"];
+    }
+}
+$_SESSION["UserName"] = $UserInfo[0]["fname"] . "_" . $UserInfo[0]["lname"];
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-    <title>Blank Page - LMS</title>
+    <title>Profile</title>
     <link rel="stylesheet" href="../assets/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet"
         href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i&amp;display=swap">
     <link rel="stylesheet" href="../assets/fonts/fontawesome-all.min.css">
+</head>
 </head>
 
 <body id="page-top">
@@ -30,11 +74,16 @@ $progress = $Controller->GetTranscript();
                 </a>
                 <hr class="sidebar-divider my-0">
                 <ul class="navbar-nav text-light" id="accordionSidebar">
-                    <li class="nav-item"><a class="nav-link" href="dashboard.php"><i class="fas fa-home"></i><span>Home</span></a></li>
-                    <li class="nav-item"><a class="nav-link" href="profile.php"><i class="fas fa-user"></i><span>Profile</span></a></li>
-                    <li class="nav-item"><a class="nav-link" href="mentors.php"><i class="fas fa-users"></i><span>Mentors</span></a></li>
-                    <li class="nav-item"><a class="nav-link" href="learning paths.php" ><i class="fas fa-book-open"></i><span>Learning Paths</span></a></li>
-                    <li class="nav-item"><a class="nav-link" href="transcript.php"><i class="fas fa-table"></i><span>transcript</span></a></li>
+                    <li class="nav-item"><a class="nav-link" href="dashboard.php"><i
+                                class="fas fa-home"></i><span>Home</span></a></li>
+                    <li class="nav-item"><a class="nav-link" href="profile.php"><i
+                                class="fas fa-user"></i><span>Profile</span></a></li>
+                    <li class="nav-item"><a class="nav-link" href="mentors.php"><i
+                                class="fas fa-users"></i><span>Mentors</span></a></li>
+                    <li class="nav-item"><a class="nav-link" href="learning paths.php"><i
+                                class="fas fa-book-open"></i><span>Learning Paths</span></a></li>
+                    <li class="nav-item"><a class="nav-link" href="transcript.php"><i
+                                class="fas fa-table"></i><span>transcript</span></a></li>
                 </ul>
                 <div class="text-center d-none d-md-inline"><button class="btn rounded-circle border-0"
                         id="sidebarToggle" type="button"></button></div>
@@ -183,86 +232,166 @@ $progress = $Controller->GetTranscript();
                         </ul>
                     </div>
                 </nav>
-            </div>
-            <div class="container-fluid">
-                <div class="card shadow">
-                    <div class="card-header py-3">
-                        <p class="text-primary m-0 fw-bold">progress</p>
-                    </div>
-                    <div class="card-body">
-                        <div class="row">
-                            <div class="col-md-6 text-nowrap">
-                                <div id="dataTable_length" class="dataTables_length" aria-controls="dataTable"><label
-                                        class="form-label">Show&nbsp;<select
-                                            class="d-inline-block form-select form-select-sm">
-                                            <option value="10" selected="">10</option>
-                                            <option value="25">25</option>
-                                            <option value="50">50</option>
-                                            <option value="100">100</option>
-                                        </select>&nbsp;</label></div>
+                <div class="container-fluid">
+
+                    <div class="row mb-3">
+                        <div class="col-lg-4">
+                            <div class="card mb-3">
+                                <div class="card-body text-center shadow"><img class="rounded-circle mb-3 mt-4"
+                                        src="../assets/img/dogs/image2.jpeg" width="160" height="160">
+                                    <div class="mb-3"><button class="btn btn-primary btn-sm" type="button">Change
+                                            Photo</button></div>
+                                </div>
                             </div>
-                            <div class="col-md-6">
-                                <div class="text-md-end dataTables_filter" id="dataTable_filter"><label
-                                        class="form-label"><input type="search" class="form-control form-control-sm"
-                                            aria-controls="dataTable" placeholder="Search"></label></div>
-                            </div>
-                        </div>
-                        <div class="table-responsive table mt-2" id="dataTable" role="grid"
-                            aria-describedby="dataTable_info">
-                            <table class="table my-0" id="dataTable">
-                                <thead>
-                                    <tr>
-                                        <th>course name</th>
-                                        <th>grade</th>
-                                        <th>gba</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
+                            <div class="card shadow mb-4">
+                                <div class="card-header py-3">
+                                    <h6 class="text-primary fw-bold m-0"> Progress </h6>
+                                </div>
+                                <div class="card-body">
                                     <?php
-                                    foreach ($progress as $Course) {
+                                    foreach ($Courses as $Course) {
+                                        if ($Course['grade'] <= 20)
+                                            $progress = "bg-danger";
+                                        elseif ($Course['grade'] > 20 && $Course['grade'] <= 40)
+                                            $progress = "bg-warning";
+                                        elseif ($Course['grade'] > 40 && $Course['grade'] <= 60)
+                                            $progress = "bg-primary";
+                                        elseif ($Course['grade'] > 60 && $Course['grade'] <= 80)
+                                            $progress = "bg-info";
+                                        else
+                                            $progress = "bg-success";
                                         ?>
-                                        <tr>
-                                            <td>
-                                                <?php echo $Course['course'] ?>
-                                            </td>
-                                            <td>
+                                        <h4 class="small fw-bold">
+                                            <?php echo $Course['course'] ?><span class="float-end">
                                                 <?php echo $Course['grade'] ?>
-                                            </td>
-                                            <td>
-                                                <?php echo $Course['gpa'] ?>
-                                            </td>
-                                        </tr>
+                                            </span>
+                                        </h4>
+                                        <div class="progress progress-sm mb-3">
+                                            <div class="progress-bar <?php echo $progress ?>" aria-valuenow="200"
+                                                aria-valuemin="0" aria-valuemax="100"
+                                                style="width: <?php echo $Course['grade'] . "%" ?>;"><span
+                                                    class="visually-hidden">20%</span></div>
+                                        </div>
                                         <?php
                                     }
 
                                     ?>
-
-                                </tbody>
-                            </table>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-6 align-self-center">
-                                <p id="dataTable_info" class="dataTables_info" role="status" aria-live="polite">Showing
-                                    1 to 10 of 27</p>
+                                </div>
                             </div>
-                            <div class="col-md-6">
-                                <nav class="d-lg-flex justify-content-lg-end dataTables_paginate paging_simple_numbers">
-                                    <ul class="pagination">
-                                        <li class="page-item disabled"><a class="page-link" aria-label="Previous"
-                                                href="#"><span aria-hidden="true">«</span></a></li>
-                                        <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                                        <li class="page-item"><a class="page-link" href="#">2</a></li>
-                                        <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                        <li class="page-item"><a class="page-link" aria-label="Next" href="#"><span
-                                                    aria-hidden="true">»</span></a></li>
-                                    </ul>
-                                </nav>
+                        </div>
+                        <div class="col-lg-8">
+                            <div class="row mb-3 d-none">
+                                <div class="col">
+                                    <div class="card text-white bg-primary shadow">
+                                        <div class="card-body">
+                                            <div class="row mb-2">
+                                                <div class="col">
+                                                    <p class="m-0">Peformance</p>
+                                                    <p class="m-0"><strong>65.2%</strong></p>
+                                                </div>
+                                                <div class="col-auto"><i class="fas fa-rocket fa-2x"></i></div>
+                                            </div>
+                                            <p class="text-white-50 small m-0"><i class="fas fa-arrow-up"></i>&nbsp;5%
+                                                since last month</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <div class="card text-white bg-success shadow">
+                                        <div class="card-body">
+                                            <div class="row mb-2">
+                                                <div class="col">
+                                                    <p class="m-0">Peformance</p>
+                                                    <p class="m-0"><strong>65.2%</strong></p>
+                                                </div>
+                                                <div class="col-auto"><i class="fas fa-rocket fa-2x"></i></div>
+                                            </div>
+                                            <p class="text-white-50 small m-0"><i class="fas fa-arrow-up"></i>&nbsp;5%
+                                                since last month</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <div class="card shadow mb-3">
+                                        <div class="card-header py-3">
+                                            <p class="text-primary m-0 fw-bold">User Settings</p>
+                                        </div>
+                                        <div class="card-body">
+                                            <form class="user" action="profile.php" method="POST">
+                                                <div class="row">
+                                                    <div class="col">
+                                                        <div class="mb-3"><label class="form-label"
+                                                                for="username"><strong>Username</strong></label><input
+                                                                class="form-control" type="text" id="username"
+                                                                placeholder="<?php echo $UserInfo[0]["fname"] . "_" . $UserInfo[0]["lname"] ?>"
+                                                                name="UserName"></div>
+                                                    </div>
+                                                    <div class="col">
+                                                        <div class="mb-3"><label class="form-label"
+                                                                for="email"><strong>Email Address</strong></label><input
+                                                                class="form-control" type="email" id="email"
+                                                                placeholder="<?php echo $UserInfo[0]['email'] ?>"
+                                                                name="Email"></div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col">
+                                                        <div class="mb-3"><label class="form-label"
+                                                                for="first_name"><strong>First
+                                                                    Name</strong></label><input class="form-control"
+                                                                type="text" id="first_name"
+                                                                placeholder="<?php echo $UserInfo[0]['fname'] ?>"
+                                                                name="Fname"></div>
+                                                    </div>
+                                                    <div class="col">
+                                                        <div class="mb-3"><label class="form-label"
+                                                                for="last_name"><strong>Last Name</strong></label><input
+                                                                class="form-control" type="text" id="last_name"
+                                                                placeholder="<?php echo $UserInfo[0]['lname'] ?>"
+                                                                name="Lname"></div>
+                                                    </div>
+                                                </div>
+                                                <div class="mb-3"><button class="btn btn-primary btn-sm"
+                                                        type="submit">Save Settings</button></div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                    <div class="card shadow">
+                                        <div class="card-header py-3">
+                                            <p class="text-primary m-0 fw-bold">Contact Settings</p>
+                                        </div>
+                                        <div class="card-body">
+                                            <form class="contact " action="profile.php" method="POST">
+                                                <div class="row">
+                                                    <div class="col">
+                                                        <div class="mb-3"><label class="form-label"
+                                                                for="Country"><strong>Country</strong></label><input
+                                                                class="form-control" type="text" id="Country"
+                                                                placeholder="<?php echo $UserInfo[0]['nationality'] ?>"
+                                                                name="Country"></div>
+                                                    </div>
+                                                    <div class="col">
+                                                        <div class="mb-3"><label class="form-label"
+                                                                for="PhoneNumber"><strong>Phone
+                                                                    Number</strong></label><input class="form-control"
+                                                                type="text" id="PhonrNumber"
+                                                                placeholder="<?php echo $UserInfo[0]['phone'] ?>"
+                                                                name="PhoneNumber"></div>
+                                                    </div>
+                                                </div>
+                                                <div class="mb-3"><button class="btn btn-primary btn-sm"
+                                                        type="submit">Save&nbsp;Settings</button></div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-
             <footer class="bg-white sticky-footer">
                 <div class="container my-auto">
                     <div class="text-center my-auto copyright"><span>Copyright © LMS 2023</span></div>
