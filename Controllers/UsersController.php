@@ -7,12 +7,20 @@ require_once(__DIR__ . "/../Models/Mentor.php");
 require_once(__DIR__ . "/../Models/Course.php");
 require_once(__DIR__ . "/../Models/user.php");
 require_once(__DIR__ . "/../Models/Lecture.php");
+<<<<<<< HEAD
 require_once(__DIR__ . "/../Models/Question.php");
+=======
+require_once(__DIR__ . "/../Models/Exam.php");
+>>>>>>> 3b58e99fc794e11ed31241458332bfe7176fb8a0
 use Mentor;
 use Course;
 use User;
 use Lecture;
+<<<<<<< HEAD
 use Question;
+=======
+use Exam;
+>>>>>>> 3b58e99fc794e11ed31241458332bfe7176fb8a0
 
 class UsersController
 {
@@ -76,6 +84,23 @@ class UsersController
 
         if ($this->db->connect()) {
             $query = "insert into course(name, description, requirements, mentor_id, learning_path_id) values ('$Name' , '$Description', '$Requirements', '$MentorID', '$LearningPathID');";
+            return $this->db->query($query);
+        } else {
+            echo "Error in Database Connection";
+            return false;
+        }
+    }
+
+
+
+    public function AddExam(Exam $Exam)
+    {
+        $this->db = new DBController();
+        $Duration = $Exam->getExamDuration();
+        $Course_ID = $Exam->getCourseID();
+
+        if ($this->db->connect()) {
+            $query = "insert into exam(duration, course_id) values ('$Duration' , '$Course_ID');";
             return $this->db->query($query);
         } else {
             echo "Error in Database Connection";
