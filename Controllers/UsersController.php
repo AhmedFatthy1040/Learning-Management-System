@@ -225,6 +225,19 @@ class UsersController
             return false;
         }
     }
+    public function EditMentor(User $mentor,$entity,$value)
+    {
+        $this->db = new DBController();
+        if ($this->db->connect()) {
+            $id = $_SESSION["MentorID"];
+            $query = "UPDATE mentor SET $entity = '$value'
+            WHERE id = $id";
+            return $this->db->query($query);
+        } else {
+            echo "Error in Database Connection";
+            return false;
+        }
+    }
     public function GetUser()
     {
         $this->db = new DBController();
