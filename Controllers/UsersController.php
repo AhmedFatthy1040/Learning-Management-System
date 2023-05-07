@@ -7,20 +7,20 @@ require_once(__DIR__ . "/../Models/Mentor.php");
 require_once(__DIR__ . "/../Models/Course.php");
 require_once(__DIR__ . "/../Models/user.php");
 require_once(__DIR__ . "/../Models/Lecture.php");
-<<<<<<< HEAD
+
 require_once(__DIR__ . "/../Models/Question.php");
-=======
+
 require_once(__DIR__ . "/../Models/Exam.php");
->>>>>>> 3b58e99fc794e11ed31241458332bfe7176fb8a0
+
 use Mentor;
 use Course;
 use User;
 use Lecture;
-<<<<<<< HEAD
+
 use Question;
-=======
+
 use Exam;
->>>>>>> 3b58e99fc794e11ed31241458332bfe7176fb8a0
+
 
 class UsersController
 {
