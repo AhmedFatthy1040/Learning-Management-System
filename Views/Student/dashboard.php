@@ -27,7 +27,7 @@
                 <hr class="sidebar-divider my-0">
                 <ul class="navbar-nav text-light" id="accordionSidebar">
                     <li class="nav-item"><a class="nav-link" href="dashboard.php"><i class="fas fa-home"></i><span>Home</span></a></li>
-                    <li class="nav-item"><a class="nav-link" href="profile.html"><i class="fas fa-user"></i><span>Profile</span></a></li>
+                    <li class="nav-item"><a class="nav-link" href="profile1.php"><i class="fas fa-user"></i><span>Profile</span></a></li>
                     <li class="nav-item"><a class="nav-link" href="table.html"><i class="fas fa-users"></i><span>Mentors</span></a></li>
                     <li class="nav-item"><a class="nav-link" href="learning paths.php"><i class="fas fa-book-open"></i><span>Learning Paths</span></a></li>
                     <li class="nav-item"><a class="nav-link" href="transcript.php"><i class="fas fa-table"></i><span>transcript</span></a></li>
@@ -140,14 +140,14 @@
                             <h3 class="title">HOME PAGE </h3>
                             <div class="sec-1">
                                 <div class="photo">
-                                <i class="fa-solid fa-user"></i>
+                                <img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="Admin" class="rounded-circle" width="900">
                                 </div>
                                 <br>
                                 <div class="info1">
-                                        name:          <br>
-                                        ID:              <br>           
-                                        lerning path:     <br>  
-                                        level:
+                                        name: ahmed        <br>
+                                        ID:   1235           <br>           
+                                        lerning path:   css  <br>  
+                                        level:    2
 
                                 </div>
                         

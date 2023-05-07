@@ -8,7 +8,7 @@
     text-decoration: none;
 }
 
-a .card {
+.card {
     background-color: #ffffff;
     width: 21em;
     box-shadow: 0 5px 20px rgba(1 1 1 /15%);
@@ -17,6 +17,7 @@ a .card {
     margin: 18px;
     transition: 0.7s ease;
     height: 400px;
+    text-decoration: none;
 }
 
 .card:hover {

@@ -1,7 +1,7 @@
 <style>
 <?php
     include("../assets/bootstrap/css/Admin.css");
-    include("css/LerningPath.css")
+    include("css/LerningPath.css");
 ?>
 </style>
 <!DOCTYPE html>
