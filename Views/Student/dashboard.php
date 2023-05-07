@@ -1,8 +1,8 @@
 <style>
 <?php
     include("../assets/bootstrap/css/Admin.css");
-     include("css/home.css")
-
+     include("css/home.css");
+     session_start();
 ?>
 </style>
 <!DOCTYPE html>
@@ -27,8 +27,8 @@
                 <hr class="sidebar-divider my-0">
                 <ul class="navbar-nav text-light" id="accordionSidebar">
                     <li class="nav-item"><a class="nav-link" href="dashboard.php"><i class="fas fa-home"></i><span>Home</span></a></li>
-                    <li class="nav-item"><a class="nav-link" href="profile1.php"><i class="fas fa-user"></i><span>Profile</span></a></li>
-                    <li class="nav-item"><a class="nav-link" href="table.html"><i class="fas fa-users"></i><span>Mentors</span></a></li>
+                    <li class="nav-item"><a class="nav-link" href="profile.php"><i class="fas fa-user"></i><span>Profile</span></a></li>
+                    <li class="nav-item"><a class="nav-link" href="mentors.php"><i class="fas fa-users"></i><span>Mentors</span></a></li>
                     <li class="nav-item"><a class="nav-link" href="learning paths.php"><i class="fas fa-book-open"></i><span>Learning Paths</span></a></li>
                     <li class="nav-item"><a class="nav-link" href="transcript.php"><i class="fas fa-table"></i><span>transcript</span></a></li>
                 </ul>

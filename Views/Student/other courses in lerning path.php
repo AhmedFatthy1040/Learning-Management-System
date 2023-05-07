@@ -1,8 +1,8 @@
 <style>
 <?php
     include("../assets/bootstrap/css/Admin.css");
-    include("css/LerningPath.css");
-    session_start();
+     include("css/other courses.css");
+     session_start();
 ?>
 </style>
 <!DOCTYPE html>
@@ -10,8 +10,8 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-    <title>Blank Page - LMS</title>
-    <link rel="stylesheet" href="css/LerningPath.css">
+    <title>home page - LMS</title>
+    <!-- <link rel="stylesheet" href="css/home.css"> -->
     <link rel="stylesheet" href="../assets/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i&amp;display=swap">
     <link rel="stylesheet" href="../assets/fonts/fontawesome-all.min.css">
@@ -27,7 +27,7 @@
                 <hr class="sidebar-divider my-0">
                 <ul class="navbar-nav text-light" id="accordionSidebar">
                     <li class="nav-item"><a class="nav-link" href="dashboard.php"><i class="fas fa-home"></i><span>Home</span></a></li>
-                    <li class="nav-item"><a class="nav-link" href="profile.html"><i class="fas fa-user"></i><span>Profile</span></a></li>
+                    <li class="nav-item"><a class="nav-link" href="profile.php"><i class="fas fa-user"></i><span>Profile</span></a></li>
                     <li class="nav-item"><a class="nav-link" href="mentors.php"><i class="fas fa-users"></i><span>Mentors</span></a></li>
                     <li class="nav-item"><a class="nav-link" href="learning paths.php"><i class="fas fa-book-open"></i><span>Learning Paths</span></a></li>
                     <li class="nav-item"><a class="nav-link" href="transcript.php"><i class="fas fa-table"></i><span>transcript</span></a></li>
@@ -135,64 +135,24 @@
                         </ul>
                     </div>
                 </nav>
-                <div class="section2" id="service">
-        <h3 class="title">Learning Pathes</h3>
-    <div class="contanre">
-            <a class="card" href="other courses in lerning path.php">
-                    <div class="icon">
-                    <i class="fa-brands fa-android"></i>
-                </div>
+        <div class="section2" id="">
+                    <div class="hed">
+                            <h3 class="title">All courses of learning path : </h3>
+                            </div>
+                        </div>
+                <div class="contanre">
+                    <a class="card" href="">
+                        <div class="icon">
+                            <img src="imges/js.png" alt="">
+                        </div>
                 <div class="info">
-                    <h3>Android </h3>
-                    <p>Launch Your Android App Development Career. Master the knowledge and skills necessary to develop maintainable mobile computing apps</p>
-                    
-                </div>
-            </a>
-            <a class="card" href="">
-                <div class="icon">
-                    <i class="fa-solid fa-code"></i>
-                </div>
-                <div class="info">
-                    <h3>Front-end</h3>
-                    <p>You will learn how front-end developers create websites and applications that work well and are easy to maintain</p>
-                </div>
-            </a>
-            <a class="card" href="">
-                
-                <div class="icon">
-                <i class="fa-solid fa-database"></i>
-                </div>
-                <div class="info">
-                    <h3>Back-end</h3>
-                    <p>You’ll learn the latest tools and technologies used by professional back-end developers</p>
+                    <h3>Java Script <br> programming language <br> lec 1  </h3>
                 </div>
             </a>    
-            <a class="card" href="">
-                
-                <div class="icon">
-                <i class="fa-solid fa-database"></i>
                 </div>
-                <div class="info">
-                    <h3>Back-end</h3>
-                    <p>You’ll learn the latest tools and technologies used by professional back-end developers</p>
-                </div>
-            </a>    
-            </a>    
-            <a class="card" href="">
-                
-                <div class="icon">
-                <i class="fa-solid fa-database"></i>
-                </div>
-                <div class="info">
-                    <h3>Back-end</h3>
-                    <p>You’ll learn the latest tools and technologies used by professional back-end developers</p>
-                </div>
-            </a>    
-    </div>
             
-        
+        </div>
     </div>
-            </div>
             <footer class="bg-white sticky-footer">
                 <div class="container my-auto">
                     <div class="text-center my-auto copyright"><span>Copyright © LMS 2023</span></div>
