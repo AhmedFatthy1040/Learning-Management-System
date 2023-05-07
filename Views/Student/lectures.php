@@ -1,5 +1,6 @@
 <?php
 use Controllers\UsersController;
+
 require_once(__DIR__ . "/../../Controllers/ValidationController.php");
 require_once(__DIR__ . "/../../Controllers/UsersController.php");
 require_once(__DIR__ . "/../../Models/Course.php");
@@ -233,15 +234,15 @@ $lectures = $Controller->GetLectures($_SESSION['CourseId']);
                                         ?>
                                         <tr>
                                             <td>
-                                                <?php echo $lecture['name']?>
+                                                <?php echo $lecture['name'] ?>
                                             </td>
                                             <td>
-                                                <?php echo "week ".$lecture['week'] ?>
+                                                <?php echo "week " . $lecture['week'] ?>
                                             </td>
                                             <td>
                                                 <?php echo $lecture['info'] ?>
                                             </td>
-                                        <?php
+                                            <?php
                                     }
                                     ?>
                                 </tbody>

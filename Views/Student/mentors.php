@@ -1,5 +1,6 @@
 <?php
 use Controllers\UsersController;
+
 require_once(__DIR__ . "/../../Controllers/ValidationController.php");
 require_once(__DIR__ . "/../../Controllers/UsersController.php");
 require_once(__DIR__ . "/../../Models/Course.php");
@@ -7,7 +8,7 @@ session_start();
 echo $_SESSION["UserID"];
 $Controller = new UsersController();
 $mentors = $Controller->GetMentorsForStudent();
-$age = date("Y")-$mentors[0]['YEAR(birthdate)'];
+$age = date("Y") - $mentors[0]['YEAR(birthdate)'];
 ?>
 
 <!DOCTYPE html>
@@ -35,6 +36,10 @@ $age = date("Y")-$mentors[0]['YEAR(birthdate)'];
                 <ul class="navbar-nav text-light" id="accordionSidebar">
                     <li class="nav-item"><a class="nav-link" href="dashboard.php"><i
                                 class="fas fa-home"></i><span>Home</span></a></li>
+                    <li class="nav-item"><a class="nav-link" href="courses.php"><i
+                                class="fas fa-home"></i><span>Courses</span></a></li>
+                    <li class="nav-item"><a class="nav-link" href="lecture.php"><i
+                                class="fas fa-home"></i><span>Lectures</span></a></li>
                     <li class="nav-item"><a class="nav-link" href="profile.php"><i
                                 class="fas fa-user"></i><span>Profile</span></a></li>
                     <li class="nav-item"><a class="nav-link" href="mentors.php"><i
@@ -234,7 +239,7 @@ $age = date("Y")-$mentors[0]['YEAR(birthdate)'];
                                         ?>
                                         <tr>
                                             <td>
-                                                <?php echo $mentor['fname']." ".$mentor['lname'] ?>
+                                                <?php echo $mentor['fname'] . " " . $mentor['lname'] ?>
                                             </td>
                                             <td>
                                                 <?php echo $mentor['email'] ?>

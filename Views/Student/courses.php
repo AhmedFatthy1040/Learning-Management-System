@@ -3,6 +3,7 @@ require_once(__DIR__ . "/../../Controllers/ValidationController.php");
 require_once(__DIR__ . "/../../Controllers/UsersController.php");
 require_once(__DIR__ . "/../../Models/Course.php");
 use Controllers\UsersController;
+
 $Controller = new UsersController();
 session_start();
 $Courses = $Controller->GetLearningPathCoursesInfo(1);
@@ -218,7 +219,8 @@ if (isset($_POST['lectures'])) {
                                                 <option value="25">25</option>
                                                 <option value="50">50</option>
                                                 <option value="100">100</option>
-                                            </select>&nbsp;</label></div>
+                                            </select>&nbsp;</label>
+                                    </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="text-md-end dataTables_filter" id="dataTable_filter"><label

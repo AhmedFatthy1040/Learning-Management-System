@@ -1,5 +1,6 @@
 <?php
 use Controllers\UsersController;
+
 require_once(__DIR__ . "/../../Controllers/ValidationController.php");
 require_once(__DIR__ . "/../../Controllers/UsersController.php");
 require_once(__DIR__ . "/../../Models/Course.php");
@@ -10,7 +11,7 @@ $UserInfo = $Controller->GetUser();
 $user = new User();
 if (isset($_POST["Fname"]) && !empty($_POST["Fname"])) {
     $user->setFirstName($_POST["Fname"]);
-    if ($Controller->EditUser($user,'fname',$user->getFirstName())) {
+    if ($Controller->EditUser($user, 'fname', $user->getFirstName())) {
         header("location: ../Student/profile.php");
     } else {
         $ErrorMessage = $_SESSION["ErrorMessage"];
@@ -18,7 +19,7 @@ if (isset($_POST["Fname"]) && !empty($_POST["Fname"])) {
 }
 if (isset($_POST["Lname"]) && !empty($_POST["Lname"])) {
     $user->setLastName($_POST["Lname"]);
-    if ($Controller->EditUser($user,'lname',$user->getLastName())) {
+    if ($Controller->EditUser($user, 'lname', $user->getLastName())) {
         header("location: ../Student/profile.php");
     } else {
         $ErrorMessage = $_SESSION["ErrorMessage"];
@@ -26,7 +27,7 @@ if (isset($_POST["Lname"]) && !empty($_POST["Lname"])) {
 }
 if (isset($_POST["Email"]) && !empty($_POST["Email"])) {
     $user->setEmail($_POST["Email"]);
-    if ($Controller->EditUser($user,'email',$user->getEmail())) {
+    if ($Controller->EditUser($user, 'email', $user->getEmail())) {
         header("location: ../Student/profile.php");
     } else {
         $ErrorMessage = $_SESSION["ErrorMessage"];
@@ -34,7 +35,7 @@ if (isset($_POST["Email"]) && !empty($_POST["Email"])) {
 }
 if (isset($_POST["Country"]) && !empty($_POST["Country"])) {
     $user->setNationality($_POST["Country"]);
-    if ($Controller->EditUser($user,'nationality',$user->Nationality())) {
+    if ($Controller->EditUser($user, 'nationality', $user->Nationality())) {
         header("location: ../Student/profile.php");
     } else {
         $ErrorMessage = $_SESSION["ErrorMessage"];
@@ -42,7 +43,7 @@ if (isset($_POST["Country"]) && !empty($_POST["Country"])) {
 }
 if (isset($_POST["PhoneNumber"]) && !empty($_POST["PhoneNumber"])) {
     $user->setPhoneNumber($_POST["PhoneNumber"]);
-    if ($Controller->EditUser($user,'phone',$user->getPhoneNumber())) {
+    if ($Controller->EditUser($user, 'phone', $user->getPhoneNumber())) {
         header("location: ../Student/profile.php");
     } else {
         $ErrorMessage = $_SESSION["ErrorMessage"];
@@ -76,6 +77,10 @@ $_SESSION["UserName"] = $UserInfo[0]["fname"] . "_" . $UserInfo[0]["lname"];
                 <ul class="navbar-nav text-light" id="accordionSidebar">
                     <li class="nav-item"><a class="nav-link" href="dashboard.php"><i
                                 class="fas fa-home"></i><span>Home</span></a></li>
+                    <li class="nav-item"><a class="nav-link" href="courses.php"><i
+                                class="fas fa-home"></i><span>Courses</span></a></li>
+                    <li class="nav-item"><a class="nav-link" href="lecture.php"><i
+                                class="fas fa-home"></i><span>Lectures</span></a></li>
                     <li class="nav-item"><a class="nav-link" href="profile.php"><i
                                 class="fas fa-user"></i><span>Profile</span></a></li>
                     <li class="nav-item"><a class="nav-link" href="mentors.php"><i
