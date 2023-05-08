@@ -6,6 +6,7 @@ session_start();
 $Controller = new \Controllers\UsersController();
 $progress = $Controller->GetTranscript();
 $total = $Controller->GetTotalGrade($_SESSION["UserID"]);
+$_SESSION["UserTotalGrades"] = $total[0]['total_gpa'];
 ?>
 
 <!DOCTYPE html>
@@ -196,10 +197,10 @@ $total = $Controller->GetTotalGrade($_SESSION["UserID"]);
                 <div class="container-fluid">
                     <div class="card shadow">
                     <div class="card-header py-3">
-                        <p class="text-primary m-0 fw-bold"><?php echo "NAME: ".$_SESSION["UserName"] ?></p>
-                        <p class="text-primary m-0 fw-bold"><?php echo "Email  : ".$_SESSION["UserEmail"] ?></p>
-                        <p class="text-primary m-0 fw-bold"><?php echo "ID  : ".$_SESSION["UserID"] ?></p>
-                        <p class="text-primary m-0 fw-bold"><?php echo "Progress  : ".$total[0]['total_gpa']."%" ?></p>
+                        <p class="text-primary m-0 fw-bold"><b><?php echo "Name: "?></b><?php echo $_SESSION["UserFirstName"]." ".$_SESSION["UserLastName"] ?></p>
+                        <p class="text-primary m-0 fw-bold"><b><?php echo "Email: "?></b><?php echo $_SESSION["UserEmail"] ?></p>
+                        <p class="text-primary m-0 fw-bold"><b><?php echo "Id: "?></b><?php echo $_SESSION["UserID"] ?></p>
+                        <p class="text-primary m-0 fw-bold"><b><?php echo "Progress: "?></b><?php echo $_SESSION["UserTotalGrades"]."%" ?></p>
                     </div>
                     <div class="card-body">
                         <div class="row">
