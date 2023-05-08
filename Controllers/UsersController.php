@@ -212,7 +212,7 @@ class UsersController
         }
 
     }
-    public function EditUser(User $user,$entity,$value)
+    public function EditUser(User $user, $entity, $value)
     {
         $this->db = new DBController();
         if ($this->db->connect()) {
@@ -225,7 +225,7 @@ class UsersController
             return false;
         }
     }
-    public function EditMentor(User $mentor,$entity,$value)
+    public function EditMentor(User $mentor, $entity, $value)
     {
         $this->db = new DBController();
         if ($this->db->connect()) {
@@ -254,7 +254,7 @@ class UsersController
     {
         $this->db = new DBController();
         if ($this->db->connect()) {
-            $query="select c.id as course_id,c.name as course,
+            $query = "select c.id as course_id,c.name as course,
                     c.description as description, lp.name as learning_path,
                     m.fname as mentor_fname, m.lname as mentor_lname 
                     from course c, mentor m, learning_path lp
@@ -265,12 +265,12 @@ class UsersController
             echo "Error in Database Connection";
             return false;
         }
-}
+    }
     public function GetLectures($id)
     {
         $this->db = new DBController();
         if ($this->db->connect()) {
-            $query="select *
+            $query = "select *
                     from lecture l, course c
                     where c.id = $id and l.course_id = c.id";
             return $this->db->Select($query);
@@ -342,6 +342,17 @@ class UsersController
         if ($this->db->connect()) {
             $query = "insert into question_ans(answer, question_id) values ('$Answer4', '1');";
             return $this->db->query($query);
+        } else {
+            echo "Error in Database Connection";
+            return false;
+        }
+    }
+    public function GetTotalGrade($id)
+    {
+        $this->db = new DBController();
+        if ($this->db->connect()) {
+            $query = "select avg(grade) as total_gpa from course_user where user_id = $id and finished = true";
+            return $this->db->Select($query);
         } else {
             echo "Error in Database Connection";
             return false;

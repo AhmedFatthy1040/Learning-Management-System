@@ -5,6 +5,7 @@ require_once(__DIR__ . "/../../Models/Course.php");
 session_start();
 $Controller = new \Controllers\UsersController();
 $progress = $Controller->GetTranscript();
+$total = $Controller->GetTotalGrade($_SESSION["UserID"]);
 ?>
 
 <!DOCTYPE html>
@@ -198,6 +199,7 @@ $progress = $Controller->GetTranscript();
                         <p class="text-primary m-0 fw-bold"><?php echo "NAME: ".$_SESSION["UserName"] ?></p>
                         <p class="text-primary m-0 fw-bold"><?php echo "Email  : ".$_SESSION["UserEmail"] ?></p>
                         <p class="text-primary m-0 fw-bold"><?php echo "ID  : ".$_SESSION["UserID"] ?></p>
+                        <p class="text-primary m-0 fw-bold"><?php echo "Progress  : ".$total[0]['total_gpa']."%" ?></p>
                     </div>
                     <div class="card-body">
                         <div class="row">

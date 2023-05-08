@@ -8,7 +8,7 @@ session_start();
 $Courses = $Controller->GetLearningPathCoursesInfo(1);
 if (isset($_POST['lectures'])) {
     $_SESSION['CourseId'] = $_POST['CourseId'];
-    header("location: lecture.php");
+    header("location: lectures.php");
 }
 ?>
 
