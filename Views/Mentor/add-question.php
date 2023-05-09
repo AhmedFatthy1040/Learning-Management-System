@@ -4,29 +4,19 @@
     require_once(__DIR__ . "/../../Models/Question.php");
     use Controllers\ValidationController;
     use Controllers\UsersController;
-    use Question;
     $Check = new ValidationController();
-    $Access = $Check->CheckForAdmin();
-    //if (!$Access)
-    //    header("location:../Auth/logout.php");
+    $Access = $Check->CheckForMentor();
+    if (!$Access)
+        header("location:../Auth/logout.php");
 
 $QuestionController = new UsersController();
     $ErrorMessage = "";
     if (isset($_POST["Question"])) {
         if (!empty($_POST["Question"])) {
-            $Question = new Question;
-            $Question->getQuestion($_POST["Question"]);
-            $Question->getCorrectAnswers($_POST["CorrectAnswer"]);
-            $Question->getAnswer1($_POST["Answer1"]);
-            $Question->getAnswer2($_POST["Answer2"]);
-            $Question->getAnswer3($_POST["Answer3"]);
+            $Question = new Question($_POST["Question"], $_POST["CorrectAnswer"], $_POST["ExamID"]);
 
             if ($QuestionController->AddQuestion($Question)) {
-                $QuestionController->SendAnswer1($Question);
-                $QuestionController->SendAnswer2($Question);
-                $QuestionController->SendAnswer3($Question);
-                $QuestionController->SendAnswer4($Question);
-                header("location: dashboard.php");
+                header("location: view_exam.php");
             }
             else {
                 $ErrorMessage =  "Error!.. Please Try Again";
@@ -73,25 +63,16 @@ $QuestionController = new UsersController();
                                 <div class="mb-3"><input class="form-control form-control-user"
                                         id="exampleInputBirthDate" aria-describedby="question"
                                         placeholder="Enter The Question ..." name="Question"></div>
-                                <div class="row mb-3">
-                                    <div class="col-sm-6 mb-3 mb-sm-0"><input class="form-control form-control-user"
-                                            id="exampleCorrectAnswer" placeholder="Enter Any Answer" name="Answer1">
-                                    </div>
-                                    <div class="col-sm-6 mb-3 mb-sm-0"><input class="form-control form-control-user"
-                                            id="exampleAnswer2" placeholder="Enter Any Answer" name="Answer2">
-                                    </div>
-                                </div>
-                                <div class="row mb-3">
-                                    <div class="col-sm-6 mb-3 mb-sm-0"><input class="form-control form-control-user"
-                                            id="exampleAnswer3" placeholder="Enter Any Answer" name="Answer3">
-                                    </div>
-                                    <div class="col-sm-6 mb-3 mb-sm-0"><input class="form-control form-control-user"
-                                            id="exampleAnswer4" placeholder="Enter Any Answer" name="Answer4">
-                                    </div>
-                                </div>
+
                                 <div class="mb-3"><input class="form-control form-control-user"
                                         id="exampleCorrectAnswer" aria-describedby="question"
                                         placeholder="Enter The Correct Answer ..." name="CorrectAnswer"></div>
+                                <div class="row mb-3">
+
+                                    <div class="col-sm-6 mb-3 mb-sm-0"><input class="form-control form-control-user"
+                                                                              id="exampleExamID" placeholder="Enter Exam ID" name="ExamID">
+                                    </div>
+                                </div>
                                 <button class="btn btn-primary d-block btn-user w-100" type="submit">Add
                                     Question</button>
 

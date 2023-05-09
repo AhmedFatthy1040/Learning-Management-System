@@ -11,6 +11,7 @@ require_once(__DIR__ . "/../Models/Lecture.php");
 require_once(__DIR__ . "/../Models/Question.php");
 
 require_once(__DIR__ . "/../Models/Exam.php");
+require_once(__DIR__ . "/../Models/Answer.php");
 
 use Mentor;
 use Course;
@@ -20,6 +21,7 @@ use Lecture;
 use Question;
 
 use Exam;
+use Answer;
 
 
 class UsersController
@@ -338,7 +340,7 @@ class UsersController
         $this->db = new DBController();
         $TheQuestion = $Question->getQuestion();
         $CorrectAnswer = $Question->getCorrectAnswers();
-        $ExamID = $_SESSION["ExamID"];
+        $ExamID = $Question->GetExamID();
 
         if ($this->db->connect()) {
             $query = "insert into question(question, correct_ans, exam_id) values ('$TheQuestion', '$CorrectAnswer', '$ExamID');";
@@ -349,58 +351,31 @@ class UsersController
         }
     }
 
-    public function SendAnswer1(Question $Question)
+    public function AddAnswer(Answer $Answer)
     {
         $this->db = new DBController();
-        $Answer1 = $Question->getAnswer1();
-
+        $AnswerString = $Answer->GetAnswer();
+        $QuestionID = $Answer->GetQuestionID();
         if ($this->db->connect()) {
-            $query = "insert into question_ans(answer, question_id) values ('$Answer1', '1');";
+            $query = "insert into question_ans(answer, question_id) values ('$AnswerString', '$QuestionID');";
             return $this->db->query($query);
         } else {
             echo "Error in Database Connection";
             return false;
         }
     }
-    public function SendAnswer2(Question $Question)
+    public function GetQuestions()
     {
         $this->db = new DBController();
-        $Answer2 = $Question->getAnswer2();
-
         if ($this->db->connect()) {
-            $query = "insert into question_ans(answer, question_id) values ('$Answer2', '1');";
-            return $this->db->query($query);
+            $query = "SELECT id, question, correct_ans, exam_id FROM question ORDER BY id desc";
+            return $this->db->Select($query);
         } else {
             echo "Error in Database Connection";
             return false;
         }
     }
-    public function SendAnswer3(Question $Question)
-    {
-        $this->db = new DBController();
-        $Answer3 = $Question->getAnswer3();
 
-        if ($this->db->connect()) {
-            $query = "insert into question_ans(answer, question_id) values ('$Answer3', '1');";
-            return $this->db->query($query);
-        } else {
-            echo "Error in Database Connection";
-            return false;
-        }
-    }
-    public function SendAnswer4(Question $Question)
-    {
-        $this->db = new DBController();
-        $Answer4 = $Question->getAnswer4();
-
-        if ($this->db->connect()) {
-            $query = "insert into question_ans(answer, question_id) values ('$Answer4', '1');";
-            return $this->db->query($query);
-        } else {
-            echo "Error in Database Connection";
-            return false;
-        }
-    }
     public function GetTotalGrade($id)
     {
         $this->db = new DBController();

@@ -39,9 +39,9 @@
 
     $hostname = "localhost";
     $username = "root";
-    $password = "root";
+    $password = "";
     $database = "lms";
-    $port = '3307';
+    $port = '3306';
     $connect = mysqli_connect($hostname, $username, $password, $database,$port);
     $query = "SELECT id FROM course where mentor_id = '$ID'";
     $result = mysqli_query($connect, $query);

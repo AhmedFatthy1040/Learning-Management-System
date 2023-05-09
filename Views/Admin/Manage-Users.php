@@ -10,7 +10,7 @@ if ( !$Access) header("location:../Auth/logout.php");
 </style>
 <?php
 // connect to the database
-$conn = mysqli_connect('localhost', 'root', 'root', 'lms','3307');
+$conn = mysqli_connect('localhost', 'root', '', 'lms','3306');
 
 // check connection
 if(!$conn){

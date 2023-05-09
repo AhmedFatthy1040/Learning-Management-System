@@ -36,7 +36,7 @@
 
     $hostname = "localhost";
     $username = "root";
-    $password = "12345";
+    $password = "";
     $database = "lms";
     $port = '3306';
     $connect = mysqli_connect($hostname, $username, $password, $database,$port);
