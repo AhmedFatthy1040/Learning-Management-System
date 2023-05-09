@@ -32,20 +32,16 @@ $_SESSION["UserTotalGrades"] = $total[0]['total_gpa'];
                 </a>
                 <hr class="sidebar-divider my-0">
                 <ul class="navbar-nav text-light" id="accordionSidebar">
-                    <li class="nav-item"><a class="nav-link" href="dashboard.php"><i
+                    <li class="nav-item"><a class="nav-link" href="home.php"><i
                                 class="fas fa-home"></i><span>Home</span></a></li>
-                    <li class="nav-item"><a class="nav-link" href="courses.php"><i
-                                class="fas fa-home"></i><span>Courses</span></a></li>
-                    <li class="nav-item"><a class="nav-link" href="lectures.php"><i
-                                class="fas fa-home"></i><span>Lectures</span></a></li>
                     <li class="nav-item"><a class="nav-link" href="profile.php"><i
                                 class="fas fa-user"></i><span>Profile</span></a></li>
+                    <li class="nav-item"><a class="nav-link" href="transcript.php"><i
+                                class="fas fa-table"></i><span>transcript</span></a></li>
                     <li class="nav-item"><a class="nav-link" href="mentors.php"><i
                                 class="fas fa-users"></i><span>Mentors</span></a></li>
                     <li class="nav-item"><a class="nav-link" href="learning paths.php"><i
                                 class="fas fa-book-open"></i><span>Learning Paths</span></a></li>
-                    <li class="nav-item"><a class="nav-link" href="transcript.php"><i
-                                class="fas fa-table"></i><span>transcript</span></a></li>
                 </ul>
                 <div class="text-center d-none d-md-inline"><button class="btn rounded-circle border-0"
                         id="sidebarToggle" type="button"></button></div>
@@ -196,86 +192,104 @@ $_SESSION["UserTotalGrades"] = $total[0]['total_gpa'];
                 </nav>
                 <div class="container-fluid">
                     <div class="card shadow">
-                    <div class="card-header py-3">
-                        <p class="text-primary m-0 fw-bold"><b><?php echo "Name: "?></b><?php echo $_SESSION["UserFirstName"]." ".$_SESSION["UserLastName"] ?></p>
-                        <p class="text-primary m-0 fw-bold"><b><?php echo "Email: "?></b><?php echo $_SESSION["UserEmail"] ?></p>
-                        <p class="text-primary m-0 fw-bold"><b><?php echo "Id: "?></b><?php echo $_SESSION["UserID"] ?></p>
-                        <p class="text-primary m-0 fw-bold"><b><?php echo "Progress: "?></b><?php echo $_SESSION["UserTotalGrades"]."%" ?></p>
-                    </div>
-                    <div class="card-body">
-                        <div class="row">
-                            <div class="col-md-6 text-nowrap">
-                                <div id="dataTable_length" class="dataTables_length" aria-controls="dataTable"><label
-                                class="form-label">Show&nbsp;<select
-                                            class="d-inline-block form-select form-select-sm">
-                                            <option value="10" selected="">10</option>
-                                            <option value="25">25</option>
-                                            <option value="50">50</option>
-                                            <option value="100">100</option>
-                                        </select>&nbsp;</label></div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="text-md-end dataTables_filter" id="dataTable_filter"><label
-                                class="form-label"><input type="search" class="form-control form-control-sm"
-                                aria-controls="dataTable" placeholder="Search"></label></div>
-                            </div>
+                        <div class="card-header py-3">
+                            <p class="text-primary m-0 fw-bold"><b>
+                                    <?php echo "Name: " ?>
+                                </b>
+                                <?php echo $_SESSION["UserFirstName"] . " " . $_SESSION["UserLastName"] ?>
+                            </p>
+                            <p class="text-primary m-0 fw-bold"><b>
+                                    <?php echo "Email: " ?>
+                                </b>
+                                <?php echo $_SESSION["UserEmail"] ?>
+                            </p>
+                            <p class="text-primary m-0 fw-bold"><b>
+                                    <?php echo "Id: " ?>
+                                </b>
+                                <?php echo $_SESSION["UserID"] ?>
+                            </p>
+                            <p class="text-primary m-0 fw-bold"><b>
+                                    <?php echo "Progress: " ?>
+                                </b>
+                                <?php echo $_SESSION["UserTotalGrades"] . "%" ?>
+                            </p>
                         </div>
-                        <div class="table-responsive table mt-2" id="dataTable" role="grid"
-                            aria-describedby="dataTable_info">
-                            <table class="table my-0" id="dataTable">
-                                <thead>
-                                    <tr>
-                                        <th>course name</th>
-                                        <th>grade</th>
-                                        <th>gba</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <?php
-                                    foreach ($progress as $Course) {
-                                        ?>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-6 text-nowrap">
+                                    <div id="dataTable_length" class="dataTables_length" aria-controls="dataTable">
+                                        <label class="form-label">Show&nbsp;<select
+                                                class="d-inline-block form-select form-select-sm">
+                                                <option value="10" selected="">10</option>
+                                                <option value="25">25</option>
+                                                <option value="50">50</option>
+                                                <option value="100">100</option>
+                                            </select>&nbsp;</label></div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="text-md-end dataTables_filter" id="dataTable_filter"><label
+                                            class="form-label"><input type="search" class="form-control form-control-sm"
+                                                aria-controls="dataTable" placeholder="Search"></label></div>
+                                </div>
+                            </div>
+                            <div class="table-responsive table mt-2" id="dataTable" role="grid"
+                                aria-describedby="dataTable_info">
+                                <table class="table my-0" id="dataTable">
+                                    <thead>
                                         <tr>
-                                            <td>
-                                                <?php echo $Course['course'] ?>
-                                            </td>
-                                            <td>
-                                                <?php echo $Course['grade'] ?>
-                                            </td>
-                                            <td>
-                                                <?php echo $Course['gpa'] ?>
-                                            </td>
+                                            <th>course name</th>
+                                            <th>grade</th>
+                                            <th>gba</th>
                                         </tr>
+                                    </thead>
+                                    <tbody>
                                         <?php
-                                    }
+                                        foreach ($progress as $Course) {
+                                            ?>
+                                            <tr>
+                                                <td>
+                                                    <?php echo $Course['course'] ?>
+                                                </td>
+                                                <td>
+                                                    <?php echo $Course['grade'] ?>
+                                                </td>
+                                                <td>
+                                                    <?php echo $Course['gpa'] ?>
+                                                </td>
+                                            </tr>
+                                            <?php
+                                        }
 
-                                    ?>
+                                        ?>
 
-                                </tbody>
-                            </table>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-6 align-self-center">
-                                <p id="dataTable_info" class="dataTables_info" role="status" aria-live="polite">Showing
-                                    1 to 10 of 27</p>
+                                    </tbody>
+                                </table>
                             </div>
-                            <div class="col-md-6">
-                                <nav class="d-lg-flex justify-content-lg-end dataTables_paginate paging_simple_numbers">
-                                    <ul class="pagination">
-                                        <li class="page-item disabled"><a class="page-link" aria-label="Previous"
-                                                href="#"><span aria-hidden="true">«</span></a></li>
-                                        <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                                        <li class="page-item"><a class="page-link" href="#">2</a></li>
-                                        <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                        <li class="page-item"><a class="page-link" aria-label="Next" href="#"><span
-                                        aria-hidden="true">»</span></a></li>
-                                    </ul>
-                                </nav>
+                            <div class="row">
+                                <div class="col-md-6 align-self-center">
+                                    <p id="dataTable_info" class="dataTables_info" role="status" aria-live="polite">
+                                        Showing
+                                        1 to 10 of 27</p>
+                                </div>
+                                <div class="col-md-6">
+                                    <nav
+                                        class="d-lg-flex justify-content-lg-end dataTables_paginate paging_simple_numbers">
+                                        <ul class="pagination">
+                                            <li class="page-item disabled"><a class="page-link" aria-label="Previous"
+                                                    href="#"><span aria-hidden="true">«</span></a></li>
+                                            <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                                            <li class="page-item"><a class="page-link" href="#">2</a></li>
+                                            <li class="page-item"><a class="page-link" href="#">3</a></li>
+                                            <li class="page-item"><a class="page-link" aria-label="Next" href="#"><span
+                                                        aria-hidden="true">»</span></a></li>
+                                        </ul>
+                                    </nav>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
             <footer class="bg-white sticky-footer">
                 <div class="container my-auto">
                     <div class="text-center my-auto copyright"><span>Copyright © LMS 2023</span></div>
@@ -287,4 +301,5 @@ $_SESSION["UserTotalGrades"] = $total[0]['total_gpa'];
     <script src="../assets/js/bs-init.js"></script>
     <script src="../assets/js/theme.js"></script>
 </body>
+
 </html>
