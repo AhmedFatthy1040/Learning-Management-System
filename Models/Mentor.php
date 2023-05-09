@@ -33,6 +33,7 @@ class Mentor extends Person{
         return $this->Email;
     }
     Public function getPhoneNumber(){
+
         return $this->PhoneNumber;
     }
     Public function getSalary(){
@@ -40,19 +41,19 @@ class Mentor extends Person{
     }
 
     public function setFirstName($FirstName){
-     $isThereNumber = false;
-     for ($i = 0; $i < strlen($FirstName); $i++) {
-     if (ctype_digit($FirstName[$i])) {
-        $isThereNumber = true;
-        break;
-    }
-}
- 
-if ( $isThereNumber ) {
-    echo "\"{$FirstName}\" has number(s).";
-} else {
-    $this->FirstName=$FirstName;
-}
+         $isThereNumber = false;
+         for ($i = 0; $i < strlen($FirstName); $i++) {
+            if (ctype_digit($FirstName[$i])) {
+                $isThereNumber = true;
+                break;
+            }
+        }
+
+        if ( $isThereNumber ) {
+            echo "\"{$FirstName}\" has number(s).";
+        } else {
+            $this->FirstName=$FirstName;
+        }
     }
 
     public function setLastName($LastName){
@@ -69,7 +70,7 @@ if ( $isThereNumber ) {
         } else {
             $this->LastName=$LastName;
         }
-            }
+    }
         
 
     public function setRate($Rate){
@@ -91,6 +92,7 @@ if ( $isThereNumber ) {
     }
 
     public function setNationality($Nationality){
+        $isThereNumber = false;
         for ($i = 0; $i < strlen($Nationality); $i++) {
             if ( ctype_digit($Nationality[$i]) ) {
                 $isThereNumber = true;
@@ -134,7 +136,7 @@ if ( $isThereNumber ) {
         {
                 $this->PhoneNumber = $PhoneNumber;
         }
-        }
+    }
 
         public function setSalary($Salary){
             if(!is_numeric($Salary))

@@ -14,7 +14,7 @@ class DBController
     private $port = "3306";
     private $conn;
 
-    function connect(): bool
+    public function connect(): bool
     {
         $this->conn = new mysqli($this->host, $this->user, $this->password, $this->database, $this->port);
         if ($this->conn->connect_error) {
@@ -24,14 +24,14 @@ class DBController
             return true;
     }
 
-    function query($sql) {
+    public function query($sql) {
         $result = $this->conn->query($sql);
         if(!$result) {
             die("Query failed: " . $this->conn->error);
         }
         return $result;
     }
-    function Select($sql)
+    public function Select($sql)
     {
         $result = $this->conn->query($sql);
         if (!$result) {
@@ -40,7 +40,7 @@ class DBController
         }
         return $result->fetch_all(MYSQLI_ASSOC);
     }
-    function insert($sql)
+    public function insert($sql)
     {
         $result = $this->conn->query($sql);
         if (!$result) {
@@ -50,7 +50,7 @@ class DBController
             return $this->conn->insert_id;
         }
     }
-    function selectQuery($sql)
+    public function selectQuery($sql)
     {
         $link = mysqli_connect($this->host, $this->user, $this->password, $this->database, $this->port);
         if ($link === false) {
@@ -61,7 +61,7 @@ class DBController
         return ($result);
     }
 
-    function close()
+    public function close()
     {
         $this->conn->close();
     }

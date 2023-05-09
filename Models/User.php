@@ -1,118 +1,81 @@
 <?php 
-include_once("person.php");
+    include_once("person.php");
+    require_once("Mentor.php");
 
 
-class User extends Person{
+    class User extends Person{
 
-    private $FirstName;
-    private $LastName;
-    Private $Nationality = "EG";
-    Private $DateOfBirth;
-    Private $Email;
-    Private $PhoneNumber;
-    Private $LearningPath;
-    Public function getFirstName(){
-        return $this->FirstName;
-    }
-
-    Public function getLastName(){
-        return $this->LastName;
-    }
-    Public function Nationality(){
-        return $this->Nationality;
-    }
-    Public function getDateOfBirth(){
-        return $this->DateOfBirth;
-    }
-    public function getEmail(){
-        return $this->Email;
-    }
-    Public function getPhoneNumber(){
-        return $this->PhoneNumber;
-    }
-    Public function getLearningPath(){
-        return $this->LearningPath;
-    }
-
-    public function setLearningPath($LearningPath){
-        if(!is_numeric($LearningPath))
-        {
-            echo "\"{$LearningPath}\" isn't a numeric value";
+        private $FirstName;
+        private $LastName;
+        Private $Nationality = "EG";
+        Private $DateOfBirth;
+        Private $Email;
+        Private $PhoneNumber;
+        Private $LearningPath;
+        private $delegate;
+        public function User() {
+            $this->delegate = new Mentor();
         }
-        else
-        {
-                $this->LearningPath = $LearningPath;
-        }
+        Public function getFirstName(){
+            return $this->FirstName;
         }
 
+        Public function getLastName(){
+            return $this->LastName;
+        }
+        Public function Nationality(){
+            return $this->Nationality;
+        }
+        Public function getDateOfBirth(){
+            return $this->DateOfBirth;
+        }
+        public function getEmail(){
+            return $this->Email;
+        }
+        Public function getPhoneNumber(){
+            return $this->PhoneNumber;
+        }
+        Public function getLearningPath(){
+            return $this->LearningPath;
+        }
 
-    public function setFirstName($FirstName){
-$isThereNumber = false;
-for ($i = 0; $i < strlen($FirstName); $i++) {
-    if ( ctype_digit($FirstName[$i]) ) {
-        $isThereNumber = true;
-        break;
-    }
-}
- 
-if ( $isThereNumber ) {
-    echo "\"{$FirstName}\" has number(s).";
-} else {
-    $this->FirstName=$FirstName;
-}
-    }
-
-    public function setLastName($LastName){
-        $isThereNumber = false;
-        for ($i = 0; $i < strlen($LastName); $i++) {
-            if ( ctype_digit($LastName[$i]) ) {
-                $isThereNumber = true;
-                break;
+        public function setLearningPath($LearningPath){
+            if(!is_numeric($LearningPath))
+            {
+                echo "\"{$LearningPath}\" isn't a numeric value";
+            }
+            else
+            {
+                    $this->LearningPath = $LearningPath;
             }
         }
-         
-        if ( $isThereNumber ) {
-            echo "\"{$LastName}\" has number(s).";
-        } else {
-            $this->LastName=$LastName;
-        }
-            }
-        
 
 
-    public function setNationality($Nationality){
-        $isThereNumber = false;
-        for ($i = 0; $i < strlen($Nationality); $i++) {
-            if ( ctype_digit($Nationality[$i]) ) {
-                $isThereNumber = true;
-                break;
-            }
+        public function setFirstName($FirstName){
+            $this->delegate->setFirstName($FirstName);
         }
-         
-        if ( $isThereNumber ) {
-            echo "\"{$Nationality}\" has number(s).";
-        } else {
-            $this->Nationality=$Nationality;
-        }
-    }
 
-    public function setDateOfBirth($DateOfBirth){
-        $this->DateOfBirth = $DateOfBirth;
-    }
-
-    public function setEmail($Email){
-        $this->Email = $Email;
-    }
-
-    public function setPhoneNumber($PhoneNumber){
-        if(!is_numeric($PhoneNumber))
-        {
-            echo "\"{$PhoneNumber}\" isn't a numeric value";
+        public function setLastName($LastName){
+            $this->delegate->setLastName($LastName);
         }
-        else
-        {
-                $this->PhoneNumber = $PhoneNumber;
+
+
+
+        public function setNationality($Nationality){
+            $this->delegate->setNationality($Nationality);
+
         }
+
+        public function setDateOfBirth($DateOfBirth){
+            $this->DateOfBirth = $DateOfBirth;
+        }
+
+        public function setEmail($Email){
+            $this->delegate->setEmail($Email);
+        }
+
+        public function setPhoneNumber($PhoneNumber){
+            $this->delegate->setPhoneNumber($PhoneNumber);
         }
 
 
