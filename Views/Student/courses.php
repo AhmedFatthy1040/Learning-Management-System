@@ -5,10 +5,14 @@ require_once(__DIR__ . "/../../Models/Course.php");
 use Controllers\UsersController;
 $Controller = new UsersController();
 session_start();
-$Courses = $Controller->GetLearningPathCoursesInfo(1);
+$Courses = $Controller->GetLearningPathCoursesInfo($_SESSION['lpid']);
 if (isset($_POST['lectures'])) {
     $_SESSION['CourseId'] = $_POST['CourseId'];
     header("location: lectures.php");
+}
+if (isset($_POST['regester'])) {
+    $_SESSION['CourseId'] = $_POST['CourseId'];
+    $Controller->RegesterCourse($_SESSION['CourseId']);
 }
 ?>
 
@@ -263,6 +267,20 @@ if (isset($_POST['lectures'])) {
                                                                 </svg></span></button>
                                                     </form>
                                                 </td>
+                                                <td>
+                                                    <form method="POST">
+                                                        <input type="hidden" name="CourseId"
+                                                            value="<?php echo $Course['course_id']; ?>">
+                                                        <button class="noselect" type="submit" name="regester"
+                                                            value="regester"><span class="text">Regester</span><span
+                                                                class="icon"><svg xmlns="http://www.w3.org/2000/svg"
+                                                                    width="24" height="24" viewBox="0 0 24 24">
+                                                                    <path
+                                                                        d="M24 20.188l-8.315-8.209 8.2-8.282-3.697-3.697-8.212 8.318-8.31-8.203-3.666 3.666 8.321 8.24-8.206 8.313 3.666 3.666 8.237-8.318 8.285 8.203z">
+                                                                    </path>
+                                                                </svg></span></button>
+                                                    </form>
+                                                </td>
                                             </tr>
                                             <?php
                                         }
@@ -272,7 +290,7 @@ if (isset($_POST['lectures'])) {
                                     </tbody>
                                     <tfoot>
                                         <tr>
-                                            <td><strong>Name</strong></td>
+                                            <td><strong>Course</strong></td>
                                             <td><strong>Description</strong></td>
                                             <td><strong>Mentor</strong></td>
                                             <td><strong>Learning Path</strong></td>
