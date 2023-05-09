@@ -2,27 +2,26 @@
     require_once(__DIR__ . "/../../Controllers/ValidationController.php");
     require_once(__DIR__ . "/../../Controllers/UsersController.php");
     require_once(__DIR__ . "/../../Models/Lecture.php");
+    require_once(__DIR__ . "/../../Models/Course.php");
     use Controllers\ValidationController;
     use Controllers\UsersController;
     $Check = new ValidationController();
     $Access = $Check->CheckForMentor();
+    $ID = $_SESSION['UserID'];
     if (!$Access)
         header("location:../Auth/logout.php");
 
     $LectureController = new UsersController();
     $ErrorMessage = "";
-    //$Lectures = $LectureController->GetCourseForLectures($_SESSION["CourseID"]);
 
-    if (isset($_POST["LectureName"]) && isset($_POST["Week"]) && isset($_POST["Course_ID"]) && isset($_POST["Info"]) && isset($_POST["Link"])) { // && isset($_POST["Slide"]) && isset($_POST["Video"])
-        if (!empty($_POST["LectureName"]) && !empty($_POST["Week"]) && !empty($_POST["Course_ID"]) && !empty($_POST["Info"]) && !empty($_POST["Link"])) { // && !empty($_POST["Slide"]) && !empty($_POST["Video"])
+    if (isset($_POST["LectureName"]) && isset($_POST["Week"]) && isset($_POST["Course_ID"]) && isset($_POST["Info"]) && isset($_POST["Link"])) { 
+        if (!empty($_POST["LectureName"]) && !empty($_POST["Week"]) && !empty($_POST["Course_ID"]) && !empty($_POST["Info"]) && !empty($_POST["Link"])) { 
             $Lecture = new Lecture();
             $Lecture->setName($_POST["LectureName"]);
             $Lecture->setWeek($_POST["Week"]);
             $Lecture->setCourse_ID($_POST["Course_ID"]);
             $Lecture->setInfo($_POST["Info"]);
             $Lecture->setLink($_POST["Link"]);
-            //$Lecture->setSlide($_POST["uploding_slides"]);
-            //$Lecture->setVideo($_POST["uploding_videos"]);
 
 
             if ($LectureController->AddLectures($Lecture)) {
@@ -38,6 +37,14 @@
     else
         $ErrorMessage = "Error";
 
+    $hostname = "localhost";
+    $username = "root";
+    $password = "root";
+    $database = "lms";
+    $port = '3307';
+    $connect = mysqli_connect($hostname, $username, $password, $database,$port);
+    $query = "SELECT id FROM course where mentor_id = '$ID'";
+    $result = mysqli_query($connect, $query);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -70,6 +77,7 @@
                     <li class="nav-item"><a class="nav-link" href="profile.php"><i class="fas fa-user"></i><span>Profile</span></a></li>
                     <li class="nav-item"><a class="nav-link" href="mange_course.php"><i class="fas fa-table"></i><span>Manage Course</span></a></li>
                     <li class="nav-item"><a class="nav-link" href="add-course.php"><i class="fas fa-table"></i><span>Add Course</span></a></li>
+                    <li class="nav-item"><a class="nav-link" href="Courses.php"><i class="fas fa-table"></i><span>Course</span></a></li>
                 </ul>
                 <div class="text-center d-none d-md-inline"><button class="btn rounded-circle border-0" id="sidebarToggle" type="button"></button></div>
             </div>
@@ -185,30 +193,18 @@
                                     <!--                        ========================================================================-->
                                         <form class="user" method="POST">
                                             <div class="row mb-3">
+                                                <button class="btn btn-primary d-block btn-user w-100" type="submit">Add</button>
                                                 <div class="col-sm-6 mb-3 mb-sm-0"><input class="form-control form-control-user" type="text" id="exampleInputLectureName" aria-describedby="Lecture Name" placeholder="Lecture Name" name="LectureName"></div>
                                                 <div class="col-sm-6 mb-3 mb-sm-0"><input class="form-control form-control-user" type="text" id="exampleInputWeek" aria-describedby="Week" placeholder="Week" name="Week"></div>
                                                 <div class="col-sm-6 mb-3 mb-sm-0"><input class="form-control form-control-user" type="text" id="exampleLink" placeholder="Link" name="Link"></div>
-                                                <div class="col-sm-6 mb-3 mb-sm-0"><input class="form-control form-control-user" type="text" id="exampleCourse_ID" placeholder="Course_ID" name="Course_ID"></div>
                                                 <div><input class="form-control form-control-user" type="text" id="exampleInfo" placeholder="Info" name="Info"></div>
-                                                <!-- <div><input class="form-control form-control-user" type="text" id="exampleSlide" placeholder="Slide" name="Slide"> -->
-                                                <div class="uploading_slides">
-                                                    <div>
-                                                        <p class="text_1" for="filename">Add Slides</p>
-                                                    </div>
-                                                    <input type="file" id="myFile" name="filename">
-                                                </div>
-                                                <!-- </div> -->
-                                                <!-- <div><input class="form-control form-control-user" type="text" id="exampleVideo" placeholder="Video" name="Video"> -->
-                                                <div class="uploading_videos">
-                                                    <div>
-                                                        <p class="text_1" for="filename">Add Video</p>
-                                                    </div>
-                                                    <input type="file" id="myFile" name="filename">
-                                                </div>
-                                                <!-- </div> -->
+                                                <label>Course ID<label>
+                                                <select name="Course_ID">
+                                                    <?php while($row = mysqli_fetch_array($result)):;?>
+                                                    <option value="<?php echo $row[0]?>" selected><?php echo $row[0];?></option>
+                                                    <?php endwhile;?>
+                                                </select>   
                                             </div>
-                                            <button class="btn btn-primary d-block btn-user w-100" type="submit">Add</button>
-
                                         </form>
                                     </div>
                                 </div>

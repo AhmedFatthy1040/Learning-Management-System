@@ -1,67 +1,26 @@
 <?php
-use Controllers\UsersController;
-
 require_once(__DIR__ . "/../../Controllers/ValidationController.php");
 require_once(__DIR__ . "/../../Controllers/UsersController.php");
-require_once(__DIR__ . "/../../Models/Mentor.php");
-session_start();
+require_once(__DIR__ . "/../../Models/Course.php");
+use Controllers\UsersController;
 $Controller = new UsersController();
-$ID =$_SESSION["UserID"];
-$UserInfo = $Controller->GetMentor($ID);
-$Mentor = new Mentor();
-if (isset($_POST["Fname"]) && !empty($_POST["Fname"])) {
-    $Mentor->setFirstName($_POST["Fname"]);
-    if ($Controller->EditMentor($Mentor, 'fname', $Mentor->getFirstName())) {
-        header("location: ../Mentor/profile.php");
-    } else {
-        $ErrorMessage = $_SESSION["ErrorMessage"];
-    }
-}
-if (isset($_POST["Lname"]) && !empty($_POST["Lname"])) {
-    $Mentor->setLastName($_POST["Lname"]);
-    if ($Controller->EditMentor($Mentor, 'lname', $Mentor->getLastName())) {
-        header("location: ../Mentor/profile.php");
-    } else {
-        $ErrorMessage = $_SESSION["ErrorMessage"];
-    }
-}
-if (isset($_POST["Email"]) && !empty($_POST["Email"])) {
-    $Mentor->setEmail($_POST["Email"]);
-    if ($Controller->EditMentor($Mentor, 'email', $Mentor->getEmail())) {
-        header("location: ../Mentor/profile.php");
-    } else {
-        $ErrorMessage = $_SESSION["ErrorMessage"];
-    }
-}
-if (isset($_POST["Country"]) && !empty($_POST["Country"])) {
-    $Mentor->setNationality($_POST["Country"]);
-    if ($Controller->EditMentor($Mentor, 'nationality', $Mentor->getNationality())) {
-        header("location: ../Mentor/profile.php");
-    } else {
-        $ErrorMessage = $_SESSION["ErrorMessage"];
-    }
-}
-if (isset($_POST["PhoneNumber"]) && !empty($_POST["PhoneNumber"])) {
-    $Mentor->setPhoneNumber($_POST["PhoneNumber"]);
-    if ($Controller->EditMentor($Mentor, 'phone', $Mentor->getPhoneNumber())) {
-        header("location: ../Mentor/profile.php");
-    } else {
-        $ErrorMessage = $_SESSION["ErrorMessage"];
-    }
+session_start();
+$Courses = $Controller->GetExam();
+if (isset($_POST['lectures'])) {
 }
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-    <title>Profile</title>
+    <title>View Courses - LMS</title>
     <link rel="stylesheet" href="../assets/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet"
         href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i&amp;display=swap">
     <link rel="stylesheet" href="../assets/fonts/fontawesome-all.min.css">
-</head>
 </head>
 
 <body id="page-top">
@@ -76,11 +35,14 @@ if (isset($_POST["PhoneNumber"]) && !empty($_POST["PhoneNumber"])) {
                 <ul class="navbar-nav text-light" id="accordionSidebar">
                     <li class="nav-item"><a class="nav-link" href="dashboard.php"><i
                                 class="fas fa-home"></i><span>Dashboard</span></a></li>
-                    <li class="nav-item"><a class="nav-link" href="add-course.php"><i
-                                class="fas fa-home"></i><span>Add Course</span></a></li>
-                    <li class="nav-item"><a class="nav-link" href="mange_course.php"><i
-                                class="fas fa-users"></i><span>Manege Course</span></a></li>
-                    <li class="nav-item"><a class="nav-link" href="Courses.php"><i class="fas fa-table"></i><span>Course</span></a></li>
+                    <li class="nav-item"><a class="nav-link" href="courses.php"><i
+                                class="fas fa-home"></i><span>Courses</span></a></li>
+                    <li class="nav-item"><a class="nav-link" href="profile.php"><i
+                                class="fas fa-user"></i><span>Profile</span></a></li>
+                    <li class="nav-item"><a class="nav-link" href="mentors.php"><i
+                                class="fas fa-users"></i><span>Mentors</span></a></li>
+                    <li class="nav-item"><a class="nav-link" href="learning paths.php"><i
+                                class="fas fa-book-open"></i><span>Learning Paths</span></a></li>
                 </ul>
                 <div class="text-center d-none d-md-inline"><button class="btn rounded-circle border-0"
                         id="sidebarToggle" type="button"></button></div>
@@ -225,87 +187,88 @@ if (isset($_POST["PhoneNumber"]) && !empty($_POST["PhoneNumber"])) {
                     </div>
                 </nav>
                 <div class="container-fluid">
-
-                    <div class="row mb-3">
-                        <div class="col-lg-4">
-                            <div class="card mb-3">
-                                <div class="card-body text-center shadow"><img class="rounded-circle mb-3 mt-4"
-                                        src="../assets/img/dogs/image2.jpeg" width="160" height="160">
-                                    <div class="mb-3"><button class="btn btn-primary btn-sm" type="button">Change
-                                            Photo</button></div>
+                    <div class="card shadow">
+                        <div class="card-header py-3">
+                            <p class="text-primary m-0 fw-bold">Courses</p>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-6 text-nowrap">
+                                    <div id="dataTable_length" class="dataTables_length" aria-controls="dataTable">
+                                        <label class="form-label">Show&nbsp;<select
+                                                class="d-inline-block form-select form-select-sm">
+                                                <option value="10" selected="">10</option>
+                                                <option value="25">25</option>
+                                                <option value="50">50</option>
+                                                <option value="100">100</option>
+                                            </select>&nbsp;</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="text-md-end dataTables_filter" id="dataTable_filter"><label
+                                            class="form-label"><input type="search" class="form-control form-control-sm"
+                                                aria-controls="dataTable" placeholder="Search"></label></div>
                                 </div>
                             </div>
-                        </div>
-                        
+                            <div class="table-responsive table mt-2" id="dataTable" role="grid"
+                                aria-describedby="dataTable_info">
+                                <table class="table my-0" id="dataTable">
+                                    <thead>
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>Duration</th>
+                                            <th>Course ID</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <?php
+                                        foreach ($Courses as $Course) {
+                                            ?>
+                                            <tr>
+                                                <td>
+                                                    <?php echo $Course['id'] ?>
+                                                </td>
+                                                <td>
+                                                    <?php echo $Course['duration'] ?>
+                                                </td>
+                                                <td>
+                                                </td>
+                                                <td>
+                                                    <?php echo $Course['course_id'] ?>
+                                                </td>
+                                            </tr>
+                                            <?php
+                                        }
+
+                                        ?>
+                                    </tbody>
+                                    <tfoot>
+                                        <tr>
+                                            <td><strong>ID</strong></td>
+                                            <td><strong>Dureation</strong></td>
+                                            <td><strong>Course ID</strong></td>
+                                        </tr>
+                                    </tfoot>
+                                </table>
                             </div>
                             <div class="row">
-                                <div class="col">
-                                    <div class="card shadow mb-3">
-                                        <div class="card-header py-3">
-                                            <p class="text-primary m-0 fw-bold">Mentor Settings</p>
-                                        </div>
-                                        <div class="card-body">
-                                            <form class="mentor" action="profile.php" method="POST">
-                                                <div class="row">
-                                                    <div class="col">
-                                                        <div class="mb-3"><label class="form-label"
-                                                                for="email"><strong>Email</strong></label><input
-                                                                class="form-control" type="email" id="email"
-                                                                placeholder="<?php echo $UserInfo[0]['email'] ?>"
-                                                                name="Email"></div>
-                                                    </div>
-                                                </div>
-                                                <div class="row">
-                                                    <div class="col">
-                                                        <div class="mb-3"><label class="form-label"
-                                                                for="first_name"><strong>First
-                                                                    Name</strong></label><input class="form-control"
-                                                                type="text" id="first_name"
-                                                                placeholder="<?php echo $UserInfo[0]['fname'] ?>"
-                                                                name="Fname"></div>
-                                                    </div>
-                                                    <div class="col">
-                                                        <div class="mb-3"><label class="form-label"
-                                                                for="last_name"><strong>Last Name</strong></label><input
-                                                                class="form-control" type="text" id="last_name"
-                                                                placeholder="<?php echo $UserInfo[0]['lname'] ?>"
-                                                                name="Lname"></div>
-                                                    </div>
-                                                    <div class="col">
-                                                        <div class="mb-3"><label class="form-label"
-                                                                for="PhoneNumber"><strong>Phone
-                                                                    Number</strong></label><input class="form-control"
-                                                                type="text" id="PhonrNumber"
-                                                                placeholder="<?php echo $UserInfo[0]['phone'] ?>"
-                                                                name="PhoneNumber"></div>
-                                                    </div>
-                                                </div>
-                                                <div class="mb-3"><button class="btn btn-primary btn-sm"
-                                                        type="submit">Save Settings</button></div>
-                                            </form>
-                                        </div>
-                                    </div>
-                                    <div class="card shadow">
-                                        <div class="card-header py-3">
-                                            <p class="text-primary m-0 fw-bold">NON Changable Information</p>
-                                        </div>
-                                        <div class="card-body">
-                                                        <div class="mb-3"><label class="form-label"
-                                                                for="Country"><strong>Country</strong></label><input
-                                                                class="form-control" type="text" id="Country"
-                                                                placeholder="<?php echo 'EG' ?>"
-                                                                name="Country">
-                                                        </div>
-                                        </div>
-                                        <div class="card-body">
-                                                        <div class="mb-3"><label class="form-label"
-                                                                for="ID"><strong>ID</strong></label><input
-                                                                class="form-control" type="text" id="ID"
-                                                                placeholder="<?php echo $ID ?>"
-                                                                name="Country">
-                                                        </div>
-                                        </div>
-                                    </div>
+                                <div class="col-md-6 align-self-center">
+                                    <p id="dataTable_info" class="dataTables_info" role="status" aria-live="polite">
+                                        Showing 1 to 10 of 27</p>
+                                </div>
+                                <div class="col-md-6">
+                                    <nav
+                                        class="d-lg-flex justify-content-lg-end dataTables_paginate paging_simple_numbers">
+                                        <ul class="pagination">
+                                            <li class="page-item disabled"><a class="page-link" aria-label="Previous"
+                                                    href="#"><span aria-hidden="true">«</span></a></li>
+                                            <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                                            <li class="page-item"><a class="page-link" href="#">2</a></li>
+                                            <li class="page-item"><a class="page-link" href="#">3</a></li>
+                                            <li class="page-item"><a class="page-link" aria-label="Next" href="#"><span
+                                                        aria-hidden="true">»</span></a></li>
+                                        </ul>
+                                    </nav>
                                 </div>
                             </div>
                         </div>
@@ -323,4 +286,5 @@ if (isset($_POST["PhoneNumber"]) && !empty($_POST["PhoneNumber"])) {
     <script src="../assets/js/bs-init.js"></script>
     <script src="../assets/js/theme.js"></script>
 </body>
+
 </html>

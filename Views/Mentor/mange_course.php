@@ -61,6 +61,7 @@
                     <li class="nav-item"><a class="nav-link" href="profile.php"><i class="fas fa-user"></i><span>Profile</span></a></li>
                     <li class="nav-item"><a class="nav-link" href="dashboard.php"><i class="fas fa-table"></i><span>Dashboard</span></a></li>
                     <li class="nav-item"><a class="nav-link" href="add-course.php"><i class="far fa-user-circle"></i><span>Add Course</span></a></li>
+                    <li class="nav-item"><a class="nav-link" href="Courses.php"><i class="fas fa-table"></i><span>Course</span></a></li>
                 </ul>
                 <div class="text-center d-none d-md-inline"><button class="btn rounded-circle border-0" id="sidebarToggle" type="button"></button></div>
             </div>
