@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <?php
 require_once(__DIR__ . "/../../Controllers/ValidationController.php");
 require_once(__DIR__ . "/../../Controllers/UsersController.php");
@@ -12,6 +13,27 @@ if (isset($_POST['lectures'])) {
 }
 ?>
 
+=======
+<style>
+    <?php
+    include("../assets/bootstrap/css/Admin.css");
+    include("css/home.css");
+    session_start();
+    ?>
+</style>
+
+<?php
+    require_once(__DIR__ . "/../../Controllers/ValidationController.php");
+    require_once(__DIR__ . "/../../Controllers/UsersController.php");
+    require_once(__DIR__ . "/../../Models/Course.php");
+    use Controllers\ValidationController;
+    use Controllers\UsersController;
+    $Check = new ValidationController();
+
+    $Controller = new UsersController();
+    $Courses = $Controller->GetCourses();
+    ?>
+>>>>>>> d9fa5c4d2d20f1472b0f59d17261bcb7ec17eca3
 <!DOCTYPE html>
 <html lang="en">
 
@@ -202,6 +224,7 @@ if (isset($_POST['lectures'])) {
                         <div class="card-header py-3">
                             <p class="text-primary m-0 fw-bold">Courses</p>
                         </div>
+<<<<<<< HEAD
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-md-6 text-nowrap">
@@ -296,6 +319,92 @@ if (isset($_POST['lectures'])) {
                                 </div>
                             </div>
                         </div>
+=======
+                        <!-- <h2 class=" description">Welcome: <br> This is the page for your already registered courses <br> in your learning path :</h2> -->
+                    </div>
+                    <div class="contanre">
+                        <?php
+                        foreach ($Courses as $Course){
+                        ?>
+                        <a class="card" href="">
+                            <div class="icon">
+                                <!-- <img class="php" src="imges/php.png" alt=""> -->
+                            </div>
+                            <div class="info">
+                                <h3><?php echo $Course['name'] ?> <br> <?php echo $Course['description']?> </h3>
+                            </div>
+                        </a>
+                     <?php
+                    }
+                    ?>
+                        <!-- <a class="card" href="">
+                            <div class="icon">
+                                <img src="imges/c++.png" alt="">
+                            </div>
+                            <div class="info">
+                                <h3> C++ <br> programming language</h3>
+
+                            </div>
+                        </a>
+                        <a class="card" href="">
+
+                            <div class="icon">
+                                <img src="imges/js.png" alt="">
+                            </div>
+                            <div class="info">
+                                <h3>Java Script <br> programming language</h3>
+                            </div>
+                        </a>
+                        <a class="card" href="">
+
+                            <div class="icon">
+                                <img src="imges/java.png" alt="">
+                            </div>
+                            <div class="info">
+                                <h3>Java<br> programming language</h3>
+
+                            </div>
+                        </a>
+                        <a class="card" href="">
+
+                            <div class="icon">
+                                <img src="imges/logo-mysql.png" alt="">
+                            </div>
+                            <div class="info">
+                                <h3>Data Base<br> programming language</h3>
+
+                            </div>
+                        </a>
+                        <a class="card" href="">
+                            <div class="icon">
+                                <img src="imges/download.jpeg" alt="">
+                            </div>
+                            <div class="info">
+                                <h3>CSS <br> programming language</h3>
+
+                            </div>
+                        </a>
+                        <a class="card" href="">
+
+                            <div class="icon">
+                                <img src="imges/html5__340.webp" alt="">
+                            </div>
+                            <div class="info">
+                                <h3>HTML<br> programming language</h3>
+
+                            </div>
+                        </a>
+                        <a class="card" href="">
+
+                            <div class="icon">
+                                <img src="imges/react.png" alt="">
+                            </div>
+                            <div class="info">
+                                <h3>react<br> library</h3>
+
+                            </div>
+                        </a> -->
+>>>>>>> d9fa5c4d2d20f1472b0f59d17261bcb7ec17eca3
                     </div>
                 </div>
             </div>
