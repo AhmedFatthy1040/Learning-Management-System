@@ -1,86 +1,54 @@
 <?php
 use Controllers\UsersController;
+
 require_once(__DIR__ . "/../../Controllers/ValidationController.php");
 require_once(__DIR__ . "/../../Controllers/UsersController.php");
-require_once(__DIR__ . "/../../Models/Course.php");
+require_once(__DIR__ . "/../../Models/Mentor.php");
 session_start();
 $Controller = new UsersController();
-$Courses = $Controller->GetAllCourses();
-$MentorInfo = $Controller->GetMentors();
-$mentor = new Mentor();
-if (isset($_POST["mentorID"]) && !empty($_POST["mentorID"])) {
-    $mentor->SetId($_POST["mentorID"]);
-    if ($Controller->EditMentor($mentor,'id',$mentor->GetId())) {
-        header("location: ../Mentor/profile.php");
-    } else {
-        $ErrorMessage = $_SESSION["ErrorMessage"];
-    }
-}
+$ID =$_SESSION["UserID"];
+$UserInfo = $Controller->GetMentor($ID);
+$Mentor = new Mentor();
 if (isset($_POST["Fname"]) && !empty($_POST["Fname"])) {
-    $mentor->setFirstName($_POST["Fname"]);
-    if ($Controller->EditMentor($mentor,'fname',$mentor->getFirstName())) {
+    $Mentor->setFirstName($_POST["Fname"]);
+    if ($Controller->EditMentor($Mentor, 'fname', $Mentor->getFirstName())) {
         header("location: ../Mentor/profile.php");
     } else {
         $ErrorMessage = $_SESSION["ErrorMessage"];
     }
 }
 if (isset($_POST["Lname"]) && !empty($_POST["Lname"])) {
-    $mentor->setLastName($_POST["Lname"]);
-    if ($Controller->EditMentor($mentor,'lname',$mentor->getLastName())) {
+    $Mentor->setLastName($_POST["Lname"]);
+    if ($Controller->EditMentor($Mentor, 'lname', $Mentor->getLastName())) {
         header("location: ../Mentor/profile.php");
     } else {
         $ErrorMessage = $_SESSION["ErrorMessage"];
     }
 }
 if (isset($_POST["Email"]) && !empty($_POST["Email"])) {
-    $mentor->setEmail($_POST["Email"]);
-    if ($Controller->EditMentor($mentor,'email',$mentor->getEmail())) {
-        header("location: ../Mentor/profile.php");
-    } else {
-        $ErrorMessage = $_SESSION["ErrorMessage"];
-    }
-}
-if (isset($_POST["birthdate"]) && !empty($_POST["birthdate"])) {
-    $mentor->setDateOfBirth($_POST["birthdate"]);
-    if ($Controller->EditMentor($mentor,'email',$mentor->getDateOfBirth())) {
-        header("location: ../Mentor/profile.php");
-    } else {
-        $ErrorMessage = $_SESSION["ErrorMessage"];
-    }
-}
-if (isset($_POST["salary"]) && !empty($_POST["salary"])) {
-    $mentor->setSalary($_POST["salary"]);
-    if ($Controller->EditMentor($mentor,'salary',$mentor->getSalary())) {
-        header("location: ../Mentor/profile.php");
-    } else {
-        $ErrorMessage = $_SESSION["ErrorMessage"];
-    }
-}
-if (isset($_POST["rate"]) && !empty($_POST["rate"])) {
-    $mentor->setRate($_POST["rate"]);
-    if ($Controller->EditMentor($mentor,'email',$mentor->getRate())) {
+    $Mentor->setEmail($_POST["Email"]);
+    if ($Controller->EditMentor($Mentor, 'email', $Mentor->getEmail())) {
         header("location: ../Mentor/profile.php");
     } else {
         $ErrorMessage = $_SESSION["ErrorMessage"];
     }
 }
 if (isset($_POST["Country"]) && !empty($_POST["Country"])) {
-    $mentor->setNationality($_POST["Country"]);
-    if ($Controller->EditMentor($mentor,'nationality',$mentor->Nationality())) {
+    $Mentor->setNationality($_POST["Country"]);
+    if ($Controller->EditMentor($Mentor, 'nationality', $Mentor->getNationality())) {
         header("location: ../Mentor/profile.php");
     } else {
         $ErrorMessage = $_SESSION["ErrorMessage"];
     }
 }
 if (isset($_POST["PhoneNumber"]) && !empty($_POST["PhoneNumber"])) {
-    $mentor->setPhoneNumber($_POST["PhoneNumber"]);
-    if ($Controller->EditMentor($mentor,'phone',$mentor->getPhoneNumber())) {
+    $Mentor->setPhoneNumber($_POST["PhoneNumber"]);
+    if ($Controller->EditMentor($Mentor, 'phone', $Mentor->getPhoneNumber())) {
         header("location: ../Mentor/profile.php");
     } else {
         $ErrorMessage = $_SESSION["ErrorMessage"];
     }
 }
-$_SESSION["mentorName"] = $MentorInfo[0]["fname"] . "_" . $MentorInfo[0]["lname"];
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -106,9 +74,13 @@ $_SESSION["mentorName"] = $MentorInfo[0]["fname"] . "_" . $MentorInfo[0]["lname"
                 </a>
                 <hr class="sidebar-divider my-0">
                 <ul class="navbar-nav text-light" id="accordionSidebar">
-                    <li class="nav-item"><a class="nav-link" href="dashboard.php"><i class="fas fa-table"></i><span>Dashboard</span></a></li>
-                    <li class="nav-item"><a class="nav-link" href="add-course.php"><i class="fas fa-mentor"></i><span>Add Course</span></a></li>
-                    <li class="nav-item"><a class="nav-link" href="mange_course.php"><i class="far fa-mentor-circle"></i><span>Manage Course</span></a></li>
+                    <li class="nav-item"><a class="nav-link" href="dashboard.php"><i
+                                class="fas fa-home"></i><span>Dashboard</span></a></li>
+                    <li class="nav-item"><a class="nav-link" href="add-course.php"><i
+                                class="fas fa-home"></i><span>Add Course</span></a></li>
+                    <li class="nav-item"><a class="nav-link" href="mange_course.php"><i
+                                class="fas fa-users"></i><span>Manege Course</span></a></li>
+                    <li class="nav-item"><a class="nav-link" href="Courses.php"><i class="fas fa-table"></i><span>Course</span></a></li>
                 </ul>
                 <div class="text-center d-none d-md-inline"><button class="btn rounded-circle border-0"
                         id="sidebarToggle" type="button"></button></div>
@@ -237,12 +209,12 @@ $_SESSION["mentorName"] = $MentorInfo[0]["fname"] . "_" . $MentorInfo[0]["lname"
                                 <div class="nav-item dropdown no-arrow">
                                     <a class="dropdown-toggle nav-link" aria-expanded="false" data-bs-toggle="dropdown"
                                         href="#"><span class="d-none d-lg-inline me-2 text-gray-600 small">
-                                            <?php echo $_SESSION["mentorName"] ?>
+                                            <?php echo $_SESSION["UserName"] ?>
                                         </span><img class="border rounded-circle img-profile"
                                             src="../assets/img/avatars/gear.png"></a>
                                     <div class="dropdown-menu shadow dropdown-menu-end animated--grow-in"><a
-                                            class="dropdown-item" href="profile.php"><i
-                                                class="fas fa-mentor fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Profile</a><a>
+                                            class="dropdown-item" href="#"><i
+                                                class="fas fa-user fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Profile</a>
                                         <div class="dropdown-divider"></div><a class="dropdown-item"
                                             href="../Auth/logout.php"><i
                                                 class="fas fa-sign-out-alt fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Logout</a>
@@ -255,144 +227,83 @@ $_SESSION["mentorName"] = $MentorInfo[0]["fname"] . "_" . $MentorInfo[0]["lname"
                 <div class="container-fluid">
 
                     <div class="row mb-3">
-                        <div class="col-lg-8">
-                            <div class="row mb-3 d-none">
-                                <div class="col">
-                                    <div class="card text-white bg-primary shadow">
-                                        <div class="card-body">
-                                            <div class="row mb-2">
-                                                <div class="col">
-                                                    <p class="m-0">Peformance</p>
-                                                    <p class="m-0"><strong>65.2%</strong></p>
-                                                </div>
-                                                <div class="col-auto"><i class="fas fa-rocket fa-2x"></i></div>
-                                            </div>
-                                            <p class="text-white-50 small m-0"><i class="fas fa-arrow-up"></i>&nbsp;5%
-                                                since last month</p>
-                                        </div>
-                                    </div>
+                        <div class="col-lg-4">
+                            <div class="card mb-3">
+                                <div class="card-body text-center shadow"><img class="rounded-circle mb-3 mt-4"
+                                        src="../assets/img/dogs/image2.jpeg" width="160" height="160">
+                                    <div class="mb-3"><button class="btn btn-primary btn-sm" type="button">Change
+                                            Photo</button></div>
                                 </div>
-                                <div class="col">
-                                    <div class="card text-white bg-success shadow">
-                                        <div class="card-body">
-                                            <div class="row mb-2">
-                                                <div class="col">
-                                                    <p class="m-0">Peformance</p>
-                                                    <p class="m-0"><strong>65.2%</strong></p>
-                                                </div>
-                                                <div class="col-auto"><i class="fas fa-rocket fa-2x"></i></div>
-                                            </div>
-                                            <p class="text-white-50 small m-0"><i class="fas fa-arrow-up"></i>&nbsp;5%
-                                                since last month</p>
-                                        </div>
-                                    </div>
-                                </div>
+                            </div>
+                        </div>
+                        
                             </div>
                             <div class="row">
                                 <div class="col">
                                     <div class="card shadow mb-3">
                                         <div class="card-header py-3">
-                                            <p class="text-primary m-0 fw-bold">mentor Settings</p>
+                                            <p class="text-primary m-0 fw-bold">Mentor Settings</p>
                                         </div>
                                         <div class="card-body">
                                             <form class="mentor" action="profile.php" method="POST">
-                                                 <div class="row">
-                                                 <div class="col">
-                                                         <div class="mb-3"><label class="form-label"
-                                                                 for="mentorId"><strong>Id</strong></label><input
-                                                                 class="form-control" type="mentorId" id="mentorId"
-                                                                 placeholder="<?php echo $MentorInfo[0]['id'] ?>"MentorInfo
-                                                                 name="mentorId"></div>
-                                                     </div>
-                                                     <div class="col">
-                                                         <div class="col">
-                                                              <div class="mb-3"><label class="form-label"
-                                                                     for="email"><strong>Email Address</strong></label><input
-                                                                     class="form-control" type="email" id="email"
-                                                                     placeholder="<?php echo $MentorInfo[0]['email'] ?>"
-                                                                     name="email"></div>
-                                                     </div>
-                                                 </div>
-                                                 <div class="row">
-                                                     <div class="col">
-                                                         <div class="mb-3"><label class="form-label"
-                                                                 for="first_name"><strong>First
-                                                                     Name</strong></label><input class="form-control"
-                                                                 type="text" id="first_name"
-                                                                 placeholder="<?php echo $MentorInfo[0]['fname'] ?>"
-                                                                 name="Fname"></div>
-                                                     </div>
-                                                     <div class="col">
-                                                         <div class="mb-3"><label class="form-label"
-                                                                 for="last_name"><strong>Last Name</strong></label><input
-                                                                 class="form-control" type="text" id="last_name"
-                                                                 placeholder="<?php echo $MentorInfo[0]['lname'] ?>"
-                                                                 name="Lname"></div>
-                                                     </div>
-                                                 </div>
-                                                <div class="row">
-                                                    <div class="col">
-                                                                 <div class="mb-3"><label class="form-label"
-                                                                         for="salary"><strong>Salary</strong></label><input
-                                                                         class="form-control" type="text" id="salary"
-                                                                         placeholder="<?php echo $MentorInfo[0]['salary'] ?>"
-                                                                         name="salary"></div>
-                                                    </div>
-                                                    <div class="col">
-                                                         <div class="mb-3"><label class="form-label"
-                                                                 for="rate"><strong>Rate</strong></label><input
-                                                                 class="form-control" type="text" id="rate"
-                                                                 placeholder="<?php echo $MentorInfo[0]['final_rate'] ?>"
-                                                                 name="rate"></div>
-                                                     </div>
-                                                </div>
-                                                 <div class="row">
-                                                     <div class="col">
-                                                         <div class="mb-3"><label class="form-label"
-                                                                 for="gender"><strong>Gender</strong></label><input
-                                                                 class="form-control" type="text" id="gender"
-                                                                 placeholder="<?php echo $MentorInfo[0]['gender'] ?>"
-                                                                 name="gender"></div>
-                                                     </div>
-                                                     <div class="col">
-                                                         <div class="mb-3"><label class="form-label"
-                                                                     for="birthdate"><strong>Birthdate</strong></label>
-                                                                     <input type="date" id="birthdate" name="birthdate" 
-                                                                     class="form-control" placeholder="<?php echo $MentorInfo[0]['birhtdate']?>">
-                                                    </div>
-                                                 </div>
-                                                 <div class="mb-3"><button class="btn btn-primary btn-sm"
-                                                         type="submit">Save Settings</button></div>
-                                            </form>
-                                        </div>
-                                    </div>
-                                    <div class="card shadow">
-                                        <div class="card-header py-3">
-                                            <p class="text-primary m-0 fw-bold">Contact Settings</p>
-                                        </div>
-                                        <div class="card-body">
-                                            <form class="contact " action="profile.php" method="POST">
                                                 <div class="row">
                                                     <div class="col">
                                                         <div class="mb-3"><label class="form-label"
-                                                                for="Country"><strong>Country</strong></label><input
-                                                                class="form-control" type="text" id="Country"
-                                                                placeholder="<?php echo $MentorInfo[0]['nationality'] ?>"
-                                                                name="Country"></div>
+                                                                for="email"><strong>Email</strong></label><input
+                                                                class="form-control" type="email" id="email"
+                                                                placeholder="<?php echo $UserInfo[0]['email'] ?>"
+                                                                name="Email"></div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col">
+                                                        <div class="mb-3"><label class="form-label"
+                                                                for="first_name"><strong>First
+                                                                    Name</strong></label><input class="form-control"
+                                                                type="text" id="first_name"
+                                                                placeholder="<?php echo $UserInfo[0]['fname'] ?>"
+                                                                name="Fname"></div>
+                                                    </div>
+                                                    <div class="col">
+                                                        <div class="mb-3"><label class="form-label"
+                                                                for="last_name"><strong>Last Name</strong></label><input
+                                                                class="form-control" type="text" id="last_name"
+                                                                placeholder="<?php echo $UserInfo[0]['lname'] ?>"
+                                                                name="Lname"></div>
                                                     </div>
                                                     <div class="col">
                                                         <div class="mb-3"><label class="form-label"
                                                                 for="PhoneNumber"><strong>Phone
                                                                     Number</strong></label><input class="form-control"
                                                                 type="text" id="PhonrNumber"
-                                                                placeholder="<?php echo $MentorInfo[0]['phone'] ?>"
+                                                                placeholder="<?php echo $UserInfo[0]['phone'] ?>"
                                                                 name="PhoneNumber"></div>
                                                     </div>
                                                 </div>
                                                 <div class="mb-3"><button class="btn btn-primary btn-sm"
-                                                        type="submit">Save&nbsp;Settings</button></div>
-                                                        
+                                                        type="submit">Save Settings</button></div>
                                             </form>
+                                        </div>
+                                    </div>
+                                    <div class="card shadow">
+                                        <div class="card-header py-3">
+                                            <p class="text-primary m-0 fw-bold">NON Changable Information</p>
+                                        </div>
+                                        <div class="card-body">
+                                                        <div class="mb-3"><label class="form-label"
+                                                                for="Country"><strong>Country</strong></label><input
+                                                                class="form-control" type="text" id="Country"
+                                                                placeholder="<?php echo 'EG' ?>"
+                                                                name="Country">
+                                                        </div>
+                                        </div>
+                                        <div class="card-body">
+                                                        <div class="mb-3"><label class="form-label"
+                                                                for="ID"><strong>ID</strong></label><input
+                                                                class="form-control" type="text" id="ID"
+                                                                placeholder="<?php echo $ID ?>"
+                                                                name="Country">
+                                                        </div>
                                         </div>
                                     </div>
                                 </div>
@@ -412,5 +323,4 @@ $_SESSION["mentorName"] = $MentorInfo[0]["fname"] . "_" . $MentorInfo[0]["lname"
     <script src="../assets/js/bs-init.js"></script>
     <script src="../assets/js/theme.js"></script>
 </body>
-
 </html>

@@ -1,28 +1,51 @@
-<?php
+<style>
+<?php session_start();
+include("../assets/bootstrap/css/Admin.css");
+include("../assets/bootstrap/css/ManageUsers.css");
 require_once(__DIR__ . "/../../Controllers/ValidationController.php");
-require_once(__DIR__ . "/../../Controllers/UsersController.php");
-require_once(__DIR__ . "/../../Models/Course.php");
-use Controllers\UsersController;
-$Controller = new UsersController();
-session_start();
-$Courses = $Controller->GetLearningPathCoursesInfo($_SESSION['lpid']);
-if (isset($_POST['lectures'])) {
-    $_SESSION['CourseId'] = $_POST['CourseId'];
-    header("location: lectures.php");
-}
-if (isset($_POST['regester'])) {
-    $_SESSION['CourseId'] = $_POST['CourseId'];
-    $Controller->RegesterCourse($_SESSION['CourseId']);
-}
-?>
+use Controllers\ValidationController;
+$Check=new ValidationController();
+$Access=$Check->CheckForMentor();
+if ( !$Access) header("location:../Auth/logout.php");
 
+
+?>
+</style>
+<?php
+
+
+
+// connect to the database
+$conn = mysqli_connect('localhost', 'root', 'root', 'lms','3307');
+
+// check connection
+if(!$conn){
+    echo 'Connection error: '. mysqli_connect_error();
+}
+
+// write query for all mentors
+$sql = 'SELECT phone, fname, lname, salary, final_rate, email, id FROM mentor ORDER BY final_rate desc ';
+
+// get the result set (set of rows)
+$result = mysqli_query($conn, $sql);
+
+// fetch the resulting rows as an array
+$mentors = mysqli_fetch_all($result, MYSQLI_ASSOC);
+
+// free the $result from memory (good practise)
+mysqli_free_result($result);
+
+// close connection
+mysqli_close($conn);
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-    <title>Manage Courses - LMS</title>
+    <title>View Mentors </title>
     <link rel="stylesheet" href="../assets/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet"
         href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i&amp;display=swap">
@@ -41,18 +64,16 @@ if (isset($_POST['regester'])) {
                 <ul class="navbar-nav text-light" id="accordionSidebar">
                     <li class="nav-item"><a class="nav-link" href="dashboard.php"><i
                                 class="fas fa-home"></i><span>Home</span></a></li>
-                    <li class="nav-item"><a class="nav-link" href="courses.php"><i
-                                class="fas fa-home"></i><span>Courses</span></a></li>
-                    <li class="nav-item"><a class="nav-link" href="lectures.php"><i
-                                class="fas fa-home"></i><span>Lectures</span></a></li>
-                    <li class="nav-item"><a class="nav-link" href="profile.php"><i
-                                class="fas fa-user"></i><span>Profile</span></a></li>
-                    <li class="nav-item"><a class="nav-link" href="mentors.php"><i
-                                class="fas fa-users"></i><span>Mentors</span></a></li>
-                    <li class="nav-item"><a class="nav-link" href="learning paths.php"><i
+                    <li class="nav-item"><a class="nav-link" href="manage-courses.php"><i
+                                class="fas fa-user"></i><span>Courses</span></a></li>
+                    <!--<<<<<<< HEAD-->
+                    <li class="nav-item"><a class="nav-link" href="Manage-Users.php"><i
+                                class="fas fa-users"></i><span>Users</span></a></li>
+                    <!--=======-->
+
+                    <!--=============================================-->
+                    <li class="nav-item"><a class="nav-link" href="manage-lp.php"><i
                                 class="fas fa-book-open"></i><span>Learning Paths</span></a></li>
-                    <li class="nav-item"><a class="nav-link" href="transcript.php"><i
-                                class="fas fa-table"></i><span>transcript</span></a></li>
                 </ul>
                 <div class="text-center d-none d-md-inline"><button class="btn rounded-circle border-0"
                         id="sidebarToggle" type="button"></button></div>
@@ -178,11 +199,10 @@ if (isset($_POST['regester'])) {
                             </li>
                             <div class="d-none d-sm-block topbar-divider"></div>
                             <li class="nav-item dropdown no-arrow">
-                                <div class="nav-item dropdown no-arrow">
-                                    <a class="dropdown-toggle nav-link" aria-expanded="false" data-bs-toggle="dropdown"
-                                        href="#"><span class="d-none d-lg-inline me-2 text-gray-600 small">
-                                            <?php echo $_SESSION["UserName"] ?>
-                                        </span><img class="border rounded-circle img-profile"
+                                <div class="nav-item dropdown no-arrow"><a class="dropdown-toggle nav-link"
+                                        aria-expanded="false" data-bs-toggle="dropdown" href="#"><span
+                                            class="d-none d-lg-inline me-2 text-gray-600 small"><?php echo $_SESSION["UserName"] ?></span><img
+                                            class="border rounded-circle img-profile"
                                             src="../assets/img/avatars/gear.png"></a>
                                     <div class="dropdown-menu shadow dropdown-menu-end animated--grow-in"><a
                                             class="dropdown-item" href="#"><i
@@ -202,124 +222,92 @@ if (isset($_POST['regester'])) {
                     </div>
                 </nav>
                 <div class="container-fluid">
-                    <div class="card shadow">
-                        <div class="card-header py-3">
-                            <p class="text-primary m-0 fw-bold">Courses</p>
-                        </div>
-                        <div class="card-body">
-                            <div class="row">
-                                <div class="col-md-6 text-nowrap">
-                                    <div id="dataTable_length" class="dataTables_length" aria-controls="dataTable">
-                                        <label class="form-label">Show&nbsp;<select
-                                                class="d-inline-block form-select form-select-sm">
-                                                <option value="10" selected="">10</option>
-                                                <option value="25">25</option>
-                                                <option value="50">50</option>
-                                                <option value="100">100</option>
-                                            </select>&nbsp;</label>
+                    <div class="card shadow border-start-success py-2">
+                    </div>
+                    </div>
+                    <div class="container-fluid">
+                        <h3 class="text-dark mb-4">Mentors</h3>
+                        <div class="card shadow">
+
+                            <div class="card-header py-3">
+                                <p class="text-primary m-0 fw-bold">Mentor Info</p>
+
+                            </div>
+                            <div class="card-body">
+
+                                <div class="row">
+
+                                    <div class="col-md-6 text-nowrap">
+
+                                        <div id="dataTable_length" class="dataTables_length" aria-controls="dataTable">
+                                            <label class="form-label">Show&nbsp;<select
+                                                    class="d-inline-block form-select form-select-sm">
+                                                    <option value="10" selected="">10</option>
+                                                    <option value="25">25</option>
+                                                    <option value="50">50</option>
+                                                    <option value="100">100</option>
+                                                </select>&nbsp;</label>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
                                     </div>
                                 </div>
-                                <div class="col-md-6">
-                                    <div class="text-md-end dataTables_filter" id="dataTable_filter"><label
-                                            class="form-label"><input type="search" class="form-control form-control-sm"
-                                                aria-controls="dataTable" placeholder="Search"></label></div>
-                                </div>
-                            </div>
-                            <div class="table-responsive table mt-2" id="dataTable" role="grid"
-                                aria-describedby="dataTable_info">
-                                <table class="table my-0" id="dataTable">
-                                    <thead>
-                                        <tr>
-                                            <th>Course</th>
-                                            <th>Description</th>
-                                            <th>Mentor</th>
-                                            <th>Learning Path</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <?php
-                                        foreach ($Courses as $Course) {
-                                            ?>
+                                <!--                            ================================================Mentors Table=============================================================-->
+                                <div class="table-responsive table mt-2" id="dataTable" role="grid"
+                                    aria-describedby="dataTable_info">
+                                    <table class="table my-0" id="dataTable">
+                                        <thead>
                                             <tr>
-                                                <td>
-                                                    <?php echo $Course['course'] ?>
-                                                </td>
-                                                <td>
-                                                    <?php echo $Course['description'] ?>
-                                                </td>
-                                                <td>
-                                                    <?php echo $Course['mentor_fname'] . " " . $Course['mentor_lname'] ?>
-                                                </td>
-                                                <td>
-                                                    <?php echo $Course['learning_path'] ?>
-                                                </td>
-                                                <td>
-                                                    <form method="POST">
-                                                        <input type="hidden" name="CourseId"
-                                                            value="<?php echo $Course['course_id']; ?>">
-                                                        <button class="noselect" type="submit" name="lectures"
-                                                            value="lectures"><span class="text">Lectures</span><span
-                                                                class="icon"><svg xmlns="http://www.w3.org/2000/svg"
-                                                                    width="24" height="24" viewBox="0 0 24 24">
-                                                                    <path
-                                                                        d="M24 20.188l-8.315-8.209 8.2-8.282-3.697-3.697-8.212 8.318-8.31-8.203-3.666 3.666 8.321 8.24-8.206 8.313 3.666 3.666 8.237-8.318 8.285 8.203z">
-                                                                    </path>
-                                                                </svg></span></button>
-                                                    </form>
-                                                </td>
-                                                <td>
-                                                    <form method="POST">
-                                                        <input type="hidden" name="CourseId"
-                                                            value="<?php echo $Course['course_id']; ?>">
-                                                        <button class="noselect" type="submit" name="regester"
-                                                            value="regester"><span class="text">Regester</span><span
-                                                                class="icon"><svg xmlns="http://www.w3.org/2000/svg"
-                                                                    width="24" height="24" viewBox="0 0 24 24">
-                                                                    <path
-                                                                        d="M24 20.188l-8.315-8.209 8.2-8.282-3.697-3.697-8.212 8.318-8.31-8.203-3.666 3.666 8.321 8.24-8.206 8.313 3.666 3.666 8.237-8.318 8.285 8.203z">
-                                                                    </path>
-                                                                </svg></span></button>
-                                                    </form>
-                                                </td>
+                                                <th>First Name</th>
+                                                <th>Last Name</th>
+                                                <th>Email</th>
+                                                <th>Rate</th>
+                                                <th>ID</th>
+                                                <th>Salary</th>
                                             </tr>
-                                            <?php
-                                        }
+                                        </thead>
+                                        <?php foreach ($mentors as $mentor): ?>
+                                        <tbody>
+                                            <tr>
 
-                                        ?>
-
-                                    </tbody>
-                                    <tfoot>
-                                        <tr>
-                                            <td><strong>Course</strong></td>
-                                            <td><strong>Description</strong></td>
-                                            <td><strong>Mentor</strong></td>
-                                            <td><strong>Learning Path</strong></td>
-                                        </tr>
-                                    </tfoot>
-                                </table>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-6 align-self-center">
-                                    <p id="dataTable_info" class="dataTables_info" role="status" aria-live="polite">
-                                        Showing 1 to 10 of 27</p>
+                                                <td><?php echo htmlspecialchars($mentor['fname']); ?></td>
+                                                <td><?php echo htmlspecialchars($mentor['lname']); ?></td>
+                                                <td><?php echo htmlspecialchars($mentor['email']); ?></td>
+                                                <td><?php echo htmlspecialchars($mentor['final_rate']); ?></td>
+                                                <td><?php echo htmlspecialchars($mentor['id']); ?></td>
+                                                <td><?php echo htmlspecialchars($mentor['salary']); ?></td>
+                                            </tr>
+                                        </tbody>
+                                        <?php endforeach; ?>
+                                    </table>
                                 </div>
-                                <div class="col-md-6">
-                                    <nav
-                                        class="d-lg-flex justify-content-lg-end dataTables_paginate paging_simple_numbers">
-                                        <ul class="pagination">
-                                            <li class="page-item disabled"><a class="page-link" aria-label="Previous"
-                                                    href="#"><span aria-hidden="true">«</span></a></li>
-                                            <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                                            <li class="page-item"><a class="page-link" href="#">2</a></li>
-                                            <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                            <li class="page-item"><a class="page-link" aria-label="Next" href="#"><span
-                                                        aria-hidden="true">»</span></a></li>
-                                        </ul>
-                                    </nav>
+                                <!--                            ==========================================================================================================================-->
+                                <div class="row">
+                                    <div class="col-md-6 align-self-center">
+                                        <p id="dataTable_info" class="dataTables_info" role="status" aria-live="polite">
+                                            Showing 1 to 10 of 27</p>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <nav
+                                            class="d-lg-flex justify-content-lg-end dataTables_paginate paging_simple_numbers">
+                                            <ul class="pagination">
+                                                <li class="page-item disabled"><a class="page-link"
+                                                        aria-label="Previous" href="#"><span
+                                                            aria-hidden="true">«</span></a></li>
+                                                <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                                                <li class="page-item"><a class="page-link" href="#">2</a></li>
+                                                <li class="page-item"><a class="page-link" href="#">3</a></li>
+                                                <li class="page-item"><a class="page-link" aria-label="Next"
+                                                        href="#"><span aria-hidden="true">»</span></a></li>
+                                            </ul>
+                                        </nav>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
+
                 </div>
             </div>
             <footer class="bg-white sticky-footer">

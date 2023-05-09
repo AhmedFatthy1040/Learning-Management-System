@@ -108,7 +108,6 @@ class UsersController
         }
     }
 
-
     public function AddLectures(Lecture $Lecture)
     {
         $this->db = new DBController();
@@ -145,6 +144,19 @@ class UsersController
         $this->db = new DBController();
         if ($this->db->connect()) {
             $query = "SELECT id, fname, lname, gender, email, phone FROM user ORDER BY id desc";
+            return $this->db->Select($query);
+        } else {
+            echo "Error in Database Connection";
+            return false;
+        }
+    }
+
+
+    public function GetMentor($ID)
+    {
+        $this->db = new DBController();
+        if ($this->db->connect()) {
+            $query = "SELECT '$ID', fname, lname, gender, email, phone FROM mentor where id = '$ID'";
             return $this->db->Select($query);
         } else {
             echo "Error in Database Connection";
@@ -196,6 +208,20 @@ class UsersController
             return false;
         }
     }
+
+
+    public function GetStudentsForMentor()
+    {
+        $this->db = new DBController();
+        if ($this->db->connect()) {
+            $query = "select YEAR(birthdate),fname,lname,password,nationality,gender,email,phone from user";
+            return $this->db->Select($query);
+        } else {
+            echo "Error in Database Connection";
+            return false;
+        }
+    }
+
     public function GetAllCourses()
     {
         $this->db = new DBController();
@@ -225,11 +251,11 @@ class UsersController
             return false;
         }
     }
-    public function EditMentor(User $mentor, $entity, $value)
+    public function EditMentor(mentor $mentor, $entity, $value)
     {
         $this->db = new DBController();
         if ($this->db->connect()) {
-            $id = $_SESSION["MentorID"];
+            $id = $_SESSION["UserID"];
             $query = "UPDATE mentor SET $entity = '$value'
             WHERE id = $id";
             return $this->db->query($query);
@@ -279,6 +305,34 @@ class UsersController
             return false;
         }
     }
+
+
+    public function GetLecture()
+    {
+        $this->db = new DBController();
+        if ($this->db->connect()) {
+            $query = "SELECT id, name, week, link, info, course_id FROM lecture ORDER BY course_id;";
+            return $this->db->Select($query);
+        } else {
+            echo "Error in Database Connection";
+            return false;
+        }
+    }
+
+
+    public function GetExam()
+    {
+        $this->db = new DBController();
+        if ($this->db->connect()) {
+            $query = "SELECT id, duration, course_id FROM exam ORDER BY course_id;";
+            return $this->db->Select($query);
+        } else {
+            echo "Error in Database Connection";
+            return false;
+        }
+    }
+
+
     public function AddQuestion(Question $Question)
     {
         $this->db = new DBController();

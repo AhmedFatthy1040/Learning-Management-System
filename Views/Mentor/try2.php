@@ -1,19 +1,52 @@
-<?php
+<style>
+<?php include("../assets/bootstrap/css/ManageUsers.css");
 require_once(__DIR__ . "/../../Controllers/ValidationController.php");
-require_once(__DIR__ . "/../../Controllers/UsersController.php");
-require_once(__DIR__ . "/../../Models/Course.php");
-use Controllers\UsersController;
-$Controller = new UsersController();
-session_start();
-$Courses = $Controller->GetLearningPathCoursesInfo($_SESSION['lpid']);
-if (isset($_POST['lectures'])) {
-    $_SESSION['CourseId'] = $_POST['CourseId'];
-    header("location: lectures.php");
+use Controllers\ValidationController;
+$Check=new ValidationController();
+$Access=$Check->CheckForMentor();
+if ( !$Access) header("location:../Auth/logout.php");
+
+?>
+</style>
+<?php
+// connect to the database
+$conn = mysqli_connect('localhost', 'root', 'root', 'lms','3307');
+
+// check connection
+if(!$conn){
+    echo 'Connection error: '. mysqli_connect_error();
 }
-if (isset($_POST['regester'])) {
-    $_SESSION['CourseId'] = $_POST['CourseId'];
-    $Controller->RegesterCourse($_SESSION['CourseId']);
+
+// write query for all mentors
+$sql = 'SELECT id, name, week, link, info, course_id FROM lecture ORDER BY course_id;';
+
+// get the result set (set of rows)
+$result = mysqli_query($conn, $sql);
+
+// fetch the resulting rows as an array
+$LPS = mysqli_fetch_all($result, MYSQLI_ASSOC);
+
+// free the $result from memory (good practise)
+mysqli_free_result($result);
+
+//delete data if button is clicked
+if(isset($_POST['delete'])){
+
+    $id_to_delete = mysqli_real_escape_string($conn, $_POST['id_to_delete']);
+
+    $sql = "DELETE FROM lecture WHERE id = $id_to_delete";
+
+    if(mysqli_query($conn, $sql)){
+        header('Location: try2.php');
+    } else {
+        echo 'query error: '. mysqli_error($conn);
+    }
+
 }
+
+// close connection
+mysqli_close($conn);
+
 ?>
 
 <!DOCTYPE html>
@@ -22,7 +55,7 @@ if (isset($_POST['regester'])) {
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-    <title>Manage Courses - LMS</title>
+    <title>delete lecture - LMS</title>
     <link rel="stylesheet" href="../assets/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet"
         href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i&amp;display=swap">
@@ -41,18 +74,17 @@ if (isset($_POST['regester'])) {
                 <ul class="navbar-nav text-light" id="accordionSidebar">
                     <li class="nav-item"><a class="nav-link" href="dashboard.php"><i
                                 class="fas fa-home"></i><span>Home</span></a></li>
-                    <li class="nav-item"><a class="nav-link" href="courses.php"><i
-                                class="fas fa-home"></i><span>Courses</span></a></li>
-                    <li class="nav-item"><a class="nav-link" href="lectures.php"><i
-                                class="fas fa-home"></i><span>Lectures</span></a></li>
-                    <li class="nav-item"><a class="nav-link" href="profile.php"><i
-                                class="fas fa-user"></i><span>Profile</span></a></li>
-                    <li class="nav-item"><a class="nav-link" href="mentors.php"><i
-                                class="fas fa-users"></i><span>Mentors</span></a></li>
-                    <li class="nav-item"><a class="nav-link" href="learning paths.php"><i
-                                class="fas fa-book-open"></i><span>Learning Paths</span></a></li>
-                    <li class="nav-item"><a class="nav-link" href="transcript.php"><i
-                                class="fas fa-table"></i><span>transcript</span></a></li>
+                    <li class="nav-item"><a class="nav-link" href="manage-courses.php"><i
+                                class="fas fa-user"></i><span>Courses</span></a></li>
+                    <!--<<<<<<< HEAD-->
+                    <li class="nav-item"><a class="nav-link" href="Manage-Users.php"><i
+                                class="fas fa-users"></i><span>Users</span></a></li>
+                    <!--=======-->
+
+                    <!--=============================================-->
+                    <li class="nav-item"><a class="nav-link" href="manage-lp.php"><i
+                                class="fas fa-book-open"></i><span>Lectures</span></a></li>
+
                 </ul>
                 <div class="text-center d-none d-md-inline"><button class="btn rounded-circle border-0"
                         id="sidebarToggle" type="button"></button></div>
@@ -178,11 +210,10 @@ if (isset($_POST['regester'])) {
                             </li>
                             <div class="d-none d-sm-block topbar-divider"></div>
                             <li class="nav-item dropdown no-arrow">
-                                <div class="nav-item dropdown no-arrow">
-                                    <a class="dropdown-toggle nav-link" aria-expanded="false" data-bs-toggle="dropdown"
-                                        href="#"><span class="d-none d-lg-inline me-2 text-gray-600 small">
-                                            <?php echo $_SESSION["UserName"] ?>
-                                        </span><img class="border rounded-circle img-profile"
+                                <div class="nav-item dropdown no-arrow"><a class="dropdown-toggle nav-link"
+                                        aria-expanded="false" data-bs-toggle="dropdown" href="#"><span
+                                            class="d-none d-lg-inline me-2 text-gray-600 small"><?php echo $_SESSION["UserName"] ?></span><img
+                                            class="border rounded-circle img-profile"
                                             src="../assets/img/avatars/gear.png"></a>
                                     <div class="dropdown-menu shadow dropdown-menu-end animated--grow-in"><a
                                             class="dropdown-item" href="#"><i
@@ -202,9 +233,14 @@ if (isset($_POST['regester'])) {
                     </div>
                 </nav>
                 <div class="container-fluid">
+                    <div class="d-sm-flex justify-content-between align-items-center mb-4">
+                        <h3 class="text-dark mb-0">Delete Lectures</h3><a
+                            class="btn btn-primary btn-sm d-none d-sm-inline-block" role="button" href="add-lp.php"><i
+                                class="fas fa-download fa-sm text-white-50"></i>&nbsp;Add Lecture</a>
+                    </div>
                     <div class="card shadow">
                         <div class="card-header py-3">
-                            <p class="text-primary m-0 fw-bold">Courses</p>
+                            <p class="text-primary m-0 fw-bold">Lecture Info</p>
                         </div>
                         <div class="card-body">
                             <div class="row">
@@ -230,70 +266,54 @@ if (isset($_POST['regester'])) {
                                 <table class="table my-0" id="dataTable">
                                     <thead>
                                         <tr>
-                                            <th>Course</th>
-                                            <th>Description</th>
-                                            <th>Mentor</th>
-                                            <th>Learning Path</th>
+                                            <th>ID</th>
+                                            <th>Name</th>
+                                            <th>Week</th>
+                                            <th>Link</th>
+                                            <th>Info</th>
+                                            <th>Course ID</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <?php
-                                        foreach ($Courses as $Course) {
-                                            ?>
-                                            <tr>
-                                                <td>
-                                                    <?php echo $Course['course'] ?>
-                                                </td>
-                                                <td>
-                                                    <?php echo $Course['description'] ?>
-                                                </td>
-                                                <td>
-                                                    <?php echo $Course['mentor_fname'] . " " . $Course['mentor_lname'] ?>
-                                                </td>
-                                                <td>
-                                                    <?php echo $Course['learning_path'] ?>
-                                                </td>
-                                                <td>
-                                                    <form method="POST">
-                                                        <input type="hidden" name="CourseId"
-                                                            value="<?php echo $Course['course_id']; ?>">
-                                                        <button class="noselect" type="submit" name="lectures"
-                                                            value="lectures"><span class="text">Lectures</span><span
-                                                                class="icon"><svg xmlns="http://www.w3.org/2000/svg"
-                                                                    width="24" height="24" viewBox="0 0 24 24">
-                                                                    <path
-                                                                        d="M24 20.188l-8.315-8.209 8.2-8.282-3.697-3.697-8.212 8.318-8.31-8.203-3.666 3.666 8.321 8.24-8.206 8.313 3.666 3.666 8.237-8.318 8.285 8.203z">
-                                                                    </path>
-                                                                </svg></span></button>
-                                                    </form>
-                                                </td>
-                                                <td>
-                                                    <form method="POST">
-                                                        <input type="hidden" name="CourseId"
-                                                            value="<?php echo $Course['course_id']; ?>">
-                                                        <button class="noselect" type="submit" name="regester"
-                                                            value="regester"><span class="text">Regester</span><span
-                                                                class="icon"><svg xmlns="http://www.w3.org/2000/svg"
-                                                                    width="24" height="24" viewBox="0 0 24 24">
-                                                                    <path
-                                                                        d="M24 20.188l-8.315-8.209 8.2-8.282-3.697-3.697-8.212 8.318-8.31-8.203-3.666 3.666 8.321 8.24-8.206 8.313 3.666 3.666 8.237-8.318 8.285 8.203z">
-                                                                    </path>
-                                                                </svg></span></button>
-                                                    </form>
-                                                </td>
-                                            </tr>
-                                            <?php
-                                        }
+                                    foreach ($LPS as $LP) {
+                                ?>
+                                        <tr>
+                                            <td><?php echo $LP['id'] ?></td>
+                                            <td><?php echo $LP['name'] ?></td>
+                                            <td><?php echo $LP['week'] ?></td>
+                                            <td><?php echo $LP['link'] ?></td>
+                                            <td><?php echo $LP['info'] ?></td>
+                                            <td><?php echo $LP['course_id'] ?></td>
+                                            <td>
+                                                <form action="try2.php" method="POST">
+                                                    <input type="hidden" name="id_to_delete"
+                                                        value="<?php echo $LP['id']; ?>">
+                                                    <button class="noselect" type="submit" name="delete"
+                                                        value="Delete"><span class="text">Delete</span><span
+                                                            class="icon"><svg xmlns="http://www.w3.org/2000/svg"
+                                                                width="24" height="24" viewBox="0 0 24 24">
+                                                                <path
+                                                                    d="M24 20.188l-8.315-8.209 8.2-8.282-3.697-3.697-8.212 8.318-8.31-8.203-3.666 3.666 8.321 8.24-8.206 8.313 3.666 3.666 8.237-8.318 8.285 8.203z">
+                                                                </path>
+                                                            </svg></span></button>
+                                                </form>
+                                            </td>
+                                        </tr>
+                                        <?php
+                                    }
 
-                                        ?>
+                                ?>
 
                                     </tbody>
                                     <tfoot>
                                         <tr>
-                                            <td><strong>Course</strong></td>
-                                            <td><strong>Description</strong></td>
-                                            <td><strong>Mentor</strong></td>
-                                            <td><strong>Learning Path</strong></td>
+                                        <th>ID</th>
+                                            <th>Name</th>
+                                            <th>Week</th>
+                                            <th>Link</th>
+                                            <th>Info</th>
+                                            <th>Course ID</th>
                                         </tr>
                                     </tfoot>
                                 </table>

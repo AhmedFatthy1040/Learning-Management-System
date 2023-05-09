@@ -5,14 +5,8 @@ require_once(__DIR__ . "/../../Models/Course.php");
 use Controllers\UsersController;
 $Controller = new UsersController();
 session_start();
-$Courses = $Controller->GetLearningPathCoursesInfo($_SESSION['lpid']);
+$Courses = $Controller->GetExam();
 if (isset($_POST['lectures'])) {
-    $_SESSION['CourseId'] = $_POST['CourseId'];
-    header("location: lectures.php");
-}
-if (isset($_POST['regester'])) {
-    $_SESSION['CourseId'] = $_POST['CourseId'];
-    $Controller->RegesterCourse($_SESSION['CourseId']);
 }
 ?>
 
@@ -22,7 +16,7 @@ if (isset($_POST['regester'])) {
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-    <title>Manage Courses - LMS</title>
+    <title>View Courses - LMS</title>
     <link rel="stylesheet" href="../assets/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet"
         href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i&amp;display=swap">
@@ -40,19 +34,15 @@ if (isset($_POST['regester'])) {
                 <hr class="sidebar-divider my-0">
                 <ul class="navbar-nav text-light" id="accordionSidebar">
                     <li class="nav-item"><a class="nav-link" href="dashboard.php"><i
-                                class="fas fa-home"></i><span>Home</span></a></li>
+                                class="fas fa-home"></i><span>Dashboard</span></a></li>
                     <li class="nav-item"><a class="nav-link" href="courses.php"><i
                                 class="fas fa-home"></i><span>Courses</span></a></li>
-                    <li class="nav-item"><a class="nav-link" href="lectures.php"><i
-                                class="fas fa-home"></i><span>Lectures</span></a></li>
                     <li class="nav-item"><a class="nav-link" href="profile.php"><i
                                 class="fas fa-user"></i><span>Profile</span></a></li>
                     <li class="nav-item"><a class="nav-link" href="mentors.php"><i
                                 class="fas fa-users"></i><span>Mentors</span></a></li>
                     <li class="nav-item"><a class="nav-link" href="learning paths.php"><i
                                 class="fas fa-book-open"></i><span>Learning Paths</span></a></li>
-                    <li class="nav-item"><a class="nav-link" href="transcript.php"><i
-                                class="fas fa-table"></i><span>transcript</span></a></li>
                 </ul>
                 <div class="text-center d-none d-md-inline"><button class="btn rounded-circle border-0"
                         id="sidebarToggle" type="button"></button></div>
@@ -186,12 +176,7 @@ if (isset($_POST['regester'])) {
                                             src="../assets/img/avatars/gear.png"></a>
                                     <div class="dropdown-menu shadow dropdown-menu-end animated--grow-in"><a
                                             class="dropdown-item" href="#"><i
-                                                class="fas fa-user fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Profile</a><a
-                                            class="dropdown-item" href="#"><i
-                                                class="fas fa-cogs fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Settings</a><a
-                                            class="dropdown-item" href="#"><i
-                                                class="fas fa-list fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Activity
-                                            log</a>
+                                                class="fas fa-user fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Profile</a>
                                         <div class="dropdown-divider"></div><a class="dropdown-item"
                                             href="../Auth/logout.php"><i
                                                 class="fas fa-sign-out-alt fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Logout</a>
@@ -230,10 +215,9 @@ if (isset($_POST['regester'])) {
                                 <table class="table my-0" id="dataTable">
                                     <thead>
                                         <tr>
-                                            <th>Course</th>
-                                            <th>Description</th>
-                                            <th>Mentor</th>
-                                            <th>Learning Path</th>
+                                            <th>ID</th>
+                                            <th>Duration</th>
+                                            <th>Course ID</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -242,58 +226,27 @@ if (isset($_POST['regester'])) {
                                             ?>
                                             <tr>
                                                 <td>
-                                                    <?php echo $Course['course'] ?>
+                                                    <?php echo $Course['id'] ?>
                                                 </td>
                                                 <td>
-                                                    <?php echo $Course['description'] ?>
+                                                    <?php echo $Course['duration'] ?>
                                                 </td>
                                                 <td>
-                                                    <?php echo $Course['mentor_fname'] . " " . $Course['mentor_lname'] ?>
                                                 </td>
                                                 <td>
-                                                    <?php echo $Course['learning_path'] ?>
-                                                </td>
-                                                <td>
-                                                    <form method="POST">
-                                                        <input type="hidden" name="CourseId"
-                                                            value="<?php echo $Course['course_id']; ?>">
-                                                        <button class="noselect" type="submit" name="lectures"
-                                                            value="lectures"><span class="text">Lectures</span><span
-                                                                class="icon"><svg xmlns="http://www.w3.org/2000/svg"
-                                                                    width="24" height="24" viewBox="0 0 24 24">
-                                                                    <path
-                                                                        d="M24 20.188l-8.315-8.209 8.2-8.282-3.697-3.697-8.212 8.318-8.31-8.203-3.666 3.666 8.321 8.24-8.206 8.313 3.666 3.666 8.237-8.318 8.285 8.203z">
-                                                                    </path>
-                                                                </svg></span></button>
-                                                    </form>
-                                                </td>
-                                                <td>
-                                                    <form method="POST">
-                                                        <input type="hidden" name="CourseId"
-                                                            value="<?php echo $Course['course_id']; ?>">
-                                                        <button class="noselect" type="submit" name="regester"
-                                                            value="regester"><span class="text">Regester</span><span
-                                                                class="icon"><svg xmlns="http://www.w3.org/2000/svg"
-                                                                    width="24" height="24" viewBox="0 0 24 24">
-                                                                    <path
-                                                                        d="M24 20.188l-8.315-8.209 8.2-8.282-3.697-3.697-8.212 8.318-8.31-8.203-3.666 3.666 8.321 8.24-8.206 8.313 3.666 3.666 8.237-8.318 8.285 8.203z">
-                                                                    </path>
-                                                                </svg></span></button>
-                                                    </form>
+                                                    <?php echo $Course['course_id'] ?>
                                                 </td>
                                             </tr>
                                             <?php
                                         }
 
                                         ?>
-
                                     </tbody>
                                     <tfoot>
                                         <tr>
-                                            <td><strong>Course</strong></td>
-                                            <td><strong>Description</strong></td>
-                                            <td><strong>Mentor</strong></td>
-                                            <td><strong>Learning Path</strong></td>
+                                            <td><strong>ID</strong></td>
+                                            <td><strong>Dureation</strong></td>
+                                            <td><strong>Course ID</strong></td>
                                         </tr>
                                     </tfoot>
                                 </table>

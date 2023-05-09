@@ -1,0 +1,14 @@
+public function AddExam(Exam $Exam)
+    {
+        $this->db = new DBController();
+        $Duration = $Exam->getExamDuration();
+        $Course_ID = $Exam->getCourseID();
+
+        if ($this->db->connect()) {
+            $query = "insert into exam(duration, course_id) values ('$Duration' , '$Course_ID');";
+            return $this->db->query($query);
+        } else {
+            echo "Error in Database Connection";
+            return false;
+        }
+    }

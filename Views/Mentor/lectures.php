@@ -1,19 +1,12 @@
 <?php
+use Controllers\UsersController;
+
 require_once(__DIR__ . "/../../Controllers/ValidationController.php");
 require_once(__DIR__ . "/../../Controllers/UsersController.php");
 require_once(__DIR__ . "/../../Models/Course.php");
-use Controllers\UsersController;
-$Controller = new UsersController();
 session_start();
-$Courses = $Controller->GetLearningPathCoursesInfo($_SESSION['lpid']);
-if (isset($_POST['lectures'])) {
-    $_SESSION['CourseId'] = $_POST['CourseId'];
-    header("location: lectures.php");
-}
-if (isset($_POST['regester'])) {
-    $_SESSION['CourseId'] = $_POST['CourseId'];
-    $Controller->RegesterCourse($_SESSION['CourseId']);
-}
+$Controller = new UsersController();
+$lectures = $Controller->GetLectures($_SESSION['CourseId']);
 ?>
 
 <!DOCTYPE html>
@@ -22,7 +15,7 @@ if (isset($_POST['regester'])) {
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-    <title>Manage Courses - LMS</title>
+    <title>Blank Page - LMS</title>
     <link rel="stylesheet" href="../assets/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet"
         href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i&amp;display=swap">
@@ -204,7 +197,7 @@ if (isset($_POST['regester'])) {
                 <div class="container-fluid">
                     <div class="card shadow">
                         <div class="card-header py-3">
-                            <p class="text-primary m-0 fw-bold">Courses</p>
+                            <p class="text-primary m-0 fw-bold">Lectures</p>
                         </div>
                         <div class="card-body">
                             <div class="row">
@@ -216,8 +209,7 @@ if (isset($_POST['regester'])) {
                                                 <option value="25">25</option>
                                                 <option value="50">50</option>
                                                 <option value="100">100</option>
-                                            </select>&nbsp;</label>
-                                    </div>
+                                            </select>&nbsp;</label></div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="text-md-end dataTables_filter" id="dataTable_filter"><label
@@ -230,78 +222,36 @@ if (isset($_POST['regester'])) {
                                 <table class="table my-0" id="dataTable">
                                     <thead>
                                         <tr>
-                                            <th>Course</th>
-                                            <th>Description</th>
-                                            <th>Mentor</th>
-                                            <th>Learning Path</th>
+                                            <th>Lecture</th>
+                                            <th>Time</th>
+                                            <th>Info</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <?php
-                                        foreach ($Courses as $Course) {
+                                        foreach ($lectures as $lecture) {
                                             ?>
                                             <tr>
                                                 <td>
-                                                    <?php echo $Course['course'] ?>
+                                                    <?php echo $lecture['name'] ?>
                                                 </td>
                                                 <td>
-                                                    <?php echo $Course['description'] ?>
+                                                    <?php echo "week " . $lecture['week'] ?>
                                                 </td>
                                                 <td>
-                                                    <?php echo $Course['mentor_fname'] . " " . $Course['mentor_lname'] ?>
+                                                    <?php echo $lecture['info'] ?>
                                                 </td>
-                                                <td>
-                                                    <?php echo $Course['learning_path'] ?>
-                                                </td>
-                                                <td>
-                                                    <form method="POST">
-                                                        <input type="hidden" name="CourseId"
-                                                            value="<?php echo $Course['course_id']; ?>">
-                                                        <button class="noselect" type="submit" name="lectures"
-                                                            value="lectures"><span class="text">Lectures</span><span
-                                                                class="icon"><svg xmlns="http://www.w3.org/2000/svg"
-                                                                    width="24" height="24" viewBox="0 0 24 24">
-                                                                    <path
-                                                                        d="M24 20.188l-8.315-8.209 8.2-8.282-3.697-3.697-8.212 8.318-8.31-8.203-3.666 3.666 8.321 8.24-8.206 8.313 3.666 3.666 8.237-8.318 8.285 8.203z">
-                                                                    </path>
-                                                                </svg></span></button>
-                                                    </form>
-                                                </td>
-                                                <td>
-                                                    <form method="POST">
-                                                        <input type="hidden" name="CourseId"
-                                                            value="<?php echo $Course['course_id']; ?>">
-                                                        <button class="noselect" type="submit" name="regester"
-                                                            value="regester"><span class="text">Regester</span><span
-                                                                class="icon"><svg xmlns="http://www.w3.org/2000/svg"
-                                                                    width="24" height="24" viewBox="0 0 24 24">
-                                                                    <path
-                                                                        d="M24 20.188l-8.315-8.209 8.2-8.282-3.697-3.697-8.212 8.318-8.31-8.203-3.666 3.666 8.321 8.24-8.206 8.313 3.666 3.666 8.237-8.318 8.285 8.203z">
-                                                                    </path>
-                                                                </svg></span></button>
-                                                    </form>
-                                                </td>
-                                            </tr>
-                                            <?php
+                                                <?php
                                         }
-
                                         ?>
-
                                     </tbody>
-                                    <tfoot>
-                                        <tr>
-                                            <td><strong>Course</strong></td>
-                                            <td><strong>Description</strong></td>
-                                            <td><strong>Mentor</strong></td>
-                                            <td><strong>Learning Path</strong></td>
-                                        </tr>
-                                    </tfoot>
                                 </table>
                             </div>
                             <div class="row">
                                 <div class="col-md-6 align-self-center">
                                     <p id="dataTable_info" class="dataTables_info" role="status" aria-live="polite">
-                                        Showing 1 to 10 of 27</p>
+                                        Showing
+                                        1 to 10 of 27</p>
                                 </div>
                                 <div class="col-md-6">
                                     <nav
@@ -333,5 +283,4 @@ if (isset($_POST['regester'])) {
     <script src="../assets/js/bs-init.js"></script>
     <script src="../assets/js/theme.js"></script>
 </body>
-
 </html>
