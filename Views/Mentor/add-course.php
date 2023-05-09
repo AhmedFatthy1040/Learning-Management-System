@@ -36,9 +36,9 @@
 
     $hostname = "localhost";
     $username = "root";
-    $password = "root";
+    $password = "12345";
     $database = "lms";
-    $port = '3307';
+    $port = '3306';
     $connect = mysqli_connect($hostname, $username, $password, $database,$port);
     $query = "SELECT id FROM learning_path";
     $result = mysqli_query($connect, $query);

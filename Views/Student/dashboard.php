@@ -5,6 +5,18 @@
     session_start();
     ?>
 </style>
+
+<?php
+    require_once(__DIR__ . "/../../Controllers/ValidationController.php");
+    require_once(__DIR__ . "/../../Controllers/UsersController.php");
+    require_once(__DIR__ . "/../../Models/Course.php");
+    use Controllers\ValidationController;
+    use Controllers\UsersController;
+    $Check = new ValidationController();
+
+    $Controller = new UsersController();
+    $Courses = $Controller->GetCourses();
+    ?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -215,17 +227,21 @@
                         <!-- <h2 class=" description">Welcome: <br> This is the page for your already registered courses <br> in your learning path :</h2> -->
                     </div>
                     <div class="contanre">
+                        <?php
+                        foreach ($Courses as $Course){
+                        ?>
                         <a class="card" href="">
                             <div class="icon">
-                                <img class="php" src="imges/php.png" alt="">
+                                <!-- <img class="php" src="imges/php.png" alt=""> -->
                             </div>
                             <div class="info">
-                                <h3>PHP <br> programming language </h3>
-
-
+                                <h3><?php echo $Course['name'] ?> <br> <?php echo $Course['description']?> </h3>
                             </div>
                         </a>
-                        <a class="card" href="">
+                     <?php
+                    }
+                    ?>
+                        <!-- <a class="card" href="">
                             <div class="icon">
                                 <img src="imges/c++.png" alt="">
                             </div>
@@ -291,7 +307,7 @@
                                 <h3>react<br> library</h3>
 
                             </div>
-                        </a>
+                        </a> -->
                     </div>
                 </div>
             </div>
