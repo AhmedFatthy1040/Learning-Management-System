@@ -417,8 +417,8 @@ class UsersController
         $this->db = new DBController();
         if ($this->db->connect()) {
             $id = $_SESSION["UserID"];
-            $query = "insert into course_user(course_id,user_id)
-            values ($course_id,$id)";
+            $query = "insert into course_user(course_id,user_id,finished)
+            values ($course_id,$id,false)";
             return $this->db->query($query);
         } else {
             echo "Error in Database Connection";
@@ -435,7 +435,7 @@ class UsersController
             cu.grade as current_grade 
             from course c, user u, course_user cu
             where u.id = $id and cu.user_id = u.id and
-            cu.course_id = c.id ";
+            cu.course_id = c.id and finished = false";
             return $this->db->Select($query);
         } else {
             echo "Error in Database Connection";
