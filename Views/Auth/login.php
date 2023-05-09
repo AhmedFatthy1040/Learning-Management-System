@@ -25,7 +25,7 @@
                 elseif ($_SESSION["UserID"] >= 1000 && $_SESSION["UserID"] < 2000)
                     header("location: ../Mentor/dashboard.php");
                 elseif ($_SESSION["UserID"] >= 2000)
-                    header("location: ../Student/dashboard.php");
+                    header("location: ../Student/home.php");
         }
         else
             $ErrorMessage = "Please Fill All Fields!";

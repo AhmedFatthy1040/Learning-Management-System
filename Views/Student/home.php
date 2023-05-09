@@ -2,11 +2,15 @@
 require_once(__DIR__ . "/../../Controllers/ValidationController.php");
 require_once(__DIR__ . "/../../Controllers/UsersController.php");
 require_once(__DIR__ . "/../../Models/Course.php");
+use Controllers\UsersController;
+
+$Controller = new UsersController();
 session_start();
-$Controller = new \Controllers\UsersController();
-$progress = $Controller->GetTranscript();
-$total = $Controller->GetTotalGrade($_SESSION["UserID"]);
-$_SESSION["UserTotalGrades"] = $total[0]['total_gpa'];
+$Courses = $Controller->GetUserCourses();
+if (isset($_POST['lectures'])) {
+    $_SESSION['CourseId'] = $_POST['CourseId'];
+    header("location: lectures.php");
+}
 ?>
 
 <!DOCTYPE html>
@@ -15,7 +19,7 @@ $_SESSION["UserTotalGrades"] = $total[0]['total_gpa'];
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-    <title>Blank Page - LMS</title>
+    <title>Manage Courses - LMS</title>
     <link rel="stylesheet" href="../assets/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet"
         href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i&amp;display=swap">
@@ -193,26 +197,7 @@ $_SESSION["UserTotalGrades"] = $total[0]['total_gpa'];
                 <div class="container-fluid">
                     <div class="card shadow">
                         <div class="card-header py-3">
-                            <p class="text-primary m-0 fw-bold"><b>
-                                    <?php echo "Name: " ?>
-                                </b>
-                                <?php echo $_SESSION["UserFirstName"] . " " . $_SESSION["UserLastName"] ?>
-                            </p>
-                            <p class="text-primary m-0 fw-bold"><b>
-                                    <?php echo "Email: " ?>
-                                </b>
-                                <?php echo $_SESSION["UserEmail"] ?>
-                            </p>
-                            <p class="text-primary m-0 fw-bold"><b>
-                                    <?php echo "Id: " ?>
-                                </b>
-                                <?php echo $_SESSION["UserID"] ?>
-                            </p>
-                            <p class="text-primary m-0 fw-bold"><b>
-                                    <?php echo "Progress: " ?>
-                                </b>
-                                <?php echo $_SESSION["UserTotalGrades"] . "%" ?>
-                            </p>
+                            <p class="text-primary m-0 fw-bold">Courses</p>
                         </div>
                         <div class="card-body">
                             <div class="row">
@@ -224,7 +209,8 @@ $_SESSION["UserTotalGrades"] = $total[0]['total_gpa'];
                                                 <option value="25">25</option>
                                                 <option value="50">50</option>
                                                 <option value="100">100</option>
-                                            </select>&nbsp;</label></div>
+                                            </select>&nbsp;</label>
+                                    </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="text-md-end dataTables_filter" id="dataTable_filter"><label
@@ -237,24 +223,38 @@ $_SESSION["UserTotalGrades"] = $total[0]['total_gpa'];
                                 <table class="table my-0" id="dataTable">
                                     <thead>
                                         <tr>
-                                            <th>course name</th>
-                                            <th>grade</th>
-                                            <th>gba</th>
+                                            <th>Course</th>
+                                            <th>Description</th>
+                                            <th>Current Grade</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <?php
-                                        foreach ($progress as $Course) {
+                                        foreach ($Courses as $Course) {
                                             ?>
                                             <tr>
                                                 <td>
                                                     <?php echo $Course['course'] ?>
                                                 </td>
                                                 <td>
-                                                    <?php echo $Course['grade'] ?>
+                                                    <?php echo $Course['description'] ?>
                                                 </td>
                                                 <td>
-                                                    <?php echo $Course['gpa'] ?>
+                                                    <?php echo $Course['current_grade'] ?>
+                                                </td>
+                                                <td>
+                                                    <form method="POST">
+                                                        <input type="hidden" name="CourseId"
+                                                            value="<?php echo $Course['course_id']; ?>">
+                                                        <button class="noselect" type="submit" name="lectures"
+                                                            value="lectures"><span class="text">Lectures</span><span
+                                                                class="icon"><svg xmlns="http://www.w3.org/2000/svg"
+                                                                    width="24" height="24" viewBox="0 0 24 24">
+                                                                    <path
+                                                                        d="M24 20.188l-8.315-8.209 8.2-8.282-3.697-3.697-8.212 8.318-8.31-8.203-3.666 3.666 8.321 8.24-8.206 8.313 3.666 3.666 8.237-8.318 8.285 8.203z">
+                                                                    </path>
+                                                                </svg></span></button>
+                                                    </form>
                                                 </td>
                                             </tr>
                                             <?php
@@ -263,13 +263,19 @@ $_SESSION["UserTotalGrades"] = $total[0]['total_gpa'];
                                         ?>
 
                                     </tbody>
+                                    <tfoot>
+                                        <tr>
+                                            <td><strong>Course</strong></td>
+                                            <td><strong>Description</strong></td>>
+                                            <td><strong>Current Grade</strong></td>>
+                                        </tr>
+                                    </tfoot>
                                 </table>
                             </div>
                             <div class="row">
                                 <div class="col-md-6 align-self-center">
                                     <p id="dataTable_info" class="dataTables_info" role="status" aria-live="polite">
-                                        Showing
-                                        1 to 10 of 27</p>
+                                        Showing 1 to 10 of 27</p>
                                 </div>
                                 <div class="col-md-6">
                                     <nav

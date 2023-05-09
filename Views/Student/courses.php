@@ -3,12 +3,17 @@ require_once(__DIR__ . "/../../Controllers/ValidationController.php");
 require_once(__DIR__ . "/../../Controllers/UsersController.php");
 require_once(__DIR__ . "/../../Models/Course.php");
 use Controllers\UsersController;
+
 $Controller = new UsersController();
 session_start();
-$Courses = $Controller->GetLearningPathCoursesInfo(1);
+$Courses = $Controller->GetLearningPathCoursesInfo($_SESSION['lpid']);
 if (isset($_POST['lectures'])) {
     $_SESSION['CourseId'] = $_POST['CourseId'];
     header("location: lectures.php");
+}
+if (isset($_POST['regester'])) {
+    $_SESSION['CourseId'] = $_POST['CourseId'];
+    $Controller->RegesterCourse($_SESSION['CourseId']);
 }
 ?>
 
@@ -35,20 +40,16 @@ if (isset($_POST['lectures'])) {
                 </a>
                 <hr class="sidebar-divider my-0">
                 <ul class="navbar-nav text-light" id="accordionSidebar">
-                    <li class="nav-item"><a class="nav-link" href="dashboard.php"><i
+                    <li class="nav-item"><a class="nav-link" href="home.php"><i
                                 class="fas fa-home"></i><span>Home</span></a></li>
-                    <li class="nav-item"><a class="nav-link" href="courses.php"><i
-                                class="fas fa-home"></i><span>Courses</span></a></li>
-                    <li class="nav-item"><a class="nav-link" href="lectures.php"><i
-                                class="fas fa-home"></i><span>Lectures</span></a></li>
                     <li class="nav-item"><a class="nav-link" href="profile.php"><i
                                 class="fas fa-user"></i><span>Profile</span></a></li>
+                    <li class="nav-item"><a class="nav-link" href="transcript.php"><i
+                                class="fas fa-table"></i><span>transcript</span></a></li>
                     <li class="nav-item"><a class="nav-link" href="mentors.php"><i
                                 class="fas fa-users"></i><span>Mentors</span></a></li>
                     <li class="nav-item"><a class="nav-link" href="learning paths.php"><i
                                 class="fas fa-book-open"></i><span>Learning Paths</span></a></li>
-                    <li class="nav-item"><a class="nav-link" href="transcript.php"><i
-                                class="fas fa-table"></i><span>transcript</span></a></li>
                 </ul>
                 <div class="text-center d-none d-md-inline"><button class="btn rounded-circle border-0"
                         id="sidebarToggle" type="button"></button></div>
@@ -183,7 +184,7 @@ if (isset($_POST['lectures'])) {
                                     <div class="dropdown-menu shadow dropdown-menu-end animated--grow-in"><a
                                             class="dropdown-item" href="#"><i
                                                 class="fas fa-user fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Profile</a><a
-                                            class="dropdown-item" href="#"><i
+                                            class="dropdown-item" href="/profile.php"><i
                                                 class="fas fa-cogs fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Settings</a><a
                                             class="dropdown-item" href="#"><i
                                                 class="fas fa-list fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Activity
@@ -263,6 +264,20 @@ if (isset($_POST['lectures'])) {
                                                                 </svg></span></button>
                                                     </form>
                                                 </td>
+                                                <td>
+                                                    <form method="POST">
+                                                        <input type="hidden" name="CourseId"
+                                                            value="<?php echo $Course['course_id']; ?>">
+                                                        <button class="noselect" type="submit" name="regester"
+                                                            value="regester"><span class="text">Regester</span><span
+                                                                class="icon"><svg xmlns="http://www.w3.org/2000/svg"
+                                                                    width="24" height="24" viewBox="0 0 24 24">
+                                                                    <path
+                                                                        d="M24 20.188l-8.315-8.209 8.2-8.282-3.697-3.697-8.212 8.318-8.31-8.203-3.666 3.666 8.321 8.24-8.206 8.313 3.666 3.666 8.237-8.318 8.285 8.203z">
+                                                                    </path>
+                                                                </svg></span></button>
+                                                    </form>
+                                                </td>
                                             </tr>
                                             <?php
                                         }
@@ -272,7 +287,7 @@ if (isset($_POST['lectures'])) {
                                     </tbody>
                                     <tfoot>
                                         <tr>
-                                            <td><strong>Name</strong></td>
+                                            <td><strong>Course</strong></td>
                                             <td><strong>Description</strong></td>
                                             <td><strong>Mentor</strong></td>
                                             <td><strong>Learning Path</strong></td>

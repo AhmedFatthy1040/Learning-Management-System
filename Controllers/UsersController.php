@@ -298,7 +298,7 @@ class UsersController
     {
         $this->db = new DBController();
         if ($this->db->connect()) {
-            $query = "select *
+            $query = "select l.name,l.week,l.info
                     from lecture l, course c
                     where c.id = $id and l.course_id = c.id";
             return $this->db->Select($query);
@@ -387,5 +387,59 @@ class UsersController
             return false;
         }
     }
-
+    public function GetLearningPaths()
+    {
+        $this->db = new DBController();
+        if ($this->db->connect()) {
+            $query = "select * from learning_path";
+            return $this->db->Select($query);
+        } else {
+            echo "Error in Database Connection";
+            return false;
+        }
+    }
+    public function RegesterLearningPath($lpid)
+    {
+        $this->db = new DBController();
+        if ($this->db->connect()) {
+            $id = $_SESSION["UserID"];
+            $query = "UPDATE user
+            SET learning_path_id = $lpid
+            WHERE id = $id";
+            return $this->db->Select($query);
+        } else {
+            echo "Error in Database Connection";
+            return false;
+        }
+    }
+    public function RegesterCourse($course_id)
+    {
+        $this->db = new DBController();
+        if ($this->db->connect()) {
+            $id = $_SESSION["UserID"];
+            $query = "insert into course_user(course_id,user_id)
+            values ($course_id,$id)";
+            return $this->db->query($query);
+        } else {
+            echo "Error in Database Connection";
+            return false;
+        }
+    }
+    public function GetUserCourses()
+    {
+        $this->db = new DBController();
+        if ($this->db->connect()) {
+            $id = $_SESSION["UserID"];
+            $query = "select c.name as course,c.id as course_id,
+            c.description as description,
+            cu.grade as current_grade 
+            from course c, user u, course_user cu
+            where u.id = $id and cu.user_id = u.id and
+            cu.course_id = c.id ";
+            return $this->db->Select($query);
+        } else {
+            echo "Error in Database Connection";
+            return false;
+        }
+    }
 }

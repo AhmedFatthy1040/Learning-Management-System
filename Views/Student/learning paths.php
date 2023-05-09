@@ -1,18 +1,25 @@
-<style>
-    <?php
-    include("../assets/bootstrap/css/Admin.css");
-    include("css/LerningPath.css");
-    session_start();
-    ?>
-</style>
+<?php
+require_once(__DIR__ . "/../../Controllers/ValidationController.php");
+require_once(__DIR__ . "/../../Controllers/UsersController.php");
+require_once(__DIR__ . "/../../Models/Course.php");
+use Controllers\UsersController;
+
+$Controller = new UsersController();
+session_start();
+$LearningPaths = $Controller->GetLearningPaths();
+if (isset($_POST['courses'])) {
+    $_SESSION['lpid'] = $_POST['lpid'];
+    header("location: courses.php");
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-    <title>Blank Page - LMS</title>
-    <link rel="stylesheet" href="css/LerningPath.css">
+    <title>Manage Courses - LMS</title>
     <link rel="stylesheet" href="../assets/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet"
         href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i&amp;display=swap">
@@ -29,20 +36,16 @@
                 </a>
                 <hr class="sidebar-divider my-0">
                 <ul class="navbar-nav text-light" id="accordionSidebar">
-                    <li class="nav-item"><a class="nav-link" href="dashboard.php"><i
+                    <li class="nav-item"><a class="nav-link" href="home.php"><i
                                 class="fas fa-home"></i><span>Home</span></a></li>
-                    <li class="nav-item"><a class="nav-link" href="courses.php"><i
-                                class="fas fa-home"></i><span>Courses</span></a></li>
-                    <li class="nav-item"><a class="nav-link" href="lectures.php"><i
-                                class="fas fa-home"></i><span>Lectures</span></a></li>
                     <li class="nav-item"><a class="nav-link" href="profile.php"><i
                                 class="fas fa-user"></i><span>Profile</span></a></li>
+                    <li class="nav-item"><a class="nav-link" href="transcript.php"><i
+                                class="fas fa-table"></i><span>transcript</span></a></li>
                     <li class="nav-item"><a class="nav-link" href="mentors.php"><i
                                 class="fas fa-users"></i><span>Mentors</span></a></li>
                     <li class="nav-item"><a class="nav-link" href="learning paths.php"><i
                                 class="fas fa-book-open"></i><span>Learning Paths</span></a></li>
-                    <li class="nav-item"><a class="nav-link" href="transcript.php"><i
-                                class="fas fa-table"></i><span>transcript</span></a></li>
                 </ul>
                 <div class="text-center d-none d-md-inline"><button class="btn rounded-circle border-0"
                         id="sidebarToggle" type="button"></button></div>
@@ -58,7 +61,6 @@
                                     placeholder="Search for ..."><button class="btn btn-primary py-0" type="button"><i
                                         class="fas fa-search"></i></button></div>
                         </form>
-
                         <ul class="navbar-nav flex-nowrap ms-auto">
                             <li class="nav-item dropdown d-sm-none no-arrow"><a class="dropdown-toggle nav-link"
                                     aria-expanded="false" data-bs-toggle="dropdown" href="#"><i
@@ -111,7 +113,6 @@
                                     </div>
                                 </div>
                             </li>
-
                             <li class="nav-item dropdown no-arrow mx-1">
                                 <div class="nav-item dropdown no-arrow"><a class="dropdown-toggle nav-link"
                                         aria-expanded="false" data-bs-toggle="dropdown" href="#"><span
@@ -193,67 +194,101 @@
                         </ul>
                     </div>
                 </nav>
-                <div class="section2" id="service">
-                    <h3 class="title">Learning Pathes</h3>
-                    <div class="contanre">
-                        <a class="card" href="other courses in lerning path.php">
-                            <div class="icon">
-                                <i class="fa-brands fa-android"></i>
+                <div class="container-fluid">
+                    <div class="card shadow">
+                        <div class="card-header py-3">
+                            <p class="text-primary m-0 fw-bold">Courses</p>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-6 text-nowrap">
+                                    <div id="dataTable_length" class="dataTables_length" aria-controls="dataTable">
+                                        <label class="form-label">Show&nbsp;<select
+                                                class="d-inline-block form-select form-select-sm">
+                                                <option value="10" selected="">10</option>
+                                                <option value="25">25</option>
+                                                <option value="50">50</option>
+                                                <option value="100">100</option>
+                                            </select>&nbsp;</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="text-md-end dataTables_filter" id="dataTable_filter"><label
+                                            class="form-label"><input type="search" class="form-control form-control-sm"
+                                                aria-controls="dataTable" placeholder="Search"></label></div>
+                                </div>
                             </div>
-                            <div class="info">
-                                <h3>Android </h3>
-                                <p>Launch Your Android App Development Career. Master the knowledge and skills necessary
-                                    to develop maintainable mobile computing apps</p>
+                            <div class="table-responsive table mt-2" id="dataTable" role="grid"
+                                aria-describedby="dataTable_info">
+                                <table class="table my-0" id="dataTable">
+                                    <thead>
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>Learning Path</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <?php
+                                        foreach ($LearningPaths as $LearningPath) {
+                                            ?>
+                                            <tr>
+                                                <td>
+                                                    <?php echo $LearningPath['id'] ?>
+                                                </td>
+                                                <td>
+                                                    <?php echo $LearningPath['name'] ?>
+                                                </td>
+                                                <td>
+                                                    <form method="POST">
+                                                        <input type="hidden" name="lpid"
+                                                            value="<?php echo $LearningPath['id']; ?>">
+                                                        <button class="noselect" type="submit" name="courses"
+                                                            value="courses"><span class="text">courses</span><span
+                                                                class="icon"><svg xmlns="http://www.w3.org/2000/svg"
+                                                                    width="24" height="24" viewBox="0 0 24 24">
+                                                                    <path
+                                                                        d="M24 20.188l-8.315-8.209 8.2-8.282-3.697-3.697-8.212 8.318-8.31-8.203-3.666 3.666 8.321 8.24-8.206 8.313 3.666 3.666 8.237-8.318 8.285 8.203z">
+                                                                    </path>
+                                                                </svg></span></button>
+                                                    </form>
+                                                </td>
+                                            </tr>
+                                            <?php
+                                        }
 
-                            </div>
-                        </a>
-                        <a class="card" href="">
-                            <div class="icon">
-                                <i class="fa-solid fa-code"></i>
-                            </div>
-                            <div class="info">
-                                <h3>Front-end</h3>
-                                <p>You will learn how front-end developers create websites and applications that work
-                                    well and are easy to maintain</p>
-                            </div>
-                        </a>
-                        <a class="card" href="">
+                                        ?>
 
-                            <div class="icon">
-                                <i class="fa-solid fa-database"></i>
+                                    </tbody>
+                                    <tfoot>
+                                        <tr>
+                                            <td><strong>ID</strong></td>
+                                            <td><strong>Learning Path</strong></td>
+                                        </tr>
+                                    </tfoot>
+                                </table>
                             </div>
-                            <div class="info">
-                                <h3>Back-end</h3>
-                                <p>You’ll learn the latest tools and technologies used by professional back-end
-                                    developers</p>
+                            <div class="row">
+                                <div class="col-md-6 align-self-center">
+                                    <p id="dataTable_info" class="dataTables_info" role="status" aria-live="polite">
+                                        Showing 1 to 10 of 27</p>
+                                </div>
+                                <div class="col-md-6">
+                                    <nav
+                                        class="d-lg-flex justify-content-lg-end dataTables_paginate paging_simple_numbers">
+                                        <ul class="pagination">
+                                            <li class="page-item disabled"><a class="page-link" aria-label="Previous"
+                                                    href="#"><span aria-hidden="true">«</span></a></li>
+                                            <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                                            <li class="page-item"><a class="page-link" href="#">2</a></li>
+                                            <li class="page-item"><a class="page-link" href="#">3</a></li>
+                                            <li class="page-item"><a class="page-link" aria-label="Next" href="#"><span
+                                                        aria-hidden="true">»</span></a></li>
+                                        </ul>
+                                    </nav>
+                                </div>
                             </div>
-                        </a>
-                        <a class="card" href="">
-
-                            <div class="icon">
-                                <i class="fa-solid fa-database"></i>
-                            </div>
-                            <div class="info">
-                                <h3>Back-end</h3>
-                                <p>You’ll learn the latest tools and technologies used by professional back-end
-                                    developers</p>
-                            </div>
-                        </a>
-                        </a>
-                        <a class="card" href="">
-
-                            <div class="icon">
-                                <i class="fa-solid fa-database"></i>
-                            </div>
-                            <div class="info">
-                                <h3>Back-end</h3>
-                                <p>You’ll learn the latest tools and technologies used by professional back-end
-                                    developers</p>
-                            </div>
-                        </a>
+                        </div>
                     </div>
-
-
                 </div>
             </div>
             <footer class="bg-white sticky-footer">
@@ -267,4 +302,5 @@
     <script src="../assets/js/bs-init.js"></script>
     <script src="../assets/js/theme.js"></script>
 </body>
+
 </html>
