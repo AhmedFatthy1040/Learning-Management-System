@@ -112,6 +112,7 @@ class Mentor extends Person{
     }
 
     public function setEmail($Email){
+        $isThereNumber = false;
         for ($i = 0; $i < strlen($Email); $i++) {
             if ($Email[$i] == '@') {
                 $isThereNumber = true;

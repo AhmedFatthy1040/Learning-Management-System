@@ -24,12 +24,14 @@ DROP TABLE IF EXISTS `admin`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `admin` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `user_name` varchar(50) NOT NULL,
-  `password` varchar(50) NOT NULL,
+  `user_name` varchar(50) DEFAULT NULL,
+  `password` varchar(50) DEFAULT NULL,
+  `email` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `user_name` (`user_name`),
-  UNIQUE KEY `password` (`password`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  UNIQUE KEY `password` (`password`),
+  UNIQUE KEY `email` (`email`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -38,6 +40,7 @@ CREATE TABLE `admin` (
 
 LOCK TABLES `admin` WRITE;
 /*!40000 ALTER TABLE `admin` DISABLE KEYS */;
+INSERT INTO `admin` VALUES (1,'gafar','123','a@bc');
 /*!40000 ALTER TABLE `admin` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -50,9 +53,9 @@ DROP TABLE IF EXISTS `am_message`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `am_message` (
   `mtime` datetime DEFAULT NULL,
-  `message` text NOT NULL,
-  `admin_id` int NOT NULL,
-  `mentor_id` int NOT NULL,
+  `message` text,
+  `admin_id` int DEFAULT NULL,
+  `mentor_id` int DEFAULT NULL,
   KEY `admin_id` (`admin_id`),
   KEY `mentor_id` (`mentor_id`),
   CONSTRAINT `am_message_ibfk_1` FOREIGN KEY (`admin_id`) REFERENCES `admin` (`id`),
@@ -77,11 +80,11 @@ DROP TABLE IF EXISTS `assignement`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `assignement` (
-  `sheet` blob NOT NULL,
+  `sheet` blob,
   `deadline` datetime DEFAULT NULL,
-  `lecture_id` int NOT NULL,
+  `lecture_id` int DEFAULT NULL,
   KEY `lecture_id` (`lecture_id`),
-  CONSTRAINT `assignement_ibfk_1` FOREIGN KEY (`lecture_id`) REFERENCES `lecture` (`id`)
+  CONSTRAINT `assignement_ibfk_1` FOREIGN KEY (`lecture_id`) REFERENCES `lecture` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -103,9 +106,9 @@ DROP TABLE IF EXISTS `au_message`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `au_message` (
   `mtime` datetime DEFAULT NULL,
-  `message` text NOT NULL,
-  `admin_id` int NOT NULL,
-  `user_id` int NOT NULL,
+  `message` text,
+  `admin_id` int DEFAULT NULL,
+  `user_id` int DEFAULT NULL,
   KEY `admin_id` (`admin_id`),
   KEY `user_id` (`user_id`),
   CONSTRAINT `au_message_ibfk_1` FOREIGN KEY (`admin_id`) REFERENCES `admin` (`id`),
@@ -131,18 +134,18 @@ DROP TABLE IF EXISTS `course`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `course` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `name` varchar(50) NOT NULL,
+  `name` varchar(50) DEFAULT NULL,
   `description` text,
   `requirements` text,
-  `mentor_id` int NOT NULL,
-  `learning_path_id` int NOT NULL,
+  `mentor_id` int DEFAULT NULL,
+  `learning_path_id` int DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `name` (`name`),
   KEY `mentor_id` (`mentor_id`),
   KEY `learning_path_id` (`learning_path_id`),
-  CONSTRAINT `course_ibfk_1` FOREIGN KEY (`mentor_id`) REFERENCES `mentor` (`id`),
-  CONSTRAINT `course_ibfk_2` FOREIGN KEY (`learning_path_id`) REFERENCES `learning_path` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  CONSTRAINT `course_ibfk_1` FOREIGN KEY (`mentor_id`) REFERENCES `mentor` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `course_ibfk_2` FOREIGN KEY (`learning_path_id`) REFERENCES `learning_path` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -151,6 +154,7 @@ CREATE TABLE `course` (
 
 LOCK TABLES `course` WRITE;
 /*!40000 ALTER TABLE `course` DISABLE KEYS */;
+INSERT INTO `course` VALUES (3,'php',NULL,NULL,NULL,NULL),(4,'mysql',NULL,NULL,NULL,NULL),(5,'laravel',NULL,NULL,NULL,NULL),(7,'data structures','for coding',NULL,1002,1),(8,'algorithm','for coding',NULL,1004,1),(9,'c++',NULL,NULL,NULL,NULL),(11,'c',NULL,NULL,NULL,1),(12,'c#',NULL,NULL,1004,1),(13,'js',NULL,NULL,1004,4);
 /*!40000 ALTER TABLE `course` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -164,12 +168,13 @@ DROP TABLE IF EXISTS `course_user`;
 CREATE TABLE `course_user` (
   `user_id` int NOT NULL,
   `course_id` int NOT NULL,
-  `grade` double NOT NULL,
-  `finished` tinyint(1) NOT NULL,
+  `grade` double DEFAULT NULL,
+  `gpa` varchar(50) DEFAULT NULL,
+  `finished` tinyint(1) DEFAULT NULL,
   PRIMARY KEY (`course_id`,`user_id`),
   KEY `user_id` (`user_id`),
-  CONSTRAINT `course_user_ibfk_1` FOREIGN KEY (`course_id`) REFERENCES `course` (`id`),
-  CONSTRAINT `course_user_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`)
+  CONSTRAINT `course_user_ibfk_1` FOREIGN KEY (`course_id`) REFERENCES `course` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `course_user_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -179,6 +184,7 @@ CREATE TABLE `course_user` (
 
 LOCK TABLES `course_user` WRITE;
 /*!40000 ALTER TABLE `course_user` DISABLE KEYS */;
+INSERT INTO `course_user` VALUES (2000,3,80,'A',1),(2001,3,80,'A',1),(2003,3,80,'A',1),(2000,4,50,'D',1),(2003,4,15,'A+',0),(2000,5,100,'A+',0),(2003,5,100,'A+',1),(2015,7,NULL,NULL,NULL),(2016,7,NULL,NULL,NULL),(2029,7,NULL,NULL,NULL),(2003,8,NULL,NULL,NULL),(2015,8,NULL,NULL,NULL),(2016,8,NULL,NULL,NULL),(2029,8,NULL,NULL,NULL),(2003,12,NULL,NULL,0),(2003,13,NULL,NULL,0);
 /*!40000 ALTER TABLE `course_user` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -191,11 +197,11 @@ DROP TABLE IF EXISTS `exam`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `exam` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `duration` time NOT NULL,
-  `course_id` int NOT NULL,
+  `duration` time DEFAULT NULL,
+  `course_id` int DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `course_id` (`course_id`),
-  CONSTRAINT `exam_ibfk_1` FOREIGN KEY (`course_id`) REFERENCES `course` (`id`)
+  CONSTRAINT `exam_ibfk_1` FOREIGN KEY (`course_id`) REFERENCES `course` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -217,13 +223,13 @@ DROP TABLE IF EXISTS `feedback`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `feedback` (
   `ftime` time DEFAULT NULL,
-  `comment` text NOT NULL,
-  `user_id` int NOT NULL,
-  `mentor_id` int NOT NULL,
+  `comment` text,
+  `user_id` int DEFAULT NULL,
+  `mentor_id` int DEFAULT NULL,
   KEY `user_id` (`user_id`),
   KEY `mentor_id` (`mentor_id`),
-  CONSTRAINT `feedback_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`),
-  CONSTRAINT `feedback_ibfk_2` FOREIGN KEY (`mentor_id`) REFERENCES `mentor` (`id`)
+  CONSTRAINT `feedback_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `feedback_ibfk_2` FOREIGN KEY (`mentor_id`) REFERENCES `mentor` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -245,10 +251,10 @@ DROP TABLE IF EXISTS `learning_path`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `learning_path` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `name` varchar(50) NOT NULL,
+  `name` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `name` (`name`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -257,6 +263,7 @@ CREATE TABLE `learning_path` (
 
 LOCK TABLES `learning_path` WRITE;
 /*!40000 ALTER TABLE `learning_path` DISABLE KEYS */;
+INSERT INTO `learning_path` VALUES (4,'ai'),(1,'cs'),(2,'is'),(3,'it');
 /*!40000 ALTER TABLE `learning_path` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -272,8 +279,8 @@ CREATE TABLE `learning_path_mentor` (
   `mentor_id` int NOT NULL,
   PRIMARY KEY (`learning_path_id`,`mentor_id`),
   KEY `mentor_id` (`mentor_id`),
-  CONSTRAINT `learning_path_mentor_ibfk_1` FOREIGN KEY (`learning_path_id`) REFERENCES `learning_path` (`id`),
-  CONSTRAINT `learning_path_mentor_ibfk_2` FOREIGN KEY (`mentor_id`) REFERENCES `mentor` (`id`)
+  CONSTRAINT `learning_path_mentor_ibfk_1` FOREIGN KEY (`learning_path_id`) REFERENCES `learning_path` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `learning_path_mentor_ibfk_2` FOREIGN KEY (`mentor_id`) REFERENCES `mentor` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -295,18 +302,18 @@ DROP TABLE IF EXISTS `lecture`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `lecture` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `name` varchar(50) NOT NULL,
+  `name` varchar(50) DEFAULT NULL,
   `week` varchar(50) DEFAULT NULL,
   `video` blob,
   `link` text,
   `slide` blob,
   `info` text,
-  `course_id` int NOT NULL,
+  `course_id` int DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `name` (`name`),
   KEY `course_id` (`course_id`),
-  CONSTRAINT `lecture_ibfk_1` FOREIGN KEY (`course_id`) REFERENCES `course` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  CONSTRAINT `lecture_ibfk_1` FOREIGN KEY (`course_id`) REFERENCES `course` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -315,6 +322,7 @@ CREATE TABLE `lecture` (
 
 LOCK TABLES `lecture` WRITE;
 /*!40000 ALTER TABLE `lecture` DISABLE KEYS */;
+INSERT INTO `lecture` VALUES (1,'intro','1',NULL,NULL,NULL,'intro to the course',7);
 /*!40000 ALTER TABLE `lecture` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -327,9 +335,9 @@ DROP TABLE IF EXISTS `ma_message`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `ma_message` (
   `mtime` datetime DEFAULT NULL,
-  `message` text NOT NULL,
-  `mentor_id` int NOT NULL,
-  `admin_id` int NOT NULL,
+  `message` text,
+  `mentor_id` int DEFAULT NULL,
+  `admin_id` int DEFAULT NULL,
   KEY `mentor_id` (`mentor_id`),
   KEY `admin_id` (`admin_id`),
   CONSTRAINT `ma_message_ibfk_1` FOREIGN KEY (`mentor_id`) REFERENCES `mentor` (`id`),
@@ -355,21 +363,21 @@ DROP TABLE IF EXISTS `mentor`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `mentor` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `fname` varchar(50) NOT NULL,
-  `lname` varchar(50) NOT NULL,
-  `password` varchar(50) NOT NULL,
-  `nationality` varchar(50) NOT NULL,
-  `gender` varchar(50) NOT NULL,
-  `birthdate` date NOT NULL,
-  `email` varchar(50) NOT NULL,
-  `phone` varchar(50) NOT NULL,
-  `salary` double NOT NULL,
+  `fname` varchar(50) DEFAULT NULL,
+  `lname` varchar(50) DEFAULT NULL,
+  `password` varchar(50) DEFAULT NULL,
+  `nationality` varchar(50) DEFAULT NULL,
+  `gender` varchar(50) DEFAULT NULL,
+  `birthdate` date DEFAULT NULL,
+  `email` varchar(50) DEFAULT NULL,
+  `phone` varchar(50) DEFAULT NULL,
+  `salary` double DEFAULT NULL,
   `final_rate` double DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `password` (`password`),
   UNIQUE KEY `email` (`email`),
   UNIQUE KEY `phone` (`phone`)
-) ENGINE=InnoDB AUTO_INCREMENT=1000 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=1023 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -378,6 +386,7 @@ CREATE TABLE `mentor` (
 
 LOCK TABLES `mentor` WRITE;
 /*!40000 ALTER TABLE `mentor` DISABLE KEYS */;
+INSERT INTO `mentor` VALUES (1002,'amr','ghoniem','123','egypt','mail','1997-06-10','sd@c','1022225555',15000,4.5),(1004,'belal','shama',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(1005,'belal','shama',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(1006,'belal','shama',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(1007,'belal','shama',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(1008,'belal','shama',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(1009,'belal','shama',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(1010,'belal','shama',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(1011,'belal','shama',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(1012,'belal','shama',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(1013,'belal','shama',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(1014,'belal','shama',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(1015,'belal','shama',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(1016,'belal','shama',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(1017,'belal','shama',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(1018,'belal','shama',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(1019,'belal','shama',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(1020,'belal','shama',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(1021,'belal','shama',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
 /*!40000 ALTER TABLE `mentor` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -390,9 +399,9 @@ DROP TABLE IF EXISTS `mu_message`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `mu_message` (
   `mtime` datetime DEFAULT NULL,
-  `message` text NOT NULL,
-  `mentor_id` int NOT NULL,
-  `user_id` int NOT NULL,
+  `message` text,
+  `mentor_id` int DEFAULT NULL,
+  `user_id` int DEFAULT NULL,
   KEY `mentor_id` (`mentor_id`),
   KEY `user_id` (`user_id`),
   CONSTRAINT `mu_message_ibfk_1` FOREIGN KEY (`mentor_id`) REFERENCES `mentor` (`id`),
@@ -418,12 +427,12 @@ DROP TABLE IF EXISTS `question`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `question` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `question` text NOT NULL,
-  `correct_ans` text NOT NULL,
-  `exam_id` int NOT NULL,
+  `question` text,
+  `correct_ans` text,
+  `exam_id` int DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `exam_id` (`exam_id`),
-  CONSTRAINT `question_ibfk_1` FOREIGN KEY (`exam_id`) REFERENCES `exam` (`id`)
+  CONSTRAINT `question_ibfk_1` FOREIGN KEY (`exam_id`) REFERENCES `exam` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -444,10 +453,10 @@ DROP TABLE IF EXISTS `question_ans`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `question_ans` (
-  `answer` text NOT NULL,
-  `question_id` int NOT NULL,
+  `answer` text,
+  `question_id` int DEFAULT NULL,
   KEY `question_id` (`question_id`),
-  CONSTRAINT `question_ans_ibfk_1` FOREIGN KEY (`question_id`) REFERENCES `question` (`id`)
+  CONSTRAINT `question_ans_ibfk_1` FOREIGN KEY (`question_id`) REFERENCES `question` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -469,9 +478,9 @@ DROP TABLE IF EXISTS `rate`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `rate` (
   `rate` int DEFAULT NULL,
-  `mentor_id` int NOT NULL,
+  `mentor_id` int DEFAULT NULL,
   KEY `mentor_id` (`mentor_id`),
-  CONSTRAINT `rate_ibfk_1` FOREIGN KEY (`mentor_id`) REFERENCES `mentor` (`id`)
+  CONSTRAINT `rate_ibfk_1` FOREIGN KEY (`mentor_id`) REFERENCES `mentor` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -493,9 +502,9 @@ DROP TABLE IF EXISTS `ua_message`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `ua_message` (
   `mtime` datetime DEFAULT NULL,
-  `message` text NOT NULL,
-  `user_id` int NOT NULL,
-  `admin_id` int NOT NULL,
+  `message` text,
+  `user_id` int DEFAULT NULL,
+  `admin_id` int DEFAULT NULL,
   KEY `user_id` (`user_id`),
   KEY `admin_id` (`admin_id`),
   CONSTRAINT `ua_message_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`),
@@ -521,9 +530,9 @@ DROP TABLE IF EXISTS `um_message`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `um_message` (
   `mtime` datetime DEFAULT NULL,
-  `message` text NOT NULL,
-  `user_id` int NOT NULL,
-  `mentor_id` int NOT NULL,
+  `message` text,
+  `user_id` int DEFAULT NULL,
+  `mentor_id` int DEFAULT NULL,
   KEY `user_id` (`user_id`),
   KEY `mentor_id` (`mentor_id`),
   CONSTRAINT `um_message_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`),
@@ -549,22 +558,21 @@ DROP TABLE IF EXISTS `user`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `user` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `fname` varchar(50) NOT NULL,
-  `lname` varchar(50) NOT NULL,
-  `password` varchar(50) NOT NULL,
-  `nationality` varchar(50) NOT NULL,
-  `gender` varchar(50) NOT NULL,
-  `birthdate` date NOT NULL,
-  `email` varchar(50) NOT NULL,
-  `phone` varchar(50) NOT NULL,
-  `learning_path_id` int NOT NULL,
+  `fname` varchar(50) DEFAULT NULL,
+  `lname` varchar(50) DEFAULT NULL,
+  `password` varchar(50) DEFAULT NULL,
+  `nationality` varchar(50) DEFAULT NULL,
+  `gender` varchar(50) DEFAULT NULL,
+  `birthdate` date DEFAULT NULL,
+  `email` varchar(50) DEFAULT NULL,
+  `phone` varchar(50) DEFAULT NULL,
+  `learning_path_id` int DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `password` (`password`),
   UNIQUE KEY `email` (`email`),
-  UNIQUE KEY `phone` (`phone`),
   KEY `learning_path_id` (`learning_path_id`),
-  CONSTRAINT `user_ibfk_1` FOREIGN KEY (`learning_path_id`) REFERENCES `learning_path` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2000 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  CONSTRAINT `user_ibfk_1` FOREIGN KEY (`learning_path_id`) REFERENCES `learning_path` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=2030 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -573,6 +581,7 @@ CREATE TABLE `user` (
 
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
+INSERT INTO `user` VALUES (2000,'ramuu','','123','',NULL,NULL,'','',NULL),(2001,'ava',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(2002,'ramyoi','ss','159',NULL,NULL,NULL,'A@FF',NULL,4),(2003,'ramo','ibrahim','333SS','egypt',NULL,NULL,'a@u','01064486774',3),(2004,'ss','ssss','33355558899',NULL,NULL,NULL,'lk@u',NULL,NULL),(2005,'ytri','plpl','12345',NULL,NULL,NULL,'a@gggl',NULL,NULL),(2006,'aa','nn','333',NULL,NULL,NULL,'kk@w',NULL,NULL),(2007,'ggg','ff','ppppl',NULL,NULL,NULL,'a@ii',NULL,NULL),(2009,'acds','ss','0088',NULL,NULL,NULL,'poimnb@w',NULL,NULL),(2010,'ramy','ibrahim','4582',NULL,NULL,NULL,'z@x',NULL,NULL),(2011,'ramzy','bba','1496','',NULL,NULL,'a@xoi','',2),(2012,'rr','uit','8020',NULL,NULL,NULL,'a@ctb',NULL,NULL),(2013,'ytq','oop','1594444',NULL,NULL,NULL,'oo@p',NULL,NULL),(2015,'uas','saw','2547',NULL,NULL,NULL,'ak@ty',NULL,2),(2016,'uas','saw','2569',NULL,NULL,NULL,'ak@tytt',NULL,2),(2022,'rak','karo','8881',NULL,NULL,NULL,'w@nm',NULL,NULL),(2023,'pjv','java','14258',NULL,NULL,NULL,'java@w',NULL,NULL),(2026,'ddf','ffd','1597',NULL,NULL,NULL,'aaa@ee',NULL,NULL),(2027,'uyt','tyy','1598741',NULL,NULL,NULL,'vcxz@zxcv',NULL,NULL),(2028,'uyt','tyy','aiu',NULL,NULL,NULL,'vcxz@zxcvz',NULL,NULL),(2029,'ahmed','ibrahim','3366',NULL,NULL,NULL,'y@we',NULL,1);
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -586,11 +595,12 @@ DROP TABLE IF EXISTS `user_exam`;
 CREATE TABLE `user_exam` (
   `exam_id` int NOT NULL,
   `user_id` int NOT NULL,
-  `grade` double NOT NULL,
+  `grade` double DEFAULT NULL,
+  `gpa` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`exam_id`,`user_id`),
   KEY `user_id` (`user_id`),
-  CONSTRAINT `user_exam_ibfk_1` FOREIGN KEY (`exam_id`) REFERENCES `exam` (`id`),
-  CONSTRAINT `user_exam_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`)
+  CONSTRAINT `user_exam_ibfk_1` FOREIGN KEY (`exam_id`) REFERENCES `exam` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `user_exam_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -612,4 +622,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-04-27  6:55:55
+-- Dump completed on 2023-05-10  5:29:33

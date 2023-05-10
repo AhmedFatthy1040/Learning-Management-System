@@ -52,17 +52,53 @@
 
 
         public function setFirstName($FirstName){
-            $this->delegate->setFirstName($FirstName);
+            $isThereNumber = false;
+            for ($i = 0; $i < strlen($FirstName); $i++) {
+                if (ctype_digit($FirstName[$i])) {
+                    $isThereNumber = true;
+                    break;
+                }
+            }
+
+            if ( $isThereNumber ) {
+                echo "\"{$FirstName}\" has number(s).";
+            } else {
+                $this->FirstName=$FirstName;
+            }
         }
 
         public function setLastName($LastName){
-            $this->delegate->setLastName($LastName);
+            $isThereNumber = false;
+            for ($i = 0; $i < strlen($LastName); $i++) {
+                if ( ctype_digit($LastName[$i]) ) {
+                    $isThereNumber = true;
+                    break;
+                }
+            }
+
+            if ( $isThereNumber ) {
+                echo "\"{$LastName}\" has number(s).";
+            } else {
+                $this->LastName=$LastName;
+            }
         }
 
 
 
         public function setNationality($Nationality){
-            $this->delegate->setNationality($Nationality);
+            $isThereNumber = false;
+            for ($i = 0; $i < strlen($Nationality); $i++) {
+                if ( ctype_digit($Nationality[$i]) ) {
+                    $isThereNumber = true;
+                    break;
+                }
+            }
+
+            if ( $isThereNumber ) {
+                echo "\"{$Nationality}\" has number(s).";
+            } else {
+                $this->Nationality=$Nationality;
+            }
 
         }
 
@@ -71,11 +107,24 @@
         }
 
         public function setEmail($Email){
-            $this->delegate->setEmail($Email);
+            $isThereNumber = false;
+            for ($i = 0; $i < strlen($Email); $i++) {
+                if ($Email[$i] == '@') {
+                    $isThereNumber = true;
+                    break;
+                }
+            }
+
+            if ( $isThereNumber ) {
+                $this->Email=$Email;
+            }
+            else {
+                echo "\"{$Email}\" doesn't contain the '@' sign";
+            }
         }
 
         public function setPhoneNumber($PhoneNumber){
-            $this->delegate->setPhoneNumber($PhoneNumber);
+
         }
 
 
