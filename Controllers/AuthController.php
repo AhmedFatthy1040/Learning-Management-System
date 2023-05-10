@@ -10,6 +10,7 @@ require_once(__DIR__ . "/DBController.php");
 
 class AuthController
 {
+    // MVC Design Pattern
     protected $db;
     public function login(User $user, $Type): bool
     {

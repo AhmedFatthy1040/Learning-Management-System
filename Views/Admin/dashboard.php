@@ -5,8 +5,8 @@ include("../assets/bootstrap/css/ManageUsers.css");
 require_once(__DIR__ . "/../../Controllers/ValidationController.php");
 use Controllers\ValidationController;
 $Check=new ValidationController();
-$Access=$Check->CheckForAdmin();
-if ( !$Access) header("location:../Auth/logout.php");
+//$Access=$Check->CheckForAdmin();
+//if ( !$Access) header("location:../Auth/logout.php");
 
 
 ?>

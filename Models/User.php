@@ -14,6 +14,7 @@
         Private $LearningPath;
         private $Mentor;
         public function User() {
+            // Delegation Design Pattern
             $this->Mentor = new Mentor();
         }
         Public function getFirstName(){
@@ -68,6 +69,7 @@
         }
 
         public function setLastName($LastName){
+            // Delegation Design Pattern
             $this->Mentor->setLastName($LastName);
         }
 
@@ -112,6 +114,7 @@
         }
 
         public function setPhoneNumber($PhoneNumber){
+            // Delegation Design Pattern
             $this->Mentor->setPhoneNumber();
         }
 
