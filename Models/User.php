@@ -1,6 +1,5 @@
 <?php 
     include_once("person.php");
-    require_once("Mentor.php");
 
 
     class User extends Person{
@@ -14,8 +13,7 @@
         Private $LearningPath;
         private $Mentor;
         public function User() {
-            // Delegation Design Pattern
-            $this->Mentor = new Mentor();
+
         }
         Public function getFirstName(){
             return $this->FirstName;
@@ -69,8 +67,7 @@
         }
 
         public function setLastName($LastName){
-            // Delegation Design Pattern
-            $this->Mentor->setLastName($LastName);
+            $this->LastName = $LastName;
         }
 
 
@@ -114,8 +111,7 @@
         }
 
         public function setPhoneNumber($PhoneNumber){
-            // Delegation Design Pattern
-            $this->Mentor->setPhoneNumber();
+            $this->PhoneNumber = $PhoneNumber;
         }
 
 

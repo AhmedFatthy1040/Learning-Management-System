@@ -39,6 +39,17 @@ class UsersController
             return false;
         }
     }
+    public function GetAdmin()
+    {
+        $this->db = new DBController();
+        if ($this->db->connect()) {
+            $query = "select * from admin";
+            return $this->db->Select($query);
+        } else {
+            echo "Error in Database Connection";
+            return false;
+        }
+    }
 
     public function GetCourses()
     {
