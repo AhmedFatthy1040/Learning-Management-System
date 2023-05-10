@@ -12,9 +12,9 @@
         Private $Email;
         Private $PhoneNumber;
         Private $LearningPath;
-        private $delegate;
+        private $Mentor;
         public function User() {
-            $this->delegate = new Mentor();
+            $this->Mentor = new Mentor();
         }
         Public function getFirstName(){
             return $this->FirstName;
@@ -68,19 +68,7 @@
         }
 
         public function setLastName($LastName){
-            $isThereNumber = false;
-            for ($i = 0; $i < strlen($LastName); $i++) {
-                if ( ctype_digit($LastName[$i]) ) {
-                    $isThereNumber = true;
-                    break;
-                }
-            }
-
-            if ( $isThereNumber ) {
-                echo "\"{$LastName}\" has number(s).";
-            } else {
-                $this->LastName=$LastName;
-            }
+            $this->Mentor->setLastName($LastName);
         }
 
 
@@ -124,7 +112,7 @@
         }
 
         public function setPhoneNumber($PhoneNumber){
-
+            $this->Mentor->setPhoneNumber();
         }
 
 
