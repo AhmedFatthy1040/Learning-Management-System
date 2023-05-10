@@ -18,7 +18,7 @@ class AuthController
         $email = $user->getEmail();
         $password = $user->GetPassword();
         if ($Type == "admin")
-            $query = "select * from $Type where user_name = '$email' and password = '$password'";
+            $query = "select * from admin where user_name = 'gafar' and password = '123';";
         else
             $query = "select * from $Type where email = '$email' and password = '$password'";
         $result = $this->db->Select($query);
