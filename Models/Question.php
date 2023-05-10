@@ -6,12 +6,18 @@ class Question{
     private $correct_answer;
     private $ExamID;
 
-    public function Question($question,$correct_answer, $ExamID) {
+    public function Question() {
+
+    }
+    public function SetQuestion($question) {
         $this->question=$question;
-        $this->correct_answer=$correct_answer;
+    }
+    public function SetExamID($ExamID) {
         $this->ExamID = $ExamID;
     }
-
+    public function SetCorrectAnswer($correct_answer) {
+        $this->correct_answer = $correct_answer;
+    }
     public function GetQuestionID() {
         return $this->question_id;
     }

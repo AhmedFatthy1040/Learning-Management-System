@@ -74,13 +74,14 @@ if (isset($_POST["PhoneNumber"]) && !empty($_POST["PhoneNumber"])) {
                 </a>
                 <hr class="sidebar-divider my-0">
                 <ul class="navbar-nav text-light" id="accordionSidebar">
-                    <li class="nav-item"><a class="nav-link" href="dashboard.php"><i
-                                class="fas fa-home"></i><span>Dashboard</span></a></li>
-                    <li class="nav-item"><a class="nav-link" href="add-course.php"><i
-                                class="fas fa-home"></i><span>Add Course</span></a></li>
-                    <li class="nav-item"><a class="nav-link" href="mange_course.php"><i
-                                class="fas fa-users"></i><span>Manege Course</span></a></li>
-                    <li class="nav-item"><a class="nav-link" href="Courses.php"><i class="fas fa-table"></i><span>Course</span></a></li>
+                    <li class="nav-item"><a class="nav-link" href="dashboard.php"><i class="fas fa-home"></i><span>Home</span></a></li>
+                    <li class="nav-item"><a class="nav-link" href="profile.php"><i class="fas fa-book-open"></i><span>Profile</span></a></li>
+                    <li class="nav-item"><a class="nav-link" href="mange_course.php"><i class="fas fa-user"></i><span>Manage Courses</span></a></li>
+                    <li class="nav-item"><a class="nav-link" href="add-course.php"><i class="fas fa-book-open"></i><span>Add Courses</span></a></li>
+                    <li class="nav-item"><a class="nav-link" href="Courses.php"><i class="fas fa-book-open"></i><span>View Courses</span></a></li>
+                    <li class="nav-item"><a class="nav-link" href="QuestionBank.php"><i class="fas fa-users"></i><span>Question Bank</span></a></li>
+                    <li class="nav-item"><a class="nav-link" href="add-question.php"><i class="fas fa-users"></i><span>Add Question</span></a></li>
+                    <li class="nav-item"><a class="nav-link" href="view_mentor.php"><i class="fas fa-book-open"></i><span>View Mentors</span></a></li>
                 </ul>
                 <div class="text-center d-none d-md-inline"><button class="btn rounded-circle border-0"
                         id="sidebarToggle" type="button"></button></div>

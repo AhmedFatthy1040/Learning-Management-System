@@ -13,8 +13,10 @@ $QuestionController = new UsersController();
     $ErrorMessage = "";
     if (isset($_POST["Question"])) {
         if (!empty($_POST["Question"])) {
-            $Question = new Question($_POST["Question"], $_POST["CorrectAnswer"], $_POST["ExamID"]);
-
+            $Question = new Question();
+            $Question->SetQuestion($_POST["Question"]);
+            $Question->SetCorrectAnswer($_POST["CorrectAnswer"]);
+            $Question->SetExamID($_POST["ExamID"]);
             if ($QuestionController->AddQuestion($Question)) {
                 header("location: view_exam.php");
             }
