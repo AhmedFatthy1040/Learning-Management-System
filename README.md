@@ -55,3 +55,8 @@ This Learning Management System was developed with contributions from the follow
 - **Ahmed Fsrghaly** ([@ahmedfarghaly261](https://github.com/ahmedfarghaly261)): Frontend development, user interface design.
 - **Ahmed Fadel** ([@justFadel19](https://github.com/justFadel19)): Requirement analysis, documentation.
 
+
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+## License
+
+This project is licensed under the terms of the [MIT License](https://opensource.org/licenses/MIT).
